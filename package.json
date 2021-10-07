@@ -1,0 +1,18 @@
+{
+  "name": "weblang",
+  "version": "0.1.0",
+  "description": "Weblang API language",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon -q --exec spekk"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eldoy/weblang"
+  },
+  "author": "Vidar Eldøy <vidar@eldoy.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "spekk": "^0.2.0"
+  }
+}
