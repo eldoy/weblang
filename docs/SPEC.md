@@ -97,6 +97,7 @@ keep(
 
 result
 ```
+
 For an app, we can also do:
 
 filters
@@ -125,24 +126,30 @@ validate
 
 set
   query
+    // Set from variable
     user_id user.id
   values
-    password encrypted
+    // Run function on variable
+    password | encrypt
+
+    // Run function on variable
+    password | encrypt salt: true with options
+
+    // Set as string
+    hello 'bye'
+
+    // Set from variable function
+    hello date
 
 db
   create
-    values
-  update
-    query
-    values
-  delete
-    query
-  find
-    query
-  get
-    query
-  count
-    query
+    user
+
+on
+  create
+    mail
+      signup
+        to values.email
 
 keep
   result
@@ -161,3 +168,130 @@ events?
   oncreate
   onupdate
   ondelete
+
+// Declarative style, line by line
+
+For an app, we can also do:
+
+filters setup auth user
+
+allow query id
+allow values name
+
+deny query link
+deny values email
+
+validate query email required: true is: $email
+validate query email
+
+set query user_id user.id
+set values password | encrypt
+set values password | encrypt salt: true
+set values hello 'bye'
+set values hello date
+
+db create user
+
+on create mail signup to: values.email
+
+keep result name
+remove result name
+
+
+// Ruby version DECLARATIVE, convert to js with Opal
+
+filter setup
+filter auth
+filter user
+allow query.id
+allow values.name
+validate query.email
+
+      required: true
+      is: '$email'
+    }
+  }
+)
+set(
+  query: {
+    user_id: user.id
+  },
+  values: {
+    password: encrypt(values.password)
+    password: encrypt(salt: true),
+    hello: 'bye',
+    hello: date
+  }
+)
+
+filters setup auth user
+
+allow query id
+allow values name
+
+deny query link
+deny values email
+
+validate query email required: true is: $email
+validate query email
+
+set query user_id user.id
+set values password | encrypt
+set values password | encrypt salt: true
+set values hello 'bye'
+set values hello date
+
+db create user
+
+on create mail signup to: values.email
+
+keep result name
+remove result name
+
+
+// YML version
+
+filters:
+  - auth
+  - user
+
+allow:
+  query:
+    - id
+  values:
+    - name
+
+validate:
+  query:
+    id:
+      - required: true
+      - is: $id
+  values:
+    email:
+      - is: $email
+
+set:
+  query:
+    user_id: user.id
+  values:
+    password: encrypt
+    password:
+      encrypt:
+        salt: true
+    hello: bye
+    hello: date
+
+db:
+  user:
+    create
+
+mail:
+  signup:
+    to: values.email
+
+keep:
+  result:
+    - name
+remove:
+  result:
+    - id

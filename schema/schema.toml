@@ -1,0 +1,44 @@
+[email.signup]
+to = "$user"
+html = """
+Welcome! This is the shit.
+Are you ready? {{email}}
+"""
+
+[action.user.create]
+filters = [ "hello" ]
+mail = "signup"
+
+[action.user.create.validate.name]
+minlength = 2
+
+[action.user.create.validate.email]
+is = "$email"
+
+# [action.allow]
+# values = [ "name", "email" ]
+
+# [action.set1.values]
+# user_id = "$user.id"
+# password = "$encrypt"
+
+# [action.set2.if."$user"]
+# eq = "vidar@eldoy.com"
+# ne = "suong@pham.com"
+
+# [action.set2.values]
+# published = true
+
+# [action.db]
+# create = "user"
+
+# [action.keep]
+# result = [ "id" ]
+
+# [form]
+# action = "user/create"
+# email = "string"
+
+# [form.name]
+# type = "string"
+# blank = true

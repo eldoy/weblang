@@ -1,0 +1,23 @@
+filters:
+  - setup
+  - auth
+validate:
+  values.name.minlength: 2
+  values.name.email: $email
+allow:
+  - values.name
+  - values.email
+set:
+  values.user_id: $user.id
+  values.password: $encrypt
+when:
+  values.name.eq: vidar@eldoy.com
+  set:
+    values.published: true
+var:
+  result:
+    $db: user.create
+mail: signup
+keep:
+  - id
+return: result

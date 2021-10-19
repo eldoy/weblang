@@ -1,0 +1,45 @@
+# email
+name: signup
+to: $user
+html: >
+  Welcome {{name}}!
+
+  Are you ready?
+
+# action
+filters:
+  - setup
+  - auth
+validate:
+  values.name.minlength: 2
+  values.name.email: $email
+allow:
+  - values.name
+  - values.email
+set:
+  values.user_id: $user.id
+  values.password: $encrypt
+when:
+  values.name.eq: vidar@eldoy.com
+  set:
+    values.published: true
+var:
+  result:
+    $db: user.create
+mail:
+  name: signup
+keep:
+  result:
+    - id
+remove:
+  result:
+    - password
+return: result
+
+# form
+action: user/create
+fields:
+  - name:
+    type: string
+    blank: true # can be blank
+  - email: string # default is 'type'

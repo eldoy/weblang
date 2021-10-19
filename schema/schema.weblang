@@ -1,0 +1,58 @@
+// Action
+action({ name: 'user/create' }, () => {
+
+  filters(['setup', 'auth'])
+  validate({
+    values: {
+      name: {
+        minlength: 2
+      },
+      email: {
+        is: '$email'
+      }
+    }
+  })
+
+  allow(values, ['name', 'email'])
+
+  set({
+    values: {
+      user_id: $user.id,
+      password: $encrypt
+    }
+  })
+
+  when({
+    values: {
+      name: {
+        ne: 'vidar@eldoy.com'
+      }
+    }
+  }, () => {
+    set({ values: { published: true } })
+  })
+
+  mail({
+    to: '$user,
+    html: `
+      Welcome! This is the shit.
+
+      Are you ready? {{values.email}}
+    `
+  })
+
+  // Result from last db lookup is merged to '$result'
+  // or result is {}
+  db('user/create', { query, values })
+
+  keep($result, ['id'])
+
+  // $result is returned
+}
+
+// FORM
+
+form({ action: 'user/create' }, () => {
+  string({ name: 'name', blank: true })
+  email({ name: 'email' })
+})

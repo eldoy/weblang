@@ -1,0 +1,66 @@
+// Emails
+{
+  "name": "signup",
+  "to": "$user",
+  "html": "Welcome {{name}}!\nAre you ready?\n"
+}
+
+// Actions
+{
+  "filters": [
+    "setup",
+    "auth"
+  ],
+  "validate": {
+    "values.name.minlength": 2,
+    "values.name.email": "$email"
+  },
+  "allow": [
+    "values.name",
+    "values.email"
+  ],
+  "set": {
+    "values.user_id": "$user.id",
+    "values.password": "$encrypt"
+  },
+  "when": {
+    "values.name.eq": "vidar@eldoy.com",
+    "set": {
+      "values.published": true
+    }
+  },
+  "var": {
+    "result": {
+      "$db": "user.create"
+    }
+  },
+  "mail": {
+    "name": "signup"
+  },
+  "keep": {
+    "result": [
+      "id"
+    ]
+  },
+  "remove": {
+    "result": [
+      "password"
+    ]
+  },
+  "return": "result"
+}
+
+// Forms
+{
+  "action": "user/create",
+  "fields": [
+    {
+      "name": null,
+      "type": "string",
+      "blank": true
+    },
+    {
+      "email": "string"
+    }
+  ]
+}
