@@ -14,5 +14,11 @@
   "license": "MIT",
   "devDependencies": {
     "spekk": "^0.2.0"
+  },
+  "dependencies": {
+    "extras": "^0.7.4",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "waveorb": "^0.22.3"
   }
 }
