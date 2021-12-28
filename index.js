@@ -43,26 +43,28 @@ module.exports = function(opt = {}) {
 
         if (key[0] == '$') {
           set(key, val)
+
+        } else if (key == 'if') {
+          for (let key in val) {
+            // Support dot notation
+            const [path, value] = Object.entries(val)[0]
+            if (path.includes('.')) {
+              val = _.set({}, path, value)
+              key = path.split('.')[0]
+            }
+            const obj = val[key]
+            const checks = _.get(state.vars, key.slice(1))
+            state.test = !checks || !(await validate(obj, checks))
+            if (!state.test) break
+          }
+
+        } else if (
+          key == 'then' && state.test ||
+          key == 'else' && state.test === false
+        ) {
+          await run(val)
+          delete state.test
         }
-
-
-
-      //   if (key == 'if') {
-      //     const name = Object.keys(val)[0]
-      //     const data = state.var[name]
-      //     const spec = val[name]
-      //     state.test = !(await validate(spec, data))
-      //   }
-
-      //   if (key == 'then' && state.test === true) {
-      //     await run(val)
-      //     delete state.test
-      //   }
-
-      //   if (key == 'else' && state.test === false) {
-      //     await run(val)
-      //     delete state.test
-      //   }
 
       //   if (key == 'return') {
 
