@@ -64,21 +64,12 @@ module.exports = function(opt = {}) {
         ) {
           await run(val)
           delete state.test
+
+        } else if (key == 'return') {
+          state.return = typeof val == 'string' && val[0] == '$'
+            ? _.get(state.vars, val.slice(1))
+            : val
         }
-
-      //   if (key == 'return') {
-
-      //     if (_.isPlainObject(val)) {
-      //       for (const k in val) {
-      //         const v = val[k]
-      //         console.log({ k, v })
-      //         val[k] = state.var[v] || v
-      //       }
-      //       return val
-      //     }
-
-      //     return state.var[val] || val
-      //   }
       }
     }
     await run(yaml(data))
