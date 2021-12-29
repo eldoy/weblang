@@ -212,9 +212,11 @@ it('should support custom vars', async ({ t }) => {
   const state = await weblang({
     vars: { req }
   })([
+    '$req.pathname: /bye',
     'return: $req.pathname'
   ].join('\n'))
-  t.ok(state.return == '/hello')
+  t.ok(req.pathname == '/bye')
+  t.ok(state.return == '/bye')
 })
 
 /* FUNCTIONS *
