@@ -207,6 +207,7 @@ it('should return a variable dot notation', async ({ t }) => {
 
 /* VARS *
 *********/
+
 it('should support custom vars', async ({ t }) => {
   const req = { pathname: '/hello' }
   const state = await weblang({
@@ -219,9 +220,19 @@ it('should support custom vars', async ({ t }) => {
   t.ok(state.return == '/bye')
 })
 
+/* PIPES *
+**********/
+
+x('should support pipes', async ({ t }) => {
+  const state = await weblang()([
+    'return: hello | upcase'
+  ].join('\n'))
+  console.log({ state })
+  t.ok(state.return == 'HELLO')
+})
+
+
 /* FUNCTIONS *
 *************/
 
-/* PIPES *
-**********/
 

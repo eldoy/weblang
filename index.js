@@ -1,13 +1,13 @@
 const _ = require('lodash')
 const { validate } = require('waveorb')
 const yaml = require('./lib/yaml.js')
-
+const PIPES = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
   // TODO: options should be
   // vars - default variables for each run
-  // functions - extra functions, should override default ones
   // pipes - transformative functions run on values, should override default ones
+  // functions - extra functions, should override default ones
 
   return async function(data) {
 
@@ -22,6 +22,27 @@ module.exports = function(opt = {}) {
       }
     }
 
+    // Add pipes
+    opt.pipes = { PIPES, ...opt.pipes }
+
+    function apply(val) {
+      // Apply pipes
+      if (typeof val != 'string') return val
+      let [v, ...pipes] = val.split('|').map(x => x.trim())
+      for (const p of pipes) {
+        const pipe = opt.pipes[p]
+        if (typeof pipe == 'function') {
+          v = pipe(v)
+        }
+      }
+      return v
+    }
+
+    function get(key) {
+      if (key[0] == '$') key = key.slice(1)
+      return _.get(state.vars, key)
+    }
+
     function set(key, val) {
       if (val && typeof val == 'object') {
         function replace(obj) {
@@ -29,14 +50,14 @@ module.exports = function(opt = {}) {
             if (obj[key] && typeof obj[key] == 'object') {
               replace(obj[key])
             } else if (typeof obj[key] == 'string' && obj[key][0] == '$'){
-              obj[key] = _.get(state.vars, obj[key].slice(1))
+              obj[key] = get(obj[key])
             }
           }
         }
         replace(val)
 
       } else if (typeof val == 'string' && val[0] == '$') {
-        val = _.get(state.vars, val.slice(1))
+        val = get(val)
       }
 
       _.set(state.vars, key.slice(1), val)
@@ -60,7 +81,7 @@ module.exports = function(opt = {}) {
               key = path.split('.')[0]
             }
             const obj = val[key]
-            const checks = _.get(state.vars, key.slice(1))
+            const checks = get(key)
             state.test = !checks || !(await validate(obj, checks))
             if (!state.test) break
           }
@@ -74,7 +95,7 @@ module.exports = function(opt = {}) {
 
         } else if (key == 'return') {
           state.return = typeof val == 'string' && val[0] == '$'
-            ? _.get(state.vars, val.slice(1))
+            ? get(val)
             : val
         }
       }
