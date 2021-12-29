@@ -204,3 +204,22 @@ it('should return a variable dot notation', async ({ t }) => {
   ].join('\n'))
   t.ok(state.return.baner == 1)
 })
+
+/* VARS *
+*********/
+it('should support custom vars', async ({ t }) => {
+  const req = { pathname: '/hello' }
+  const state = await weblang({
+    vars: { req }
+  })([
+    'return: $req.pathname'
+  ].join('\n'))
+  t.ok(state.return == '/hello')
+})
+
+/* FUNCTIONS *
+*************/
+
+/* PIPES *
+**********/
+

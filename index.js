@@ -15,6 +15,13 @@ module.exports = function(opt = {}) {
       vars: {}
     }
 
+    // Add custom vars
+    if (opt.vars) {
+      for (const name in opt.vars) {
+        state.vars[name] = opt.vars[name]
+      }
+    }
+
     function set(key, val) {
       if (val && typeof val == 'object') {
         function replace(obj) {
