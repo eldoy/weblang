@@ -56,13 +56,13 @@ $hello:
     deep: 1
 $bye: $hello.name.deep
 
-# Set variable in array, dot notation
+# Set variable from array, dot notation
 $hello:
   - 1
   - 2
 $bye: $hello[0]
 
-# Set variable in object array, dot notation
+# Set variable from object array, dot notation
 $hello:
   - name: nils
 $bye: $hello[0].name
