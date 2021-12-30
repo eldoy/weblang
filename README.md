@@ -67,7 +67,7 @@ $hello:
   - name: nils
 $bye: $hello[0].name
 
-# Non existing variables are empty string
+# Non existing variables are empty strings
 $bye: $hello
 ```
 
