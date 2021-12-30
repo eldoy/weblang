@@ -232,9 +232,14 @@ const run = await weblang({
 })
 ```
 
-Run the extension like this:
+Define the _code_ like this:
 ```yaml
 db: user/create
+```
+
+and run with the extension like this:
+```js
+const state = await run(code)
 ```
 
 To set the result of the function, use the _extension variable syntax_:
