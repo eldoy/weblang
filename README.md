@@ -2,6 +2,8 @@
 
 The Weblang language lets you write safe, portable and efficient code with minimal logic. Written to let users run code on your server.
 
+The code is written using YAML.
+
 ### Install
 ```
 npm i weblang
@@ -211,11 +213,12 @@ Weblang can (and should) be extended with your own commands. Define an extension
 
 ```js
 // Function called db
-const db = function({ state, key, val, set, get }) {
+const db = function({ state, key, val, id, set, get }) {
 
   // state - the runner's state with vars and return
   // key - the name of the function, here 'db'
   // val - the object you send to this function
+  // id - the duplicate key id, if any
   // set - use this to set variables, prefix with '$'
   // get - use this to get variables and run pipes
 
@@ -249,5 +252,25 @@ db$result: user/create
 ```
 
 and the `result` variable will be available in `state.vars.result`.
+
+### Duplicate keys
+
+Since YAML doesn't support duplicate keys you can write code using the `duplicate key syntax`:
+
+```yaml
+if@1:
+  $req.pathname.eq: /users
+then@1:
+  $hello: 1
+
+if@2:
+  $req.pathname.eq: /users
+then@2:
+  $hello: 2
+```
+
+The `@id` can be anything you want, it's just to avoid duplicate key errors.
+
+### License
 
 MIT Licensed. Enjoy!
