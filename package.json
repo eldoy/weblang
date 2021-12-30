@@ -1,6 +1,6 @@
 {
   "name": "weblang",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Weblang API language",
   "main": "index.js",
   "scripts": {
