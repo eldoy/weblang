@@ -1,6 +1,6 @@
 const yaml = require('../../lib/yaml.js')
 
-it('should allow duplicate keys', async function({ t }) {
+it('should load yaml', async function({ t }) {
   const result = yaml([
     'hello@1: world',
     'hello@2: world'
