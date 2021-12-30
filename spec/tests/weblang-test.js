@@ -93,8 +93,11 @@ it('should set variable with array object dot notation', async ({ t }) => {
   t.ok(state.vars.bye == 'nils')
 })
 
-x('should set empty string if not exists', async ({ t }) => {
-
+it('should set empty string if variable does not exist', async ({ t }) => {
+  const state = await weblang()([
+    '$bye: $hello'
+  ].join('\n'))
+  t.ok(state.vars.bye == '')
 })
 
 /* IF-THEN-ELSE *
@@ -257,7 +260,12 @@ it('should strip pipes with return', async ({ t }) => {
   t.ok(state.return == 'hello')
 })
 
+it('should work with multiple pipes', async ({ t }) => {
+  const state = await weblang()([
+    'return: hello | upcase | downcase | capitalize'
+  ].join('\n'))
+  t.ok(state.return == 'Hello')
+})
+
 /* FUNCTIONS *
 *************/
-
-
