@@ -163,9 +163,20 @@ const req = { pathname: '/hello' }
 const run = await weblang({
   vars: { req }
 })
+```
 
-// Then run with
-run(code)
+Use some _code_ like this:
+```yaml
+# Modify pathname
+$req.pathname: /bye
+
+# Return the modified pathname
+return: $req.pathname
+```
+
+Then run with:
+```js
+await run(code)
 ```
 
 ### Pipes
