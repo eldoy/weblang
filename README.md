@@ -75,7 +75,7 @@ $bye: $hello
 
 Minimal logic is achieved through _if, then and else_.
 
-The validations inside the if-section are from [the Waveorb validations](https://waveorb.com/doc/actions#validations)
+The validations inside the if-section are from [the Waveorb validations.](https://waveorb.com/doc/actions#validations)
 
 ```yaml
 # If with then
