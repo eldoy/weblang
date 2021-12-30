@@ -2,7 +2,7 @@
 
 The Weblang language lets you write safe, portable and efficient code with minimal logic. Written to let users run code on your server.
 
-The code is written using YAML.
+The code is written using YAML, which can easily be transformed to and from JSON.
 
 ### Install
 ```
