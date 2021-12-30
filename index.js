@@ -25,30 +25,17 @@ module.exports = function(opt = {}) {
     // Add pipes
     opt.pipes = { ...PIPES, ...opt.pipes }
 
-    // Apply pipes
-    function apply(val) {
-      if (typeof val != 'string') return val
+    function get(val) {
       let [v, ...pipes] = val.split('|').map(x => x.trim())
+      if (v[0] == '$') {
+        v = _.get(state.vars, v.slice(1)) || ''
+      }
       for (const p of pipes) {
         const pipe = opt.pipes[p]
         if (typeof pipe == 'function') {
           v = pipe(v)
         }
       }
-      return v
-    }
-
-    function get(key) {
-      if (key[0] == '$') key = key.slice(1)
-      let [v, ...pipes] = key.split('|').map(x => x.trim())
-      v = _.get(state.vars, v)
-      for (const p of pipes) {
-        const pipe = opt.pipes[p]
-        if (typeof pipe == 'function') {
-          v = pipe(v)
-        }
-      }
-
       return v
     }
 
@@ -58,18 +45,18 @@ module.exports = function(opt = {}) {
           for (const key in obj) {
             if (obj[key] && typeof obj[key] == 'object') {
               replace(obj[key])
-            } else if (typeof obj[key] == 'string' && obj[key][0] == '$'){
+            } else if (typeof obj[key] == 'string'){
               obj[key] = get(obj[key])
             }
           }
         }
         replace(val)
 
-      } else if (typeof val == 'string' && val[0] == '$') {
+      } else if (typeof val == 'string') {
         val = get(val)
       }
 
-      _.set(state.vars, key.slice(1), apply(val))
+      _.set(state.vars, key.slice(1), val)
     }
 
     async function run(code) {
@@ -103,10 +90,7 @@ module.exports = function(opt = {}) {
           delete state.test
 
         } else if (key == 'return') {
-          const v = typeof val == 'string' && val[0] == '$'
-            ? get(val)
-            : val
-          state.return = apply(v)
+          state.return = get(val)
         }
       }
     }

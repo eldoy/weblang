@@ -93,6 +93,10 @@ it('should set variable with array object dot notation', async ({ t }) => {
   t.ok(state.vars.bye == 'nils')
 })
 
+x('should set empty string if not exists', async ({ t }) => {
+
+})
+
 /* IF-THEN-ELSE *
 *****************/
 
