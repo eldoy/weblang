@@ -1,7 +1,7 @@
 {
   "name": "weblang",
   "version": "0.2.6",
-  "description": "Weblang API language",
+  "description": "Weblang low code programming language",
   "main": "index.js",
   "scripts": {
     "test": "nodemon -q --exec spekk"
@@ -16,7 +16,6 @@
     "spekk": "^0.2.0"
   },
   "dependencies": {
-    "extras": "^0.7.4",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "waveorb": "^0.22.3"
