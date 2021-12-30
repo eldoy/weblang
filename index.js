@@ -4,10 +4,6 @@ const yaml = require('./lib/yaml.js')
 const PIPES = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
-  // TODO: options should be
-  // vars - default variables for each run
-  // pipes - transformative functions run on values, should override default ones
-  // functions - extra functions, should override default ones
 
   return async function(data) {
 
@@ -24,6 +20,9 @@ module.exports = function(opt = {}) {
 
     // Add pipes
     opt.pipes = { ...PIPES, ...opt.pipes }
+
+    // Add extensions
+    opt.ext = opt.ext || {}
 
     function get(val) {
       let [v, ...pipes] = val.split('|').map(x => x.trim())
@@ -63,7 +62,11 @@ module.exports = function(opt = {}) {
 
       for (const name in code) {
         let val = code[name]
-        let [key, no] = name.split('@')
+        let key, id, setter
+        [key, id] = name.split('@')
+        if (key[0] != '$') {
+          [key, setter] = key.split('$')
+        }
 
         if (key[0] == '$') {
           set(key, val)
@@ -91,6 +94,12 @@ module.exports = function(opt = {}) {
 
         } else if (key == 'return') {
           state.return = get(val)
+
+        } else if (typeof opt.ext[key] == 'function') {
+          const result = await opt.ext[key]({ state, key, val, id, set, get })
+          if (setter) {
+            set(`$${setter}`, result)
+          }
         }
       }
     }
@@ -122,13 +131,6 @@ module.exports = function(opt = {}) {
 
 // if (key == 'validate') {
 //   await $.validate(val)
-// }
-
-// if (key == 'set') {
-//   for (const k in val) {
-//     const v = val[k]
-//     state.var[k] = v
-//   }
 // }
 
 // if (key == 'db') {
