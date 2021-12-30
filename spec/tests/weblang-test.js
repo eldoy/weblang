@@ -84,6 +84,28 @@ it('should set variable with array dot notation', async ({ t }) => {
   t.ok(state.vars.bye == 1)
 })
 
+it('should set object field variable, dot notation', async ({ t }) => {
+  const state = await weblang()([
+    '$hello.name: nils'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'nils')
+})
+
+it('should set object field variable deep, dot notation', async ({ t }) => {
+  const state = await weblang()([
+    '$hello.name.deep: nils'
+  ].join('\n'))
+  t.ok(state.vars.hello.name.deep == 'nils')
+})
+
+it('should update object field variable, dot notation', async ({ t }) => {
+  const state = await weblang()([
+    '$hello.name: nils',
+    '$hello.name: kari'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'kari')
+})
+
 it('should set variable with array object dot notation', async ({ t }) => {
   const state = await weblang()([
     '$hello:',

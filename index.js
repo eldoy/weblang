@@ -62,8 +62,7 @@ module.exports = function(opt = {}) {
 
       for (const name in code) {
         let val = code[name]
-        let key, id, setter
-        [key, id] = name.split('@')
+        let [key, id] = name.split('@'), setter
         if (key[0] != '$') {
           [key, setter] = key.split('$')
         }
