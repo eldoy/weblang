@@ -230,15 +230,14 @@ it('should support pipes with set', async ({ t }) => {
   t.ok(state.vars.hello == 'HELLO')
 })
 
-// it('should support pipes with set variables', async ({ t }) => {
-//   const state = await weblang()([
-//     '$hello: hello',
-//     '$bye: $hello | upcase'
-//   ].join('\n'))
-//   console.log({ state })
-//   t.ok(state.vars.hello == 'hello')
-//   t.ok(state.vars.bye == 'HELLO')
-// })
+it('should support pipes with set variables', async ({ t }) => {
+  const state = await weblang()([
+    '$hello: hello',
+    '$bye: $hello | upcase'
+  ].join('\n'))
+  t.ok(state.vars.hello == 'hello')
+  t.ok(state.vars.bye == 'HELLO')
+})
 
 it('should support pipes with return', async ({ t }) => {
   const state = await weblang()([

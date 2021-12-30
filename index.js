@@ -40,7 +40,16 @@ module.exports = function(opt = {}) {
 
     function get(key) {
       if (key[0] == '$') key = key.slice(1)
-      return _.get(state.vars, key)
+      let [v, ...pipes] = key.split('|').map(x => x.trim())
+      v = _.get(state.vars, v)
+      for (const p of pipes) {
+        const pipe = opt.pipes[p]
+        if (typeof pipe == 'function') {
+          v = pipe(v)
+        }
+      }
+
+      return v
     }
 
     function set(key, val) {
