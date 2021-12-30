@@ -50,7 +50,7 @@ $hello: world
 $bye:
   - $hello
 
-# Set variable in object, dot notation
+# Set variable from object, dot notation
 $hello:
   name:
     deep: 1
