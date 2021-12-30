@@ -73,7 +73,9 @@ $bye: $hello
 
 ### If then else
 
-Minimal logic is achieved through _if, then and else_. The validations inside the if-section is taken from [the Waveorb validations](https://waveorb.com/doc/actions#validations)
+Minimal logic is achieved through _if, then and else_.
+
+The validations inside the if-section is taken from [the Waveorb validations](https://waveorb.com/doc/actions#validations)
 
 ```yaml
 # If with then
@@ -110,7 +112,6 @@ then:
   $hello.name: hans
 
 # if else
-
 $hello:
   name: nils
 if:
@@ -225,12 +226,12 @@ Run the extension like this:
 db: user/create
 ```
 
-To set the result of the function, use the extension _variable syntax_:
+To set the result of the function, use the _extension variable syntax_:
 
 ```yaml
 db$result: user/create
 ```
 
-The `result` variable will be available in `state.vars.result`.
+and the `result` variable will be available in `state.vars.result`.
 
 MIT Licensed. Enjoy!
