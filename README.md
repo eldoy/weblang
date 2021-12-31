@@ -35,7 +35,7 @@ $hello:
   - 1
   - 2
 
-#  Set bool variable
+# Set bool variable
 $hello: true
 
 # Set variable from other variable
