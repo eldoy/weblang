@@ -213,11 +213,12 @@ Weblang can (and should) be extended with your own commands. Define an extension
 
 ```js
 // Function called db
-const db = function({ state, key, val, id, set, get }) {
+const db = function({ state, key, val, setter, id, set, get }) {
 
   // state - the runner's state with vars and return
   // key - the name of the function, here 'db'
   // val - the object you send to this function
+  // setter - store the result in this variable
   // id - the duplicate key id, if any
   // set - use this to set variables, prefix with '$'
   // get - use this to get variables and run pipes
@@ -245,7 +246,7 @@ and run with the extension like this:
 const state = await run(code)
 ```
 
-To set the result of the function, use the _extension variable syntax_:
+To set the result of the function, use the _extension variable setter syntax_:
 
 ```yaml
 db$result: user/create
