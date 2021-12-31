@@ -95,7 +95,8 @@ module.exports = function(opt = {}) {
           state.return = get(val)
 
         } else if (typeof opt.ext[key] == 'function') {
-          const result = await opt.ext[key]({ state, key, val, id, set, get })
+          const args = { state, key, val, setter, id, set, get }
+          const result = await opt.ext[key](args)
           if (setter) {
             set(`$${setter}`, result)
           }
