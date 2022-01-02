@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const { validate } = require('waveorb')
-const yaml = require('./lib/yaml.js')
+const { load, clean } = require('./lib/util.js')
 const PIPES = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
@@ -56,6 +56,7 @@ module.exports = function(opt = {}) {
       }
 
       _.set(state.vars, key.slice(1), val)
+      state.vars = clean(state.vars)
     }
 
     async function run(code) {
@@ -95,7 +96,7 @@ module.exports = function(opt = {}) {
           state.return = get(val)
 
         } else if (typeof opt.ext[key] == 'function') {
-          const args = { state, key, val, setter, id, set, get }
+          const args = { state, key, val, setter, id, run, set, get }
           const result = await opt.ext[key](args)
           if (setter) {
             set(`$${setter}`, result)
@@ -103,7 +104,7 @@ module.exports = function(opt = {}) {
         }
       }
     }
-    await run(yaml(data))
+    await run(load(data))
 
     return state
   }
