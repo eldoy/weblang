@@ -122,6 +122,47 @@ it('should set empty string if variable does not exist', async ({ t }) => {
   t.ok(state.vars.bye == '')
 })
 
+it('should delete a variable', async ({ t }) => {
+  const state = await weblang()([
+    '$hello@1: world',
+    '$hello@2: null'
+  ].join('\n'))
+  t.ok(typeof state.vars.hello == 'undefined')
+})
+
+it('should delete a value from object', async ({ t }) => {
+  const state = await weblang()([
+    '$hello:',
+    '  name: world',
+    '  email: a@world.no',
+    '$hello.email: null'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'world')
+  t.ok(typeof state.vars.hello.email == 'undefined')
+})
+
+it('should delete a value from object', async ({ t }) => {
+  const state = await weblang()([
+    '$hello:',
+    '  name: world',
+    '  email: a@world.no',
+    '$hello.email: null'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'world')
+  t.ok(typeof state.vars.hello.email == 'undefined')
+})
+
+it('should delete an array index', async ({ t }) => {
+  const state = await weblang()([
+    '$hello:',
+    '  - a',
+    '  - b',
+    '$hello[0]: null'
+  ].join('\n'))
+  t.ok(state.vars.hello.length == 1)
+  t.ok(state.vars.hello[0] == 'b')
+})
+
 /* IF-THEN-ELSE *
 *****************/
 
