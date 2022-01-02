@@ -225,6 +225,7 @@ return: hello | upcase | downcase | capitalize
 
 You can add your own pipes or replace the existing ones using the _pipes_ option:
 ```js
+// Add a pipe named 'hello'
 const run = await weblang({
   pipes: {
     hello: function(str) {
