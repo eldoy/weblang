@@ -223,6 +223,23 @@ return: hello | capitalize
 return: hello | upcase | downcase | capitalize
 ```
 
+You can add your own pipes or replace the existing ones using the _pipes_ option:
+```js
+const run = await weblang({
+  pipes: {
+    hello: function(str) {
+      if (typeof str != 'string') return str
+      return 'hello ' + str
+    }
+  }
+})
+```
+and the use it like this:
+
+```yaml
+return: world | hello
+```
+
 ### Extensions
 
 Weblang can (and should) be extended with your own commands. Define an extension function like this:
