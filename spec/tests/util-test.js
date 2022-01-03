@@ -12,6 +12,11 @@ it('should load yaml', async function({ t }) {
   t.ok(keys[1] == 'hello@2')
 })
 
+it('should load undefined code', async ({ t }) => {
+  const result = load()
+  t.ok(result == '')
+})
+
 it('should clean an object', async function({ t }) {
   let obj = {
     a: null,
