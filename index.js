@@ -25,6 +25,7 @@ module.exports = function(opt = {}) {
     opt.ext = opt.ext || {}
 
     function get(val) {
+      if (typeof val != 'string') return val
       let [v, ...pipes] = val.split('|').map(x => x.trim())
       if (v[0] == '$') {
         v = _.get(state.vars, v.slice(1)) || ''

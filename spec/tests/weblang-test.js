@@ -237,6 +237,25 @@ it('should return a string', async ({ t }) => {
   t.ok(state.return == 'hello')
 })
 
+o('should return an object', async ({ t }) => {
+  const state = await weblang()([
+    'return:',
+    '  name: world'
+  ].join('\n'))
+  t.ok(state.return.name == 'world')
+})
+
+o('should return an array', async ({ t }) => {
+  const state = await weblang()([
+    'return:',
+    '  - 1',
+    '  - 2'
+  ].join('\n'))
+  t.ok(state.return.length == 2)
+  t.ok(state.return[0] == 1)
+  t.ok(state.return[1] == 2)
+})
+
 it('should return a string variable', async ({ t }) => {
   const state = await weblang()([
     '$hello: world',
