@@ -97,8 +97,6 @@ The validations inside the if-section are from [the Waveorb validations.](https:
 
 ```yaml
 # If with then
-$hello:
-  name: nils
 if:
   $hello:
     name:
@@ -107,10 +105,6 @@ then:
   $hello.name: hans
 
 # Multiple checks
-$hello:
-  name: nils
-$req:
-  pathname: /hello
 if:
   $hello:
     name:
@@ -121,17 +115,13 @@ if:
 then:
   $hello.name: hans
 
-# The checks work dot notation as well
-$hello:
-  name: nils
+# Checks works with dot notation as well
 if:
   $hello.name.eq: nils
 then:
   $hello.name: hans
 
 # if else
-$hello:
-  name: nils
 if:
   $hello:
     name:
