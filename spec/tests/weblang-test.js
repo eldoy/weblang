@@ -237,7 +237,7 @@ it('should return a string', async ({ t }) => {
   t.ok(state.return == 'hello')
 })
 
-o('should return an object', async ({ t }) => {
+it('should return an object', async ({ t }) => {
   const state = await weblang()([
     'return:',
     '  name: world'
@@ -245,7 +245,7 @@ o('should return an object', async ({ t }) => {
   t.ok(state.return.name == 'world')
 })
 
-o('should return an array', async ({ t }) => {
+it('should return an array', async ({ t }) => {
   const state = await weblang()([
     'return:',
     '  - 1',
