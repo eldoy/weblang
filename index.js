@@ -62,6 +62,10 @@ module.exports = function(opt = {}) {
 
     async function run(code) {
 
+      if (typeof code == 'string') {
+        code = load(code)
+      }
+
       for (const name in code) {
         if (typeof state.return != 'undefined') break
         let val = code[name]
@@ -106,7 +110,7 @@ module.exports = function(opt = {}) {
         }
       }
     }
-    await run(load(data))
+    await run(data)
 
     return state
   }
