@@ -62,6 +62,7 @@ module.exports = function(opt = {}) {
     async function run(code) {
 
       for (const name in code) {
+        if (typeof state.return != 'undefined') break
         let val = code[name]
         let [key, id] = name.split('@'), setter
         if (key[0] != '$') {

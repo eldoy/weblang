@@ -275,6 +275,14 @@ it('should return a variable dot notation', async ({ t }) => {
   t.ok(state.return.baner == 1)
 })
 
+it('should return early', async ({ t }) => {
+  const state = await weblang()([
+    'return@1: early',
+    'return@2: late'
+  ].join('\n'))
+  t.ok(state.return == 'early')
+})
+
 /* VARS *
 *********/
 
