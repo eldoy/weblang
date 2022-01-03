@@ -144,7 +144,7 @@ else:
 
 ### Return
 
-The _return_ command sets a variable in `state.return`:
+The _return_ command sets a variable in `state.return`. Using _return_ causes execution to be halted.
 
 ```yaml
 # Return a string
