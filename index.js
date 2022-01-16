@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const { validate } = require('waveorb')
+const { validate } = require('d8a')
 const { load, clean } = require('./lib/util.js')
 const PIPES = require('./lib/pipes.js')
 
