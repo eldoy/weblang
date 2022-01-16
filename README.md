@@ -93,8 +93,42 @@ $bye: $hello
 
 Minimal logic is achieved through _if, then and else_.
 
-The validations inside the if-section are from [the Waveorb validations.](https://waveorb.com/doc/actions#validations)
+The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
 
+```yaml
+required: true # this means can not be undefined
+eq: 5          # Equal to
+ne: 5          # Not equal to
+gt: 5          # Greater than
+lt: 5          # Less than
+gte: 5         # Greater than or equal to
+lte: 5         # Less than or equal to
+in:            # Must be in list
+  - 1
+  - 2
+  - 3
+nin:           # Must not be in list
+  - 1
+  - 2
+  - 3
+length: 5      # Length of string must be
+minlength: 5   # Minimum length of string
+maxlength: 5   # Maximum length of string
+match: /regex/ # Must match regex
+is: boolean    # Must be true or false
+is: string     # Must be a string
+is: number     # Must be a number, integer or decimal (float)
+is: integer    # Must be an integer
+is: decimal    # Must be a decimal number
+is: date       # Must be a date
+is: id         # Must be an id
+is: object     # Must be an object
+is: array      # Must an array
+is: email      # Must be an email address
+is: url        # Must be a URL
+```
+
+This is how you use them:
 ```yaml
 # If with then
 if:
