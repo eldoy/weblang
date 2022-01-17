@@ -24,6 +24,7 @@ module.exports = function(opt = {}) {
     // Add extensions
     opt.ext = opt.ext || {}
 
+    // Get value from state
     function get(val) {
       if (typeof val != 'string') return val
       let [v, ...pipes] = val.split('|').map(x => x.trim())
@@ -39,20 +40,22 @@ module.exports = function(opt = {}) {
       return v
     }
 
+    // Set value in state
     function set(key, val) {
       if (val && typeof val == 'object') {
-        function replace(obj) {
+        function expand(obj) {
           for (const key in obj) {
             if (obj[key] && typeof obj[key] == 'object') {
-              replace(obj[key])
+              expand(obj[key])
             } else if (typeof obj[key] == 'string'){
               obj[key] = get(obj[key])
             }
           }
         }
-        replace(val)
+        expand(val)
+      }
 
-      } else if (typeof val == 'string') {
+      else if (typeof val == 'string') {
         val = get(val)
       }
 
@@ -70,14 +73,16 @@ module.exports = function(opt = {}) {
         if (typeof state.return != 'undefined') break
         let val = code[name]
         let [key, id] = name.split('@'), setter
+
         if (key[0] != '$') {
           [key, setter] = key.split('$')
         }
 
         if (key[0] == '$') {
           set(key, val)
+        }
 
-        } else if (key == 'if') {
+        else if (key == 'if') {
           for (let key in val) {
             // Support dot notation
             const [path, value] = Object.entries(val)[0]
@@ -90,18 +95,21 @@ module.exports = function(opt = {}) {
             state.test = !checks || !(await validate(obj, checks))
             if (!state.test) break
           }
+        }
 
-        } else if (
+        else if (
           key == 'then' && state.test ||
           key == 'else' && state.test === false
         ) {
           await run(val)
           delete state.test
+        }
 
-        } else if (key == 'return') {
+        else if (key == 'return') {
           state.return = get(val)
+        }
 
-        } else if (typeof opt.ext[key] == 'function') {
+        else if (typeof opt.ext[key] == 'function') {
           const args = { state, key, val, setter, id, run, set, get }
           const result = await opt.ext[key](args)
           if (setter) {
@@ -110,6 +118,7 @@ module.exports = function(opt = {}) {
         }
       }
     }
+
     await run(data)
 
     return state
