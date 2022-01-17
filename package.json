@@ -1,6 +1,6 @@
 {
   "name": "weblang",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Weblang low code programming language",
   "main": "index.js",
   "scripts": {
