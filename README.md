@@ -219,6 +219,10 @@ return: $req.pathname
 Then run with:
 ```js
 await run(code)
+
+// Pass params to extensions
+const params = { name: 'hello' }
+await run(code, params)
 ```
 
 ### Pipes
@@ -271,23 +275,27 @@ Weblang can (and should) be extended with your own commands. Define an extension
 
 ```js
 // Function called db
-const db = function({ state, key, val, setter, id, run, set, get }) {
+const db = function({
+  state,  // the runner's state with vars and return
+  key,    // the name of the function, here 'db'
+  val,    // the object you send to this function
+  setter, // store the result in this variable
+  id,     // the duplicate key id, if any
+  run,    // the run function that runs your code
+  set,    // use this to set variables, prefix with '$'
+  get,    // use this to get variables and run pipes
+  params  // parameters passed to your extensions
+}) {
 
-  // state - the runner's state with vars and return
-  // key - the name of the function, here 'db'
-  // val - the object you send to this function
-  // setter - store the result in this variable
-  // id - the duplicate key id, if any
-  // run - the run function that runs your code
-  // set - use this to set variables, prefix with '$'
-  // get - use this to get variables and run pipes
-
+  // Example use of set
   set('$internal', 'hello')
+
+  // Whatever you return will be in your setter
   return { id: '1' }
 }
 ```
 
-and then add the function to the runner like this:
+Add the function to the runner like this:
 
 ```js
 const run = await weblang({
