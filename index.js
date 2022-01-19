@@ -5,7 +5,7 @@ const PIPES = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
 
-  return async function(data) {
+  return async function(data, params) {
 
     const state = {
       vars: {}
@@ -110,7 +110,7 @@ module.exports = function(opt = {}) {
         }
 
         else if (typeof opt.ext[key] == 'function') {
-          const args = { state, key, val, setter, id, run, set, get }
+          const args = { state, key, val, setter, id, run, set, get, params }
           const result = await opt.ext[key](args)
           if (setter) {
             set(`$${setter}`, result)
