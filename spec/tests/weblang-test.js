@@ -166,7 +166,18 @@ it('should delete an array index', async ({ t }) => {
 /* IF-THEN-ELSE *
 *****************/
 
-it('should work with simple if', async ({ t }) => {
+it('should work with value if', async ({ t }) => {
+  const state = await weblang()([
+    '$hello: 1',
+    'if:',
+    '  $hello: 1',
+    'then:',
+    '  $hello: 2'
+  ].join('\n'))
+  t.ok(state.vars.hello == 2)
+})
+
+it('should work with object if', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
