@@ -84,12 +84,6 @@ module.exports = function(opt = {}) {
 
         else if (key == 'if') {
           for (let key in val) {
-            // Support dot notation
-            const [path, value] = Object.entries(val)[0]
-            if (path.includes('.')) {
-              val = _.set({}, path, value)
-              key = path.split('.')[0]
-            }
             const obj = val[key]
             const checks = get(key)
             state.test = !checks || !(await validate(obj, checks))
