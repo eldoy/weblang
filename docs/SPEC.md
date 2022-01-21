@@ -1,4 +1,17 @@
-# Create if it doesn't exist
+# Immutable, does not change other variable on change
+# Expand means applying vars (immutable) and pipes
+# Set and get must always expand before read and write
+# Pipes disappear, only piped value is set and get
+# Setter is only used when extension returns value
+# Create if it doesn't exist, overwrite if exists
+# Expand must expand inside objects as well
+
+# Enhancements:
+# Support literal '$' with \$?
+# More default pipes? Better pipes? (support arrays and objects)
+# More default functions? (log)
+# Error handling, display name of function that failed?
+# Error function passed to extension? Same for log?
 
 # Set string
 $hello: somestring
