@@ -64,10 +64,10 @@ module.exports = function(opt = {}) {
         }
 
         else if (key == 'if') {
-          for (let key in val) {
-            const obj = val[key]
-            const checks = get(key)
-            state.test = !checks || !(await validate(obj, checks))
+          for (const field in val) {
+            const obj = val[field]
+            const checks = get(field)
+            state.test = !checks || !await validate(obj, checks)
             if (!state.test) break
           }
         }
