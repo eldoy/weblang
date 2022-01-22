@@ -61,6 +61,12 @@ it('should expand string var', async ({ t }) => {
   t.ok(result === 'world')
 })
 
+it('should support $ in string', async ({ t }) => {
+  const state = {}
+  const result = expand('$$hello', state)
+  t.ok(result === '$hello')
+})
+
 it('should expand object var', async ({ t }) => {
   const state = {
     vars: {
@@ -147,4 +153,24 @@ it('should expand object var deeply dotted', async ({ t }) => {
   })
 })
 
+it('should not pipe unknown pipe', async ({ t }) => {
+  const state = {}
+  const result = expand('hello | unknown', state)
+  t.ok(result == 'hello')
+})
 
+it('should pipe string value', async ({ t }) => {
+  const state = {}
+  const result = expand('hello | upcase', state)
+  t.ok(result == 'HELLO')
+})
+
+it('should expand string var with pipe', async ({ t }) => {
+  const state = {
+    vars: {
+      hello: 'world'
+    }
+  }
+  const result = expand('$hello | upcase', state)
+  t.ok(result == 'WORLD')
+})
