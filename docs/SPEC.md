@@ -5,6 +5,7 @@
 # Setter is only used when extension returns value
 # Create if it doesn't exist, overwrite if exists
 # Expand expands inside objects as well
+# Full dot notation
 
 # Set string
 $hello: somestring

@@ -1,4 +1,4 @@
-const { load, clean } = require('../../lib/util.js')
+const { load, clean, undot } = require('../../lib/util.js')
 
 it('should load yaml', async function({ t }) {
   const result = load([
@@ -33,4 +33,28 @@ it('should clean an object', async function({ t }) {
   t.ok(obj.e[0] == 1)
   t.ok(obj.e[1] == 2)
   t.ok(obj.e[2] == 3)
+})
+
+o('should undot a dotted object', async ({ t }) => {
+  let result = undot({})
+  t.deepEqual(result, {})
+
+  result = undot({ name: 'hello' })
+  t.deepEqual(result, { name: 'hello' })
+
+  result = undot({ 'name.harald': 'hello' })
+  t.deepEqual(result, { name: { harald: 'hello' } })
+
+  result = undot({
+    names: {
+      'harald.email': 'hello@test.no'
+    }
+  })
+  t.deepEqual(result, {
+    names: {
+      harald: {
+        email: 'hello@test.no'
+      }
+    }
+  })
 })
