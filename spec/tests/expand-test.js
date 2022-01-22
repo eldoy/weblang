@@ -1,4 +1,5 @@
 const expand = require('../../lib/expand.js')
+const pipes = require('../../lib/pipes.js')
 
 it('should not expand empty object', async ({ t }) => {
   const state = {}
@@ -22,8 +23,7 @@ it('should expand with undefined if var undefined', async ({ t }) => {
     hello: '$hello'
   }, state)
   const keys = Object.keys(result)
-  t.ok(keys.length == 1)
-  t.ok(keys[0] == 'hello')
+  t.ok(keys.length == 0)
   t.ok(typeof result.hello == 'undefined')
 })
 
@@ -155,13 +155,13 @@ it('should expand object var deeply dotted', async ({ t }) => {
 
 it('should not pipe unknown pipe', async ({ t }) => {
   const state = {}
-  const result = expand('hello | unknown', state)
+  const result = expand('hello | unknown', state, { pipes })
   t.ok(result == 'hello')
 })
 
 it('should pipe string value', async ({ t }) => {
   const state = {}
-  const result = expand('hello | upcase', state)
+  const result = expand('hello | upcase', state, { pipes })
   t.ok(result == 'HELLO')
 })
 
@@ -171,6 +171,6 @@ it('should expand string var with pipe', async ({ t }) => {
       hello: 'world'
     }
   }
-  const result = expand('$hello | upcase', state)
+  const result = expand('$hello | upcase', state, { pipes })
   t.ok(result == 'WORLD')
 })

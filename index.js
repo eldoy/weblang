@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const { validate } = require('d8a')
+const expand = require('./lib/expand.js')
 const { load, clean } = require('./lib/util.js')
 const PIPES = require('./lib/pipes.js')
 
@@ -42,24 +43,8 @@ module.exports = function(opt = {}) {
 
     // Set value in state
     function set(key, val) {
-      if (val && typeof val == 'object') {
-        function expand(obj) {
-          for (const key in obj) {
-            if (obj[key] && typeof obj[key] == 'object') {
-              expand(obj[key])
-            } else if (typeof obj[key] == 'string'){
-              obj[key] = get(obj[key])
-            }
-          }
-        }
-        expand(val)
-      }
-
-      else if (typeof val == 'string') {
-        val = get(val)
-      }
-
-      _.set(state.vars, key.slice(1), val)
+      if (key[0] == '$') key = key.slice(1)
+      _.set(state.vars, key, val)
       state.vars = clean(state.vars)
     }
 
@@ -71,11 +56,10 @@ module.exports = function(opt = {}) {
 
       for (const name in code) {
         if (typeof state.return != 'undefined') break
-        let val = code[name]
 
-        // val must be expanded meaning:
-        // - replace $vars with state vars
-        // - run pipes
+        let val = code[name]
+        val = expand(val, state, opt)
+
         let [key, id] = name.split('@'), setter
 
         if (key[0] != '$') {

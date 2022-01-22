@@ -112,11 +112,11 @@ it('should set variable with array object dot notation', async ({ t }) => {
   t.ok(state.vars.bye == 'nils')
 })
 
-it('should set empty string if variable does not exist', async ({ t }) => {
+it('should set to undefined if variable does not exist', async ({ t }) => {
   const state = await weblang()([
     '$bye: $hello'
   ].join('\n'))
-  t.ok(state.vars.bye == '')
+  t.ok(typeof state.vars.bye == 'undefined')
 })
 
 it('should delete a variable', async ({ t }) => {
@@ -158,4 +158,15 @@ it('should delete an array index', async ({ t }) => {
   ].join('\n'))
   t.ok(state.vars.hello.length == 1)
   t.ok(state.vars.hello[0] == 'b')
+})
+
+x('should not mutate existing var', async ({ t }) => {
+  const state = await weblang()([
+    '$hello:',
+    '  name: nisse',
+    '$bye: $hello',
+    '$bye.name: baner'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'nisse')
+  t.ok(state.vars.hello.name == 'baner')
 })
