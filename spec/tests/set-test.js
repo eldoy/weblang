@@ -160,7 +160,7 @@ it('should delete an array index', async ({ t }) => {
   t.ok(state.vars.hello[0] == 'b')
 })
 
-x('should not mutate existing var', async ({ t }) => {
+it('should not mutate existing var', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nisse',
@@ -168,5 +168,5 @@ x('should not mutate existing var', async ({ t }) => {
     '$bye.name: baner'
   ].join('\n'))
   t.ok(state.vars.hello.name == 'nisse')
-  t.ok(state.vars.hello.name == 'baner')
+  t.ok(state.vars.bye.name == 'baner')
 })

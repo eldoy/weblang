@@ -28,17 +28,10 @@ module.exports = function(opt = {}) {
     // Get value from state
     function get(val) {
       if (typeof val != 'string') return val
-      let [v, ...pipes] = val.split('|').map(x => x.trim())
-      if (v[0] == '$') {
-        v = _.get(state.vars, v.slice(1)) || ''
+      if (val[0] == '$') {
+        val = _.get(state.vars, val.slice(1)) || ''
       }
-      for (const p of pipes) {
-        const pipe = opt.pipes[p]
-        if (typeof pipe == 'function') {
-          v = pipe(v)
-        }
-      }
-      return v
+      return val
     }
 
     // Set value in state
@@ -57,8 +50,8 @@ module.exports = function(opt = {}) {
       for (const name in code) {
         if (typeof state.return != 'undefined') break
 
-        let val = code[name]
-        val = expand(val, state, opt)
+        let raw = code[name]
+        let val = expand(raw, state, opt)
 
         let [key, id] = name.split('@'), setter
 
@@ -88,11 +81,22 @@ module.exports = function(opt = {}) {
         }
 
         else if (key == 'return') {
-          state.return = get(val)
+          state.return = val
         }
 
         else if (typeof opt.ext[key] == 'function') {
-          const args = { state, key, val, setter, id, run, set, get, params }
+          const args = {
+            state,
+            key,
+            val,
+            raw,
+            setter,
+            id,
+            run,
+            set,
+            get,
+            params
+          }
           const result = await opt.ext[key](args)
           if (setter) {
             set(setter, result)
