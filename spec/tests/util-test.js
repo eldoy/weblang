@@ -1,4 +1,4 @@
-const { load, clean, undot } = require('../../lib/util.js')
+const { load } = require('../../lib/util.js')
 
 it('should load yaml', async function({ t }) {
   const result = load([
@@ -15,46 +15,4 @@ it('should load yaml', async function({ t }) {
 it('should load undefined code', async ({ t }) => {
   const result = load()
   t.ok(result == '')
-})
-
-it('should clean an object', async function({ t }) {
-  let obj = {
-    a: null,
-    b: {
-      c: null,
-      d: 1
-    },
-    e: [1, 2, null, 3]
-  }
-  obj = clean(obj)
-  t.ok(typeof obj.a == 'undefined')
-  t.ok(typeof obj.b.c == 'undefined')
-  t.ok(obj.b.d == 1)
-  t.ok(obj.e[0] == 1)
-  t.ok(obj.e[1] == 2)
-  t.ok(obj.e[2] == 3)
-})
-
-o('should undot a dotted object', async ({ t }) => {
-  let result = undot({})
-  t.deepEqual(result, {})
-
-  result = undot({ name: 'hello' })
-  t.deepEqual(result, { name: 'hello' })
-
-  result = undot({ 'name.harald': 'hello' })
-  t.deepEqual(result, { name: { harald: 'hello' } })
-
-  result = undot({
-    names: {
-      'harald.email': 'hello@test.no'
-    }
-  })
-  t.deepEqual(result, {
-    names: {
-      harald: {
-        email: 'hello@test.no'
-      }
-    }
-  })
 })
