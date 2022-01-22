@@ -112,8 +112,8 @@ nin:           # Must not be in list
   - 2
   - 3
 length: 5      # Length of string must be
-minlength: 5   # Minimum length of string
-maxlength: 5   # Maximum length of string
+min: 5         # Minimum length of string
+max: 5         # Maximum length of string
 match: /regex/ # Must match regex
 is: boolean    # Must be true or false
 is: string     # Must be a string
