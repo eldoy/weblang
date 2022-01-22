@@ -1,7 +1,8 @@
 const _ = require('lodash')
 const { validate } = require('d8a')
+const { clean } = require('extras')
 const expand = require('./lib/expand.js')
-const { load, clean } = require('./lib/util.js')
+const { load } = require('./lib/util.js')
 const PIPES = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
