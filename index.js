@@ -72,6 +72,10 @@ module.exports = function(opt = {}) {
       for (const name in code) {
         if (typeof state.return != 'undefined') break
         let val = code[name]
+
+        // val must be expanded meaning:
+        // - replace $vars with state vars
+        // - run pipes
         let [key, id] = name.split('@'), setter
 
         if (key[0] != '$') {
