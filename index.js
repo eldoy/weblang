@@ -28,9 +28,8 @@ module.exports = function(opt = {}) {
 
     // Get value from state
     function get(val) {
-      if (typeof val != 'string') return val
-      if (val[0] == '$') {
-        val = _.get(state.vars, val.slice(1)) || ''
+      if (typeof val == 'string' && val[0] == '$') {
+        return _.get(state.vars, val.slice(1))
       }
       return val
     }
