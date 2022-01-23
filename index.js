@@ -95,6 +95,7 @@ module.exports = function(opt = {}) {
             run,
             set,
             get,
+            opt,
             params
           }
           const result = await opt.ext[key](args)
