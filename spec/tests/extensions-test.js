@@ -27,10 +27,12 @@ it('should set variable with extensions', async ({ t }) => {
 
 it('should not set variable if undefined', async ({ t }) => {
   const state = await weblang({
-    ext: { db: function(){} }
+    ext: { db: function({ set }){
+      set('result', 'hello')
+    } }
   })([
     'db$result: user/create',
     'return: $result'
   ].join('\n'))
-  t.ok(typeof state.vars.result == 'undefined')
+  t.ok(state.vars.result == 'hello')
 })
