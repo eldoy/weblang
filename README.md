@@ -288,6 +288,7 @@ const db = function({
   run,    // the run function that runs your code
   set,    // use this to set variables, prefix with '$'
   get,    // use this to get variables and run pipes
+  opt,    // the options passed to weblang
   params  // parameters passed to your extensions
 }) {
 
