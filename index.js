@@ -98,7 +98,7 @@ module.exports = function(opt = {}) {
             params
           }
           const result = await opt.ext[key](args)
-          if (setter) {
+          if (typeof result != 'undefined' && setter) {
             set(setter, result)
           }
         }
