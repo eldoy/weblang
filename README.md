@@ -87,6 +87,9 @@ $bye: $hello[0].name
 
 # Non existing variables are empty strings
 $bye: $hello
+
+# Set literal '$', prevents var lookup
+$bye: $$hello
 ```
 
 ### If then else

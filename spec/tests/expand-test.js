@@ -174,3 +174,24 @@ it('should expand string var with pipe', async ({ t }) => {
   const result = expand('$hello | upcase', state, { pipes })
   t.ok(result == 'WORLD')
 })
+
+it('should return the correct type', async ({ t }) => {
+  const state = {}
+  let result = expand('hello', state)
+  t.ok(result == 'hello')
+
+  result = expand('5', state)
+  t.ok(result === 5)
+
+  result = expand('5 | unknown', state)
+  t.ok(result === 5)
+
+  result = expand('true', state)
+  t.ok(result === true)
+
+  result = expand('false', state)
+  t.ok(result === false)
+
+  result = expand('null', state)
+  t.ok(result === null)
+})
