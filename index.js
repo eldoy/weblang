@@ -37,7 +37,7 @@ module.exports = function(opt = {}) {
     // Set value in state
     function set(key, val) {
       if (key[0] == '$') key = key.slice(1)
-      _.set(state.vars, key, val)
+      _.set(state.vars, key, _.cloneDeep(val))
       state.vars = clean(state.vars)
     }
 
@@ -81,7 +81,7 @@ module.exports = function(opt = {}) {
         }
 
         else if (key == 'return') {
-          state.return = val
+          state.return = _.cloneDeep(val)
         }
 
         else if (typeof opt.ext[key] == 'function') {
