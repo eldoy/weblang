@@ -67,7 +67,7 @@ module.exports = function(opt = {}) {
           for (const field in val) {
             const obj = val[field]
             const checks = get(field)
-            state.test = !checks || !await validate(obj, checks)
+            state.test = !checks || !await validate(obj, checks, { mode: 'strict' })
             if (!state.test) break
           }
         }
