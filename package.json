@@ -13,10 +13,10 @@
   "author": "Vidar Eldøy <vidar@eldoy.com>",
   "license": "MIT",
   "devDependencies": {
-    "spekk": "^0.2.0"
+    "spekk": "^0.2.1"
   },
   "dependencies": {
-    "d8a": "^0.6.3",
+    "d8a": "^0.6.6",
     "extras": "^0.10.4",
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
