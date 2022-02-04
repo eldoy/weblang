@@ -61,30 +61,26 @@ module.exports = function(opt = {}) {
 
         if (key[0] == '$') {
           set(key, val)
-        }
 
-        else if (key == 'if') {
+        } else if (key == 'if') {
           for (const field in val) {
             const obj = val[field]
             const checks = get(field)
             state.test = !checks || !await validate(obj, checks)
             if (!state.test) break
           }
-        }
 
-        else if (
+        } else if (
           key == 'then' && state.test ||
           key == 'else' && state.test === false
         ) {
           await run(val)
           delete state.test
-        }
 
-        else if (key == 'return') {
+        } else if (key == 'return') {
           state.return = _.cloneDeep(val)
-        }
 
-        else if (typeof opt.ext[key] == 'function') {
+        } else if (typeof opt.ext[key] == 'function') {
           const args = {
             state,
             key,
