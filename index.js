@@ -41,6 +41,18 @@ module.exports = function(opt = {}) {
       state.vars = clean(state.vars)
     }
 
+    // Check if object validates
+    async function check(val) {
+      for (const field in val) {
+        const obj = val[field]
+        const checks = get(field)
+        if (checks && await validate(obj, checks)) {
+          return false
+        }
+      }
+      return true
+    }
+
     async function run(code) {
 
       if (typeof code == 'string') {
@@ -63,12 +75,7 @@ module.exports = function(opt = {}) {
           set(key, val)
 
         } else if (key == 'if') {
-          for (const field in val) {
-            const obj = val[field]
-            const checks = get(field)
-            state.test = !checks || !await validate(obj, checks)
-            if (!state.test) break
-          }
+          state.test = await check(val)
 
         } else if (
           key == 'then' && state.test ||
