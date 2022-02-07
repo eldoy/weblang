@@ -1,4 +1,4 @@
-const { load } = require('../../lib/util.js')
+const load = require('../../lib/load.js')
 
 it('should load yaml', async function({ t }) {
   const result = load([
