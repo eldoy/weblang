@@ -42,7 +42,7 @@ module.exports = function(opt = {}) {
     }
 
     // Check if object validates
-    async function check(val) {
+    async function ok(val) {
       for (const field in val) {
         const obj = val[field]
         const checks = get(field)
@@ -75,7 +75,7 @@ module.exports = function(opt = {}) {
           set(key, val)
 
         } else if (key == 'if') {
-          state.test = await check(val)
+          state.test = await ok(val)
 
         } else if (
           key == 'then' && state.test ||
@@ -98,6 +98,7 @@ module.exports = function(opt = {}) {
             run,
             set,
             get,
+            ok,
             opt,
             params
           }
