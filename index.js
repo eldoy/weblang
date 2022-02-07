@@ -3,7 +3,6 @@ const { validate } = require('d8a')
 const { clean } = require('extras')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
-const pipes = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
 
@@ -19,9 +18,6 @@ module.exports = function(opt = {}) {
         state.vars[name] = opt.vars[name]
       }
     }
-
-    // Add pipes
-    opt.pipes = { ...pipes, ...opt.pipes }
 
     // Add extensions
     opt.ext = opt.ext || {}
@@ -100,7 +96,8 @@ module.exports = function(opt = {}) {
             get,
             ok,
             opt,
-            params
+            params,
+            expand
           }
           const result = await opt.ext[key](args)
           if (typeof result != 'undefined' && setter) {
