@@ -99,7 +99,7 @@ Minimal logic is achieved through _if, then and else_.
 The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
 
 ```yaml
-required: true # this means can not be undefined
+required: true # Can not be undefined
 eq: 5          # Equal to
 ne: 5          # Not equal to
 gt: 5          # Greater than
@@ -131,7 +131,17 @@ is: email      # Must be an email address
 is: url        # Must be a URL
 is: undefined  # Must be undefined
 is: null       # Must be null
-isnt: null     # The opposite of 'is', not null here
+
+# Multiple types
+is: [string, number]
+
+# Use 'isnt' as the opposite of 'is'
+isnt: null
+
+# Works for all of the ones in 'is'
+isnt: string
+isnt: number
+isnt: [email, id]
 ```
 
 This is how you use them:
