@@ -34,7 +34,7 @@ const state = await weblang()(code)
 
 Set variables, available in `state.vars`:
 
-```yaml
+```yml
 # Set string variable
 $hello: world
 
@@ -111,7 +111,7 @@ Minimal logic is achieved through _if, then and else_.
 
 The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
 
-```yaml
+```yml
 required: true # Can not be undefined
 eq: 5          # Equal to
 ne: 5          # Not equal to
@@ -158,7 +158,7 @@ isnt: [email, id]
 ```
 
 This is how you use them:
-```yaml
+```yml
 # If with then
 if:
   $hello:
@@ -199,7 +199,7 @@ else:
 
 The _return_ command sets a variable in `state.return`. Using _return_ causes execution to be halted.
 
-```yaml
+```yml
 # Return a string
 return: hello
 
@@ -237,7 +237,7 @@ const run = await weblang({
 ```
 
 Use some _code_ like this:
-```yaml
+```yml
 # Modify pathname
 $req.pathname: /bye
 
@@ -265,7 +265,7 @@ Currently 3 built in pipes exist:
 * __downcase__ - transform a string value to lower case
 * __capitalize__ - capitalize the first letter of a string
 
-```yaml
+```yml
 # Use pipes with string
 $hello: hello | upcase
 
@@ -294,7 +294,7 @@ const run = await weblang({
 ```
 and the use it like this:
 
-```yaml
+```yml
 return: world | hello
 ```
 
@@ -342,7 +342,7 @@ const run = await weblang({
 ```
 
 Define the _code_ like this:
-```yaml
+```yml
 db: user/create
 ```
 
@@ -353,7 +353,7 @@ const state = await run(code)
 
 To set the result of the function, use the _extension variable setter syntax_:
 
-```yaml
+```yml
 db$result: user/create
 ```
 
@@ -363,9 +363,7 @@ and the `result` variable will be available in `state.vars.result`.
 
 YAML doesn't normally support duplicate keys, but Weblang does! It is automatically handled for you:
 
-You willyou can write code using the `duplicate key syntax`:
-
-```yaml
+```yml
 if:
   $req.pathname.eq: /users
 then:
@@ -379,7 +377,7 @@ then:
 ```
 
 If you use duplicate keys in a variable, the last one overwrites the first one:
-```yaml
+```yml
 $hello:
   name: kari
   name: ola
