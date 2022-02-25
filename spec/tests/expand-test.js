@@ -180,18 +180,30 @@ it('should return the correct type', async ({ t }) => {
   let result = expand('hello', state)
   t.ok(result == 'hello')
 
-  result = expand('5', state)
-  t.ok(result === 5)
-
-  result = expand('5 | unknown', state)
-  t.ok(result === 5)
-
-  result = expand('true', state)
+  result = expand(true, state)
   t.ok(result === true)
 
-  result = expand('false', state)
+  result = expand(false, state)
   t.ok(result === false)
 
-  result = expand('null', state)
+  result = expand(null, state)
   t.ok(result === null)
+
+  result = expand(5, state)
+  t.ok(result === 5)
+
+  result = expand('5', state)
+  t.ok(result === '5')
+
+  result = expand('5 | unknown', state)
+  t.ok(result === '5')
+
+  result = expand('true', state)
+  t.ok(result === 'true')
+
+  result = expand('false', state)
+  t.ok(result === 'false')
+
+  result = expand('null', state)
+  t.ok(result === 'null')
 })
