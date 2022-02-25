@@ -63,8 +63,8 @@ module.exports = function(opt = {}) {
       for (const name in blob) {
         if (typeof state.return != 'undefined') break
 
-        let raw = blob[name]
-        let val = expand(raw, state, opt)
+        const raw = blob[name]
+        const val = expand(raw, state, opt)
 
         let [key, id] = util.split(name)
         let setter
