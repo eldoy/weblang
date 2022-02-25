@@ -2,7 +2,20 @@
 
 The Weblang low code programming language lets you write safe, portable and efficient code with minimal logic. Created to let users run code on your server, but can be extended to run anything anywhere.
 
-The code is written using YAML, which can easily be transformed to and from JSON.
+#### Features:
+- Extendable dynamic runtime
+- Written in Javascript, can run anywhere
+- Variables have dynamic types
+- All variables are global
+- Easy to learn, very minimal logic
+- Safe and secure
+  - File and network access prohibited by default
+  - Allows running of user defined code on your server
+- JSON compatible
+  - Write code using YAML
+  - Easily transform to and from JSON
+
+Ready to try it out?
 
 ### Install
 ```
