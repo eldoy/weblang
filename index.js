@@ -4,8 +4,11 @@ const { clean } = require('extras')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
 const util = require('./lib/util.js')
+const pipes = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
+
+  opt.pipes = { ...pipes, ...opt.pipes }
 
   return async function(data, params) {
 
@@ -91,9 +94,11 @@ module.exports = function(opt = {}) {
         } else if (typeof opt.ext[key] == 'function') {
           const args = {
             state,
-            key,
-            val,
+            code,
+            blob,
             raw,
+            val,
+            key,
             setter,
             id,
             run,
@@ -102,7 +107,9 @@ module.exports = function(opt = {}) {
             ok,
             opt,
             params,
-            expand
+            expand,
+            pipes,
+            util
           }
           const result = await opt.ext[key](args)
           if (typeof result != 'undefined' && setter) {

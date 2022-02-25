@@ -129,6 +129,9 @@ is: object     # Must be an object
 is: array      # Must an array
 is: email      # Must be an email address
 is: url        # Must be a URL
+is: undefined  # Must be undefined
+is: null       # Must be null
+isnt: null     # The opposite of 'is', not null here
 ```
 
 This is how you use them:
@@ -280,16 +283,22 @@ Weblang can (and should) be extended with your own commands. Define an extension
 // Function called db
 const db = function({
   state,  // the runner's state with vars and return
-  key,    // the name of the function, here 'db'
+  code,   // the actual code sent to weblang, untouched
+  blob,   // the internal object used by weblang, with ids
   raw,    // the object you send to this function
   val,    // the object, variables and pipes applied
+  key,    // the name of the function, here 'db'
   setter, // store the result in this variable
   id,     // the duplicate key id, if any
   run,    // the run function that runs your code
   set,    // use this to set variables, prefix with '$'
   get,    // use this to get variables and run pipes
+  ok,     // the validation function used for if tests
   opt,    // the options passed to weblang
-  params  // parameters passed to your extensions
+  params, // parameters passed to your extensions
+  expand, // the expander function used internally
+  pipes,  // the pipe functions
+  util    // util functions
 }) {
 
   // Example use of set
