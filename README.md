@@ -2,7 +2,7 @@
 
 The Weblang low code programming language lets you write safe, portable and efficient code with minimal logic. Created to let users run code on your server, but can be extended to run anything anywhere.
 
-#### Features:
+### Features:
 - Extendable dynamic runtime
 - Written in Javascript, can run anywhere
 - Variables have dynamic types
