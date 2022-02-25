@@ -328,21 +328,31 @@ and the `result` variable will be available in `state.vars.result`.
 
 ### Duplicate keys
 
-Since YAML doesn't support duplicate keys you can write code using the `duplicate key syntax`:
+YAML doesn't normally support duplicate keys, but Weblang does! It is automatically handled for you:
+
+You willyou can write code using the `duplicate key syntax`:
 
 ```yaml
-if@1:
+if:
   $req.pathname.eq: /users
-then@1:
-  $hello: 1
+then:
+  $hello: lasse
 
-if@2:
-  $req.pathname.eq: /users
-then@2:
-  $hello: 2
+# No problem with a second if here
+if:
+  $req.pathname.eq: /projects
+then:
+  $hello: nils
 ```
 
-The `@id` can be anything you want, it's just to avoid duplicate key errors.
+If you use duplicate keys in a variable, the last one overwrites the first one:
+```yaml
+$hello:
+  name: kari
+  name: ola
+
+# $hello.name is 'ola'
+```
 
 ### License
 

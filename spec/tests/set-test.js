@@ -170,3 +170,12 @@ it('should not mutate existing var', async ({ t }) => {
   t.ok(state.vars.hello.name == 'nisse')
   t.ok(state.vars.bye.name == 'baner')
 })
+
+it('should overwrite duplicate keys', async ({ t }) => {
+  const state = await weblang()([
+    '$hello:',
+    '  name: nisse',
+    '  name: alv'
+  ].join('\n'))
+  t.ok(state.vars.hello.name == 'alv')
+})
