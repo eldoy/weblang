@@ -121,8 +121,8 @@ it('should set to undefined if variable does not exist', async ({ t }) => {
 
 it('should delete a variable', async ({ t }) => {
   const state = await weblang()([
-    '$hello@1: world',
-    '$hello@2: null'
+    '$hello: world',
+    '$hello: null'
   ].join('\n'))
   t.ok(typeof state.vars.hello == 'undefined')
 })

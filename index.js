@@ -3,6 +3,7 @@ const { validate } = require('d8a')
 const { clean } = require('extras')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
+const util = require('./lib/util.js')
 
 module.exports = function(opt = {}) {
 
@@ -24,6 +25,7 @@ module.exports = function(opt = {}) {
 
     // Get value from state
     function get(val) {
+      val = util.split(val)[0]
       if (typeof val == 'string' && val[0] == '$') {
         return _.get(state.vars, val.slice(1))
       }
@@ -51,17 +53,20 @@ module.exports = function(opt = {}) {
 
     async function run(code) {
 
-      if (typeof code == 'string') {
-        code = load(code)
+      let blob = code
+
+      if (typeof blob == 'string') {
+        blob = load(blob, opt)
       }
 
-      for (const name in code) {
+      for (const name in blob) {
         if (typeof state.return != 'undefined') break
 
-        let raw = code[name]
+        let raw = blob[name]
         let val = expand(raw, state, opt)
 
-        let [key, id] = name.split('@'), setter
+        let [key, id] = util.split(name)
+        let setter
 
         if (key[0] != '$') {
           [key, setter] = key.split('$')

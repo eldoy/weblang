@@ -8,6 +8,7 @@ it('should support custom vars', async ({ t }) => {
     '$req.pathname: /bye',
     'return: $req.pathname'
   ].join('\n'))
+
   t.ok(req.pathname == '/bye')
   t.ok(state.return == '/bye')
 })
