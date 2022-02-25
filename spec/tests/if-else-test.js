@@ -69,5 +69,6 @@ it('should work with else', async ({ t }) => {
     'else:',
     '  $hello.name: kari'
   ].join('\n'))
+
   t.ok(state.vars.hello.name == 'kari')
 })

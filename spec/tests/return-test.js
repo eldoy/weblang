@@ -66,8 +66,8 @@ it('should return a variable dot notation', async ({ t }) => {
 
 it('should return early', async ({ t }) => {
   const state = await weblang()([
-    'return@1: early',
-    'return@2: late'
+    'return: early',
+    'return: late'
   ].join('\n'))
   t.ok(state.return == 'early')
 })
