@@ -298,7 +298,8 @@ const db = function({
   params, // parameters passed to your extensions
   expand, // the expander function used internally
   pipes,  // the pipe functions
-  util    // util functions
+  util,   // util functions
+  load    // the loader, converts yml string to object
 }) {
 
   // Example use of set

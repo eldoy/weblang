@@ -107,7 +107,8 @@ module.exports = function(opt = {}) {
             params,
             expand,
             pipes,
-            util
+            util,
+            load
           }
           const result = await opt.ext[key](args)
           if (typeof result != 'undefined' && setter) {
