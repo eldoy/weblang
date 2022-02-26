@@ -1,5 +1,12 @@
 const weblang = require('../../index.js')
 
+it('should set number variable', async ({ t }) => {
+  const state = await weblang()([
+    '$hello: 1'
+  ].join('\n'))
+  t.ok(state.vars.hello == 1)
+})
+
 it('should set string variable', async ({ t }) => {
   const state = await weblang()([
     '$hello: world'
