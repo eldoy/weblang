@@ -28,13 +28,13 @@ const code = '$hello: world'
 const state = await weblang()(code)
 ```
 
-### Concepts
+### Abstract
 
 Generally, variables start with the `$` character, and functions start with `@`.
 
 Variables have dynamic types, just as with YAML. All variables are global, there is no scope, not even inside _if_ and _else_ blocks.
 
-Functions are added through _extensions_. Even the core functionality can be overriden, Weblang is meant to be extended.
+Functions are added through _extensions_. Even the core functionality can be overridden, Weblang is meant to be extended.
 
 
 ### Set
