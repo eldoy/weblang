@@ -6,7 +6,7 @@ it('should support custom vars', async ({ t }) => {
     vars: { req }
   })([
     '$req.pathname: /bye',
-    'return: $req.pathname'
+    '@return: $req.pathname'
   ].join('\n'))
 
   t.ok(req.pathname == '/bye')
