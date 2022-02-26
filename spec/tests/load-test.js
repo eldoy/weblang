@@ -12,7 +12,7 @@ it('should load yaml with variable', async function({ t }) {
 
   const keys = Object.keys(result)
   t.ok(keys.length == 1)
-  t.ok(keys[0].startsWith('$hello@'))
+  t.ok(keys[0].startsWith('$hello#'))
 })
 
 it('should load yaml multiple variables', async function({ t }) {
@@ -23,8 +23,8 @@ it('should load yaml multiple variables', async function({ t }) {
 
   const keys = Object.keys(result)
   t.ok(keys.length == 2)
-  t.ok(keys[0].startsWith('$hello@'))
-  t.ok(keys[1].startsWith('$hello@'))
+  t.ok(keys[0].startsWith('$hello#'))
+  t.ok(keys[1].startsWith('$hello#'))
 })
 
 it('should load yaml keywords', async function({ t }) {
@@ -40,11 +40,11 @@ it('should load yaml keywords', async function({ t }) {
 
   const keys = Object.keys(result)
   t.ok(keys.length == 3)
-  t.ok(keys[0].startsWith('if@'))
-  t.ok(keys[1].startsWith('then@'))
-  t.ok(keys[2].startsWith('else@'))
+  t.ok(keys[0].startsWith('if#'))
+  t.ok(keys[1].startsWith('then#'))
+  t.ok(keys[2].startsWith('else#'))
 
   // Check deeply
   const hello = Object.keys(result[keys[1]])
-  t.ok(hello[0].startsWith('$hello@'))
+  t.ok(hello[0].startsWith('$hello#'))
 })
