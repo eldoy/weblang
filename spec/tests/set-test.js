@@ -199,3 +199,13 @@ it('should allow set object on same dotted key with if', async ({ t }) => {
   t.ok(state.vars.translation.key == 'eq')
   t.ok(state.vars.translation.value == 'must')
 })
+
+it('should set object with many keys', async ({ t }) => {
+  const state = await weblang()([
+    '$translation:',
+    '  id: 1234',
+    '  name: hello'
+  ].join('\n'))
+  t.ok(state.vars.translation.id == 1234)
+  t.ok(state.vars.translation.name == 'hello')
+})
