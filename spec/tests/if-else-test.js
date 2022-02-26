@@ -3,9 +3,9 @@ const weblang = require('../../index.js')
 it('should work with value if', async ({ t }) => {
   const state = await weblang()([
     '$hello: 1',
-    'if:',
+    '@if:',
     '  $hello: 1',
-    'then:',
+    '@then:',
     '  $hello: 2'
   ].join('\n'))
   t.ok(state.vars.hello == 2)
@@ -15,11 +15,11 @@ it('should work with object if', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: nils',
-    'then:',
+    '@then:',
     '  $hello.name: hans'
   ].join('\n'))
   t.ok(state.vars.hello.name == 'hans')
@@ -31,14 +31,14 @@ it('should work with multiple if checks', async ({ t }) => {
     '  name: nils',
     '$req:',
     '  pathname: /hello',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: nils',
     '  $req:',
     '    pathname:',
     '      eq: /hello',
-    'then:',
+    '@then:',
     '  $hello.name: hans'
   ].join('\n'))
   t.ok(state.vars.hello.name == 'hans')
@@ -48,9 +48,9 @@ it('should work with if dot notation', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello.name.eq: nils',
-    'then:',
+    '@then:',
     '  $hello.name: hans'
   ].join('\n'))
   t.ok(state.vars.hello.name == 'hans')
@@ -60,13 +60,13 @@ it('should work with else', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: hans',
-    'then:',
+    '@then:',
     '  $hello.name: guri',
-    'else:',
+    '@else:',
     '  $hello.name: kari'
   ].join('\n'))
 
@@ -77,17 +77,17 @@ it('should support double if', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: nils',
-    'then:',
+    '@then:',
     '  $hello.name: guri',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: guri',
-    'then:',
+    '@then:',
     '  $hello.name: sol'
   ].join('\n'))
 
@@ -98,19 +98,19 @@ it('should support double if with else', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: nils',
-    'then:',
+    '@then:',
     '  $hello.name: guri',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: hans',
-    'then:',
+    '@then:',
     '  $hello.name: sol',
-    'else:',
+    '@else:',
     '  $hello.name: maane'
   ].join('\n'))
 
@@ -121,17 +121,17 @@ it('should support nested if', async ({ t }) => {
   const state = await weblang()([
     '$hello:',
     '  name: nils',
-    'if:',
+    '@if:',
     '  $hello:',
     '    name:',
     '      eq: nils',
-    'then:',
+    '@then:',
     '  $hello.name: guri',
-    '  if:',
+    '  @if:',
     '    $hello:',
     '      name:',
     '        eq: guri',
-    '  then:',
+    '  @then:',
     '    $hello.name: sol'
   ].join('\n'))
 

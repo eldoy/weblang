@@ -29,20 +29,20 @@ it('should load yaml multiple variables', async function({ t }) {
 
 it('should load yaml keywords', async function({ t }) {
   const result = load([
-    'if:',
+    '@if:',
     '  name:',
     '    eq: hello',
-    'then:',
+    '@then:',
     '  $hello: moon',
-    'else:',
+    '@else:',
     '  $hello: sun'
   ].join('\n'))
 
   const keys = Object.keys(result)
   t.ok(keys.length == 3)
-  t.ok(keys[0].startsWith('if#'))
-  t.ok(keys[1].startsWith('then#'))
-  t.ok(keys[2].startsWith('else#'))
+  t.ok(keys[0].startsWith('@if#'))
+  t.ok(keys[1].startsWith('@then#'))
+  t.ok(keys[2].startsWith('@else#'))
 
   // Check deeply
   const hello = Object.keys(result[keys[1]])

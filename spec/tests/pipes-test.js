@@ -18,21 +18,21 @@ it('should support pipes with set variables', async ({ t }) => {
 
 it('should support pipes with return', async ({ t }) => {
   const state = await weblang()([
-    'return: hello | upcase'
+    '@return: hello | upcase'
   ].join('\n'))
   t.ok(state.return == 'HELLO')
 })
 
 it('should strip pipes with return', async ({ t }) => {
   const state = await weblang()([
-    'return: hello | unknown'
+    '@return: hello | unknown'
   ].join('\n'))
   t.ok(state.return == 'hello')
 })
 
 it('should work with multiple pipes', async ({ t }) => {
   const state = await weblang()([
-    'return: hello | upcase | downcase | capitalize'
+    '@return: hello | upcase | downcase | capitalize'
   ].join('\n'))
   t.ok(state.return == 'Hello')
 })

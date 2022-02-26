@@ -73,23 +73,9 @@ module.exports = function(opt = {}) {
           [key, setter] = key.split('$')
         }
 
-        if (key[0] == '$') {
-          set(key, val)
+        const ext = opt.ext[key.slice(1)]
 
-        } else if (key == 'if') {
-          state.test = await ok(val)
-
-        } else if (
-          key == 'then' && state.test ||
-          key == 'else' && state.test === false
-        ) {
-          await run(val)
-          delete state.test
-
-        } else if (key == 'return') {
-          state.return = _.cloneDeep(val)
-
-        } else if (typeof opt.ext[key] == 'function') {
+        if (typeof ext == 'function') {
           const args = {
             state,
             code,
@@ -110,10 +96,26 @@ module.exports = function(opt = {}) {
             util,
             load
           }
-          const result = await opt.ext[key](args)
+          const result = await ext(args)
           if (typeof result != 'undefined' && setter) {
             set(setter, result)
           }
+
+        } else if (key[0] == '$') {
+          set(key, val)
+
+        } else if (key == '@if') {
+          state.test = await ok(val)
+
+        } else if (
+          key == '@then' && state.test ||
+          key == '@else' && state.test === false
+        ) {
+          await run(val)
+          delete state.test
+
+        } else if (key == '@return') {
+          state.return = _.cloneDeep(val)
         }
       }
     }
