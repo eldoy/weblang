@@ -5,8 +5,6 @@ The Weblang low code programming language lets you write safe, portable and effi
 ### Features:
 - Extendable dynamic runtime
 - Written in Javascript, can run anywhere
-- Variables have dynamic types
-- All variables are global
 - Easy to learn, very minimal logic
 - Safe and secure
   - File and network access prohibited by default
@@ -30,9 +28,18 @@ const code = '$hello: world'
 const state = await weblang()(code)
 ```
 
+### Concepts
+
+Generally, variables start with the `$` character, and functions start with `@`.
+
+Variables have dynamic types, just as with YAML. All variables are global, there is no scope, not even inside _if_ and _else_ blocks.
+
+Functions are added through _extensions_. Even the core functionality can be overriden, Weblang is meant to be extended.
+
+
 ### Set
 
-Set variables, available in `state.vars`:
+Set variables, _starting with $_, available in `state.vars`:
 
 ```yml
 # Set string variable
@@ -107,7 +114,7 @@ $bye: $$hello
 
 ### If then else
 
-Minimal logic is achieved through _if, then and else_.
+Minimal logic is achieved through _@if, @then and @else_.
 
 The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
 
@@ -160,69 +167,69 @@ isnt: [email, id]
 This is how you use them:
 ```yml
 # If with then
-if:
+@if:
   $hello:
     name:
       eq: nils
-then:
+@then:
   $hello.name: hans
 
 # Multiple checks
-if:
+@if:
   $hello:
     name:
       eq: nils
   $req:
     pathname:
       eq: /hello
-then:
+@then:
   $hello.name: hans
 
 # Checks works with dot notation as well
-if:
+@if:
   $hello.name.eq: nils
-then:
+@then:
   $hello.name: hans
 
 # if else
-if:
+@if:
   $hello:
     name:
       eq: hans
-then:
+@then:
   $hello.name: guri
-else:
+@else:
   $hello.name: kari
 ```
 
 ### Return
 
-The _return_ command sets a variable in `state.return`. Using _return_ causes execution to be halted.
+The _@return_ command sets a variable in `state.return`. Using _@return_ causes execution to be halted.
 
 ```yml
 # Return a string
-return: hello
+@return: hello
 
 # Return a string variable
 $hello: world
-return: $hello
+@return: $hello
 
 # Return an object variable
 $hello:
   name: world
-return: $hello
+@return: $hello
 
 # Return an array variable
 $hello:
   - 1
   - 2
-return: $hello
+@return: $hello
 
 # Return a variable, dot notation
 $hello:
   name:
     baner: 1
-return: $hello.name
+@return: $hello.name
 ```
 
 ### Vars
@@ -242,7 +249,7 @@ Use some _code_ like this:
 $req.pathname: /bye
 
 # Return the modified pathname
-return: $req.pathname
+@return: $req.pathname
 ```
 
 Then run with:
@@ -274,10 +281,10 @@ $hello: hello
 $bye: $hello | upcase
 
 # Use pipes with return
-return: hello | capitalize
+@return: hello | capitalize
 
 # Multiple pipes
-return: hello | upcase | downcase | capitalize
+@return: hello | upcase | downcase | capitalize
 ```
 
 You can add your own pipes or replace the existing ones using the _pipes_ option:
@@ -295,7 +302,7 @@ const run = await weblang({
 and the use it like this:
 
 ```yml
-return: world | hello
+@return: world | hello
 ```
 
 ### Extensions
@@ -342,9 +349,9 @@ const run = await weblang({
 })
 ```
 
-Define the _code_ like this:
+Write the _code_ like this:
 ```yml
-db: user/create
+@db: user/create
 ```
 
 and run with the extension like this:
@@ -355,7 +362,7 @@ const state = await run(code)
 To set the result of the function, use the _extension variable setter syntax_:
 
 ```yml
-db$result: user/create
+@db$result: user/create
 ```
 
 and the `result` variable will be available in `state.vars.result`.
@@ -365,15 +372,15 @@ and the `result` variable will be available in `state.vars.result`.
 YAML doesn't normally support duplicate keys, but Weblang does! It is automatically handled for you:
 
 ```yml
-if:
+@if:
   $req.pathname.eq: /users
-then:
+@then:
   $hello: lasse
 
 # No problem with a second if here
-if:
+@if:
   $req.pathname.eq: /projects
-then:
+@then:
   $hello: nils
 ```
 
@@ -385,6 +392,8 @@ $hello:
 
 # $hello.name is 'ola'
 ```
+
+Internally the keys are added to anything starting with a `$` and `@`, using a unique identifier starting with the `#` character.
 
 ### License
 
