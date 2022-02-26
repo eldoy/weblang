@@ -4,11 +4,13 @@ const { clean } = require('extras')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
 const util = require('./lib/util.js')
+const core = require('./lib/core.js')
 const pipes = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
 
   opt.pipes = { ...pipes, ...opt.pipes }
+  opt.ext = { ...core, ...opt.ext }
 
   return async function(data, params) {
 
@@ -22,9 +24,6 @@ module.exports = function(opt = {}) {
         state.vars[name] = opt.vars[name]
       }
     }
-
-    // Add extensions
-    opt.ext = opt.ext || {}
 
     // Get value from state
     function get(val) {
@@ -67,11 +66,14 @@ module.exports = function(opt = {}) {
         const val = expand(raw, state, opt)
 
         let [key, id] = util.split(name)
-        let setter
 
-        if (key[0] != '$') {
-          [key, setter] = key.split('$')
+        if (key[0] == '$') {
+          set(key, val)
+          continue
         }
+
+        let setter
+        [key, setter] = key.split('$')
 
         const ext = opt.ext[key.slice(1)]
 
@@ -94,28 +96,13 @@ module.exports = function(opt = {}) {
             expand,
             pipes,
             util,
-            load
+            load,
+            core
           }
           const result = await ext(args)
           if (typeof result != 'undefined' && setter) {
             set(setter, result)
           }
-
-        } else if (key[0] == '$') {
-          set(key, val)
-
-        } else if (key == '@if') {
-          state.test = await ok(val)
-
-        } else if (
-          key == '@then' && state.test ||
-          key == '@else' && state.test === false
-        ) {
-          await run(val)
-          delete state.test
-
-        } else if (key == '@return') {
-          state.return = _.cloneDeep(val)
         }
       }
     }
