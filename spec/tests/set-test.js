@@ -179,3 +179,16 @@ it('should overwrite duplicate keys', async ({ t }) => {
   ].join('\n'))
   t.ok(state.vars.hello.name == 'alv')
 })
+
+it('should allow set object on same dotted key with if', async ({ t }) => {
+  const state = await weblang()([
+    '@if:',
+    '  $translation:',
+    '    is: undefined',
+    '@then:',
+    '  $translation.key: eq',
+    '  $translation.value: must'
+  ].join('\n'))
+  t.ok(state.vars.translation.key == 'eq')
+  t.ok(state.vars.translation.value == 'must')
+})

@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const { validate } = require('d8a')
-const { clean } = require('extras')
+const { dot, clean } = require('extras')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
 const util = require('./lib/util.js')
@@ -37,7 +37,9 @@ module.exports = function(opt = {}) {
     // Set value in state
     function set(key, val) {
       if (key[0] == '$') key = key.slice(1)
-      _.set(state.vars, key, _.cloneDeep(val))
+      const dotted = dot({[key]: _.cloneDeep(val)})
+      const entries = Object.entries(dotted).flat()
+      _.set(state.vars, ...entries)
       state.vars = clean(state.vars)
     }
 
