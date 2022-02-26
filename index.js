@@ -55,9 +55,7 @@ module.exports = function(opt = {}) {
 
     async function run(code) {
 
-      const blob = typeof code == 'string'
-        ? load(code, opt)
-        : code
+      const blob = load(code)
 
       for (const name in blob) {
         if (typeof state.return != 'undefined') break
