@@ -18,7 +18,7 @@
   "dependencies": {
     "d8a": "^0.9.3",
     "extras": "^0.10.5",
-    "js-yaml": "^4.1.0",
+    "js-yaml": "github:eldoy/js-yaml",
     "lodash": "^4.17.21"
   }
 }
