@@ -322,7 +322,8 @@ const db = function({
   expand, // the expander function used internally
   pipes,  // the pipe functions
   util,   // util functions
-  load    // the loader, converts yml string to object
+  load,   // the loader, converts yml string to object
+  core    // the core extension functions
 }) {
 
   // Example use of set
