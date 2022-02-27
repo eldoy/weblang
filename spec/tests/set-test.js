@@ -209,3 +209,26 @@ it('should set object with many keys', async ({ t }) => {
   t.ok(state.vars.translation.id == 1234)
   t.ok(state.vars.translation.name == 'hello')
 })
+
+it('should merge objects', async ({ t }) => {
+  const state = await weblang()([
+    '$translation:',
+    '  id: 1234',
+    '$translation:',
+    '  name: hello'
+  ].join('\n'))
+  t.ok(state.vars.translation.id == 1234)
+  t.ok(state.vars.translation.name == 'hello')
+})
+
+it('should reset objects', async ({ t }) => {
+  const state = await weblang()([
+    '$translation:',
+    '  id: 1234',
+    '$translation: null',
+    '$translation:',
+    '  name: hello'
+  ].join('\n'))
+  t.ok(state.vars.translation.id === undefined)
+  t.ok(state.vars.translation.name == 'hello')
+})
