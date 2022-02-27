@@ -114,7 +114,44 @@ $bye: $$hello
 
 ### If then else
 
-Minimal logic is achieved through _@if, @then and @else_.
+Minimal logic is achieved through _@if, @then and @else_:
+
+```yml
+# If with then
+@if:
+  $hello:
+    name:
+      eq: nils
+@then:
+  $hello.name: hans
+
+# Multiple checks
+@if:
+  $hello:
+    name:
+      eq: nils
+  $req:
+    pathname:
+      eq: /hello
+@then:
+  $hello.name: hans
+
+# Checks works with dot notation as well
+@if:
+  $hello.name.eq: nils
+@then:
+  $hello.name: hans
+
+# If then else
+@if:
+  $hello:
+    name:
+      eq: hans
+@then:
+  $hello.name: guri
+@else:
+  $hello.name: kari
+```
 
 The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
 
@@ -162,44 +199,6 @@ isnt: null
 isnt: string
 isnt: number
 isnt: [email, id]
-```
-
-This is how you use them:
-```yml
-# If with then
-@if:
-  $hello:
-    name:
-      eq: nils
-@then:
-  $hello.name: hans
-
-# Multiple checks
-@if:
-  $hello:
-    name:
-      eq: nils
-  $req:
-    pathname:
-      eq: /hello
-@then:
-  $hello.name: hans
-
-# Checks works with dot notation as well
-@if:
-  $hello.name.eq: nils
-@then:
-  $hello.name: hans
-
-# If then else
-@if:
-  $hello:
-    name:
-      eq: hans
-@then:
-  $hello.name: guri
-@else:
-  $hello.name: kari
 ```
 
 ### Return
