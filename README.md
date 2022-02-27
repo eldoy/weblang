@@ -153,7 +153,7 @@ Minimal logic is achieved through _@if, @then and @else_:
   $hello.name: kari
 ```
 
-The validations inside the if-section are from [the d8a validations.](https://github.com/eldoy/d8a)
+The validations inside the if-section are from [the d8a validations:](https://github.com/eldoy/d8a)
 
 ```yml
 required: true # Can not be undefined
