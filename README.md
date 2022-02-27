@@ -2,7 +2,7 @@
 
 The Weblang low code programming language lets you write safe, portable and efficient code with minimal logic. Created to let users run code on your server, but can be extended to run anything anywhere.
 
-### Features:
+### Features
 - Extendable dynamic runtime
 - Written in Javascript, can run anywhere
 - Easy to learn, very minimal logic
@@ -10,7 +10,7 @@ The Weblang low code programming language lets you write safe, portable and effi
   - File and network access prohibited by default
   - Allows running of user defined code on your server
 - JSON compatible
-  - Write code using YAML
+  - Write code using YAML syntax
   - Easily transform to and from JSON
 
 Ready to try it out?
@@ -28,7 +28,7 @@ const code = '$hello: world'
 const state = await weblang()(code)
 ```
 
-### Abstract
+### How it works
 
 Generally, variables start with the `$` character, and functions start with `@`.
 
@@ -191,7 +191,7 @@ This is how you use them:
 @then:
   $hello.name: hans
 
-# if else
+# If then else
 @if:
   $hello:
     name:
