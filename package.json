@@ -16,8 +16,8 @@
     "spekk": "^0.2.1"
   },
   "dependencies": {
-    "d8a": "^0.9.3",
-    "extras": "^0.10.5",
+    "d8a": "^0.9.6",
+    "extras": "^0.10.6",
     "js-yaml": "github:eldoy/js-yaml",
     "lodash": "^4.17.21"
   }
