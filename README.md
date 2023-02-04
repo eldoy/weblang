@@ -298,7 +298,7 @@ const run = await weblang({
   }
 })
 ```
-and the use it like this:
+and then use it like this:
 
 ```yml
 @return: world | hello
