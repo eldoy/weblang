@@ -23,13 +23,3 @@ it('should split name with id, dotted', async ({ t }) => {
   t.ok(result[0] == 'hello.name.bye')
   t.ok(result[1] == '1234')
 })
-
-it('should parse pipe options', async ({ t }) => {
-  let result = util.parsePipes([
-    'join hello=1234&name=bye',
-    'something b=1'
-  ])
-  t.ok(result['join'].hello == '1234')
-  t.ok(result['join'].name == 'bye')
-  t.ok(result['something'].b == '1')
-})

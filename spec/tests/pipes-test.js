@@ -45,3 +45,18 @@ it('should support pipe options', async ({ t }) => {
   ].join('\n'))
   t.ok(state.return == 'a+b+c')
 })
+
+it('should not pipe unknown pipe', async ({ t }) => {
+  const state = await weblang({ pipes })([
+    '$hello: hello | unknown'
+  ].join('\n'))
+  t.ok(state.vars.hello == 'hello')
+})
+
+it('should expand string var with pipe', async ({ t }) => {
+  const state = await weblang({ pipes })([
+    '$hello: hei',
+    '$result: $hello | upcase'
+  ].join('\n'))
+  t.ok(state.vars.result == 'HEI')
+})
