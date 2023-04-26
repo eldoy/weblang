@@ -266,10 +266,7 @@ Variables can be run through _pipes_, which are functions that transform a value
 
 If the pipe does not exist, it is ignored.
 
-Currently 3 built in pipes exist:
-* __upcase__ - transform a string value to upper case
-* __downcase__ - transform a string value to lower case
-* __capitalize__ - capitalize the first letter of a string
+Currently there are no built in pipes.
 
 ```yml
 # Use pipes with string
@@ -298,7 +295,7 @@ const run = await weblang({
   }
 })
 ```
-and then use it like this:
+and the use it like this:
 
 ```yml
 @return: world | hello
