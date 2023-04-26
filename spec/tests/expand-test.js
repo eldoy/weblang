@@ -1,5 +1,5 @@
 const expand = require('../../lib/expand.js')
-const pipes = require('../../lib/pipes.js')
+const pipes = require('../lib/pipes.js')
 
 it('should not expand empty object', async ({ t }) => {
   const state = {}
