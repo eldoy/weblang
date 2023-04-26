@@ -37,3 +37,11 @@ it('should work with multiple pipes', async ({ t }) => {
   ].join('\n'))
   t.ok(state.return == 'Hello')
 })
+
+it('should support pipe options', async ({ t }) => {
+  const state = await weblang({ pipes })([
+    '$arr: [a, b, c]',
+    '@return: $arr | join delimiter=+'
+  ].join('\n'))
+  t.ok(state.return == 'a+b+c')
+})

@@ -15,4 +15,10 @@ pipes.capitalize = function(str) {
   return str[0].toUpperCase() + str.slice(1)
 }
 
+pipes.join = function(arr, opt = {}) {
+  if (!Array.isArray(arr)) return arr
+  opt.delimiter = opt.delimiter || ','
+  return arr.join(opt.delimiter)
+}
+
 module.exports = pipes
