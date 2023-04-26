@@ -221,10 +221,35 @@ it('should merge objects', async ({ t }) => {
   t.ok(state.vars.translation.name == 'hello')
 })
 
+it('should merge objects deeply', async ({ t }) => {
+  const state = await weblang()([
+    '$translation:',
+    '  data:',
+    '    a: 1',
+    '$translation:',
+    '  data:',
+    '    b: 2'
+  ].join('\n'))
+  t.ok(state.vars.translation.data.a == 1)
+  t.ok(state.vars.translation.data.b == 2)
+})
+
 it('should reset objects', async ({ t }) => {
   const state = await weblang()([
     '$translation:',
-    '  id: 1234',
+    '  data:',
+    '    a: 1',
+    '$translation:',
+    '  data:',
+    '    a: null'
+  ].join('\n'))
+  t.ok(state.vars.translation.data.a === undefined)
+})
+
+it('should reset objects deeply', async ({ t }) => {
+  const state = await weblang()([
+    '$translation:',
+    '  data:',
     '$translation: null',
     '$translation:',
     '  name: hello'
