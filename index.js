@@ -58,13 +58,13 @@ module.exports = function(opt = {}) {
 
     async function run(code) {
 
-      const blob = load(code)
+      const ast = load(code)
 
-      for (const name in blob) {
+      for (const name in ast) {
         if (typeof state.return != 'undefined') break
 
-        const raw = blob[name]
-        const val = expand(raw, state, opt)
+        const line = ast[name]
+        const val = expand(line, state, opt)
 
         let [key, id] = util.split(name)
 
@@ -82,8 +82,8 @@ module.exports = function(opt = {}) {
           const args = {
             state,
             code,
-            blob,
-            raw,
+            ast,
+            line,
             val,
             key,
             setter,
