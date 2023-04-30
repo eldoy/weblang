@@ -5,7 +5,7 @@ it('should support custom vars', async ({ t }) => {
   const state = await weblang({
     vars: { req }
   })([
-    '$req.pathname: /bye',
+    '=req.pathname: /bye',
     '@return: $req.pathname'
   ].join('\n'))
 

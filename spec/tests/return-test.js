@@ -28,7 +28,7 @@ it('should return an array', async ({ t }) => {
 
 it('should return a string variable', async ({ t }) => {
   const state = await weblang()([
-    '$hello: world',
+    '=hello: world',
     '@return: $hello'
   ].join('\n'))
   t.ok(state.return == 'world')
@@ -36,7 +36,7 @@ it('should return a string variable', async ({ t }) => {
 
 it('should return an object variable', async ({ t }) => {
   const state = await weblang()([
-    '$hello:',
+    '=hello:',
     '  name: world',
     '@return: $hello'
   ].join('\n'))
@@ -45,7 +45,7 @@ it('should return an object variable', async ({ t }) => {
 
 it('should return an array variable', async ({ t }) => {
   const state = await weblang()([
-    '$hello:',
+    '=hello:',
     '  - 1',
     '  - 2',
     '@return: $hello'
@@ -56,7 +56,7 @@ it('should return an array variable', async ({ t }) => {
 
 it('should return a variable dot notation', async ({ t }) => {
   const state = await weblang()([
-    '$hello:',
+    '=hello:',
     '  name:',
     '    baner: 1',
     '@return: $hello.name'
