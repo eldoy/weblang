@@ -1,7 +1,7 @@
 const weblang = require('../../index.js')
 
-const db = function({ state, key, val, set, get }) {
-  set('$internal', 'hello')
+const db = function({ set }) {
+  set('=internal', 'hello')
   return { id: '1' }
 }
 

@@ -36,7 +36,7 @@ module.exports = function(opt = {}) {
 
     // Set value in state
     function set(key, val) {
-      if (key[0] == '$') key = key.slice(1)
+      if (key[0] == '=') key = key.slice(1)
       const dotted = dot({[key]: _.cloneDeep(val)})
       for (const k in dotted) {
         _.set(state.vars, k, dotted[k])
@@ -68,7 +68,7 @@ module.exports = function(opt = {}) {
 
         let [key, id] = util.split(name)
 
-        if (key[0] == '$') {
+        if (key[0] == '=') {
           set(key, val)
           continue
         }
