@@ -25,7 +25,6 @@ module.exports = function(opt = {}) {
 
     // Get value from state
     function get(val) {
-      val = util.split(val)[0]
       if (typeof val == 'string' && val[0] == '$') {
         return _.get(state.vars, val.slice(1))
       }
