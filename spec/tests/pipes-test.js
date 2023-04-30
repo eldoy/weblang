@@ -66,6 +66,5 @@ it('should pass var through pipe parameter', async ({ t }) => {
     '=hello: book',
     '=result: bye | concat a=$hello'
   ].join('\n'))
-  console.log(state.vars.result)
   t.ok(state.vars.result == 'bye book')
 })

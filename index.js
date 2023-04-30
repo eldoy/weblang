@@ -5,10 +5,12 @@ const load = require('./lib/load.js')
 const util = require('./lib/util.js')
 const core = require('./lib/core.js')
 const pipes = require('./lib/pipes.js')
+const renderers = require('./lib/renderers.js')
 
 module.exports = function(opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
   opt.ext = { ...core, ...opt.ext }
+  opt.renderers = { ...renderers, ...opt.renderers }
 
   return async function(code, params) {
     const state = {
