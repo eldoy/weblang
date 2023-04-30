@@ -60,6 +60,9 @@ module.exports = function(opt = {}) {
 
       const ast = load(code)
 
+      // DEBUG:
+      // console.log(JSON.stringify(ast, null, 2))
+
       for (const name in ast) {
         if (typeof state.return != 'undefined') break
 
