@@ -8,12 +8,10 @@ const core = require('./lib/core.js')
 const pipes = require('./lib/pipes.js')
 
 module.exports = function(opt = {}) {
-
   opt.pipes = { ...pipes, ...opt.pipes }
   opt.ext = { ...core, ...opt.ext }
 
   return async function(code, params) {
-
     const state = {
       vars: {}
     }
@@ -58,53 +56,45 @@ module.exports = function(opt = {}) {
 
     const tree = load(code)
 
-    // DEBUG:
-    // console.log(JSON.stringify(tree, null, 2))
-
     async function run(branch) {
-
       for (const node in branch) {
         if (typeof state.return != 'undefined') break
 
         const leaf = branch[node]
-        const val = expand(leaf, state, opt)
+        let val = expand(leaf, state, opt)
 
         let [key, ext, id] = util.split(node)
-
-        if (!ext && key[0] == '=') {
-          set(key, val)
-          continue
+        if (ext) {
+          const fn = opt.ext[ext]
+          if (typeof fn == 'function') {
+            const args = {
+              state,
+              code,
+              tree,
+              branch,
+              node,
+              leaf,
+              val,
+              key,
+              id,
+              run,
+              set,
+              get,
+              ok,
+              opt,
+              params,
+              expand,
+              pipes,
+              util,
+              load,
+              core
+            }
+            val = await fn(args)
+          }
         }
 
-        const fn = opt.ext[ext]
-
-        if (typeof fn == 'function') {
-          const args = {
-            state,
-            code,
-            tree,
-            branch,
-            node,
-            leaf,
-            val,
-            key,
-            id,
-            run,
-            set,
-            get,
-            ok,
-            opt,
-            params,
-            expand,
-            pipes,
-            util,
-            load,
-            core
-          }
-          const result = await fn(args)
-          if (typeof result != 'undefined') {
-            set(key, result)
-          }
+        if (typeof val != 'undefined' && key[0] == '=') {
+          set(key, val)
         }
       }
     }
