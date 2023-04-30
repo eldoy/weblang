@@ -59,7 +59,7 @@ module.exports = function(opt = {}) {
     const tree = load(code)
 
     // DEBUG:
-    // console.log(JSON.stringify(ast, null, 2))
+    // console.log(JSON.stringify(tree, null, 2))
 
     async function run(branch) {
 
