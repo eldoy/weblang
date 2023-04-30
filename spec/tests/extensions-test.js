@@ -18,7 +18,7 @@ it('should set variable with extensions', async ({ t }) => {
   const state = await weblang({
     ext: { db }
   })([
-    '@db$result: user/create',
+    '=result@db: user/create',
     '@return: $result'
   ].join('\n'))
   t.ok(state.vars.result.id == '1')
@@ -31,7 +31,7 @@ it('should not set variable if undefined', async ({ t }) => {
       set('result', 'hello')
     } }
   })([
-    '@db$result: user/create',
+    '=result@db: user/create',
     '@return: $result'
   ].join('\n'))
   t.ok(state.vars.result == 'hello')

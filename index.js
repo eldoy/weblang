@@ -71,15 +71,16 @@ module.exports = function(opt = {}) {
 
         let [key, id] = util.split(leaf)
 
-        if (key[0] == '=') {
+        if (!key.includes('@') && key[0] == '=') {
           set(key, val)
           continue
         }
 
         let setter
-        [key, setter] = key.split('$')
+        [setter, key] = key.split('@')
+        setter = setter.slice(1)
 
-        const ext = opt.ext[key.slice(1)]
+        const ext = opt.ext[key]
 
         if (typeof ext == 'function') {
           const args = {
