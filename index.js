@@ -12,7 +12,7 @@ module.exports = function(opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
   opt.ext = { ...core, ...opt.ext }
 
-  return async function(data, params) {
+  return async function(code, params) {
 
     const state = {
       vars: {}
@@ -56,17 +56,17 @@ module.exports = function(opt = {}) {
       return true
     }
 
-    async function run(code) {
+    const tree = load(code)
 
-      const ast = load(code)
+    // DEBUG:
+    // console.log(JSON.stringify(ast, null, 2))
 
-      // DEBUG:
-      // console.log(JSON.stringify(ast, null, 2))
+    async function run(branch) {
 
-      for (const name in ast) {
+      for (const name in branch) {
         if (typeof state.return != 'undefined') break
 
-        const line = ast[name]
+        const line = branch[name]
         const val = expand(line, state, opt)
 
         let [key, id] = util.split(name)
@@ -85,7 +85,8 @@ module.exports = function(opt = {}) {
           const args = {
             state,
             code,
-            ast,
+            branch,
+            tree,
             line,
             val,
             key,
@@ -111,7 +112,7 @@ module.exports = function(opt = {}) {
       }
     }
 
-    await run(data)
+    await run(tree)
 
     return state
   }
