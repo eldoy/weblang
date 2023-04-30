@@ -21,4 +21,8 @@ pipes.join = function(arr, opt = {}) {
   return arr.join(opt.delimiter)
 }
 
+pipes.concat = function(str, opt = {}) {
+  return str + ' ' + opt.a
+}
+
 module.exports = pipes
