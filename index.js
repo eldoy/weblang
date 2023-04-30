@@ -63,36 +63,33 @@ module.exports = function(opt = {}) {
 
     async function run(branch) {
 
-      for (const leaf in branch) {
+      for (const node in branch) {
         if (typeof state.return != 'undefined') break
 
-        const vein = branch[leaf]
-        const val = expand(vein, state, opt)
+        const leaf = branch[node]
+        const val = expand(leaf, state, opt)
 
-        let [key, id] = util.split(leaf)
+        let [key, id] = util.split(node)
 
         if (!key.includes('@') && key[0] == '=') {
           set(key, val)
           continue
         }
 
-        let setter
-        [setter, key] = key.split('@')
-        setter = setter.slice(1)
+        [key, ext] = key.split('@')
 
-        const ext = opt.ext[key]
+        const fn = opt.ext[ext]
 
-        if (typeof ext == 'function') {
+        if (typeof fn == 'function') {
           const args = {
             state,
             code,
             tree,
             branch,
+            node,
             leaf,
-            vein,
             val,
             key,
-            setter,
             id,
             run,
             set,
@@ -106,9 +103,9 @@ module.exports = function(opt = {}) {
             load,
             core
           }
-          const result = await ext(args)
-          if (typeof result != 'undefined' && setter) {
-            set(setter, result)
+          const result = await fn(args)
+          if (typeof result != 'undefined') {
+            set(key, result)
           }
         }
       }
