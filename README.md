@@ -310,8 +310,8 @@ Weblang can (and should) be extended with your own commands. Define an extension
 const db = function({
   state,  // the runner's state with vars and return
   code,   // the actual code sent to weblang, untouched
-  blob,   // the internal object used by weblang, with ids
-  raw,    // the object you send to this function
+  ast,    // the abstract syntax tree like object, with ids
+  line,   // the current object being processed
   val,    // the object, variables and pipes applied
   key,    // the name of the function, here 'db'
   setter, // store the result in this variable
