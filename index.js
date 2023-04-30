@@ -63,13 +63,13 @@ module.exports = function(opt = {}) {
 
     async function run(branch) {
 
-      for (const name in branch) {
+      for (const leaf in branch) {
         if (typeof state.return != 'undefined') break
 
-        const line = branch[name]
-        const val = expand(line, state, opt)
+        const vein = branch[leaf]
+        const val = expand(vein, state, opt)
 
-        let [key, id] = util.split(name)
+        let [key, id] = util.split(leaf)
 
         if (key[0] == '=') {
           set(key, val)
@@ -85,9 +85,10 @@ module.exports = function(opt = {}) {
           const args = {
             state,
             code,
-            branch,
             tree,
-            line,
+            branch,
+            leaf,
+            vein,
             val,
             key,
             setter,
