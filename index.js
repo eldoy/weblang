@@ -6,7 +6,6 @@ const load = require('./lib/load.js')
 const util = require('./lib/util.js')
 const core = require('./lib/core.js')
 const pipes = require('./lib/pipes.js')
-const getter = require('./lib/getter.js')
 
 module.exports = function(opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
@@ -26,7 +25,7 @@ module.exports = function(opt = {}) {
 
     // Get value from state
     function get(val) {
-      return getter(val, state)
+      return util.get(val, state)
     }
 
     // Set value in state
