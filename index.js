@@ -69,14 +69,12 @@ module.exports = function(opt = {}) {
         const leaf = branch[node]
         const val = expand(leaf, state, opt)
 
-        let [key, id] = util.split(node)
+        let [key, ext, id] = util.split(node)
 
-        if (!key.includes('@') && key[0] == '=') {
+        if (!ext && key[0] == '=') {
           set(key, val)
           continue
         }
-
-        [key, ext] = key.split('@')
 
         const fn = opt.ext[ext]
 
