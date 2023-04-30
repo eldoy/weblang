@@ -27,7 +27,7 @@ it('should load yaml multiple variables', async function({ t }) {
   t.ok(keys[1].startsWith('=hello#'))
 })
 
-it('should load yaml keywords', async function({ t }) {
+it('should load extension functions', async function({ t }) {
   const result = load([
     '@if:',
     '  name:',
