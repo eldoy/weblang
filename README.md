@@ -256,27 +256,9 @@ You can prefill the state with your own variables:
 
 ```js
 const req = { pathname: '/hello' }
-const run = await weblang({
+const run = await weblang.init(code, {
   vars: { req }
 })
-```
-
-Use some _code_ like this:
-```yml
-# Modify pathname
-=req.pathname: /bye
-
-# Return the modified pathname
-@return: $req.pathname
-```
-
-Then run with:
-```js
-await run(code)
-
-// Pass params to extensions
-const params = { name: 'hello' }
-await run(code, params)
 ```
 
 ### Pipes
@@ -308,7 +290,7 @@ Currently there are no built in pipes.
 You can add your own pipes or replace the existing ones using the _pipes_ option:
 ```js
 // Add a pipe named 'hello'
-const run = await weblang({
+const run = await weblang.init(code, {
   pipes: {
     hello: function(str) {
       if (typeof str != 'string') return str
@@ -364,7 +346,7 @@ var code = '@db: user/create'
 
 then run the code like this, while also adding the extension:
 ```js
-const state = await weblang(code, {
+const state = await weblang.init(code, {
   ext: { db }
 })
 ```
@@ -411,7 +393,7 @@ The renderer functions are added like with extensions, and have access to the sa
 
 ```js
 // Add a renderer function like this
-const state = await weblang(code, {
+const state = await weblang.init(code, {
   renderers: { mustache }
 })
 ```
