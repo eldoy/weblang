@@ -39,9 +39,10 @@ Functions are added through _extensions_. Even the core functionality can be ove
 
 ### Get and Set variables
 
-Getting variables from `state.vars` _starts with $_.
+Variables are stored in `state.vars`:
 
-Set variables, _starting with =_, available in `state.vars`.
+* Getting a variable starts with `$`
+* Setting a variable starts with `=`
 
 ```yml
 # Set string variable
