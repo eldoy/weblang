@@ -73,7 +73,7 @@ function renderer(str) {
 }
 
 // Apply pipes
-function applyPipes(val, pipes, state, opt) {
+async function applyPipes(val, pipes, state, opt, args) {
   for (const pipe of pipes) {
     const [lang, body] = renderer(pipe)
 
@@ -82,8 +82,7 @@ function applyPipes(val, pipes, state, opt) {
       if (lang) {
         const renderer = opt.renderers[lang]
         if (typeof renderer == 'function') {
-          // TODO: Async + pass args
-          val = renderer()
+          val = await renderer({ ...args, val })
         }
       }
     } else {
@@ -98,14 +97,14 @@ function applyPipes(val, pipes, state, opt) {
 
       const fn = (opt.pipes || {})[name]
       if (typeof fn == 'function') {
-        val = fn(val, query)
+        val = await fn(val, query, { ...args, val })
       }
     }
   }
   return val
 }
 
-function expand(obj = {}, state = {}, opt = {}) {
+async function expand(obj = {}, state = {}, opt = {}, args = {}) {
   const wasString = typeof obj == 'string'
   if (wasString) obj = [obj]
 
@@ -113,15 +112,15 @@ function expand(obj = {}, state = {}, opt = {}) {
     obj = undot(_.cloneDeep(obj))
   }
 
-  function build(obj, state, opt) {
+  async function build(obj, state, opt, args) {
     for (const key in obj) {
       if (obj[key] && typeof obj[key] == 'object') {
-        build(obj[key], state, opt)
+        await build(obj[key], state, opt, args)
       } else if (typeof obj[key] == 'string') {
         let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
 
         val = get(val, state)
-        val = applyPipes(val, pipes, state, opt)
+        val = await applyPipes(val, pipes, state, opt, args)
         val = transform(val)
 
         // Remove undefined
@@ -134,7 +133,7 @@ function expand(obj = {}, state = {}, opt = {}) {
     }
   }
 
-  build(obj, state, opt)
+  await build(obj, state, opt, args)
 
   return wasString ? obj[0] : obj
 }
@@ -176,31 +175,30 @@ module.exports = function (opt = {}) {
 
         let [key, ext, id] = split(node)
         let leaf = branch[node]
-        let val = expand(leaf, state, opt)
+        const args = {
+          state,
+          code,
+          tree,
+          branch,
+          node,
+          leaf,
+          set,
+          get,
+          key,
+          id,
+          run,
+          ok,
+          opt,
+          params,
+          expand,
+          load
+        }
+        let val = await expand(leaf, state, opt)
 
         if (ext) {
           const fn = opt.ext[ext]
           if (typeof fn == 'function') {
-            const args = {
-              state,
-              code,
-              tree,
-              branch,
-              node,
-              leaf,
-              set,
-              get,
-              val,
-              key,
-              id,
-              run,
-              ok,
-              opt,
-              params,
-              expand,
-              load
-            }
-            val = await fn(args)
+            val = await fn({ ...args, val })
           }
         }
 
