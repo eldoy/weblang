@@ -361,7 +361,11 @@ and the `result` variable will be available in `state.vars.result`.
 
 ### Renderers
 
-After setting up your data, you can pass them to _renderer functions_:
+After setting up your data, you can pass them to _renderer functions_.
+
+The renderer functions are added like with extensions, and have access to the same parameters, and also the `body` and `lang` values.
+
+`body` is the template body between the triple backticks, and `lang` is the name of the renderer your specified, in the previous example called `tomarkup`:
 
 ```js
 // Create a renderer supporting markdown and mustache
@@ -387,14 +391,10 @@ Renderer functions work very nicely with the built in `@return` extension:
   ```
 ````
 
-The renderer functions are added like with extensions, and have access to the same parameters, and also the `body` and `lang` values.
-
-`body` is the template body between the triple backticks, and `lang` is the name of the renderer your specified, in the previous example called `tomarkup`.
-
+Add a renderer function like this:
 ```js
-// Add a renderer function like this
 const state = await weblang.init(code, {
-  renderers: { mustache }
+  renderers: { tomarkup }
 })
 ```
 
