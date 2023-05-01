@@ -91,12 +91,13 @@ async function piper(val, pipes, state, opt, args) {
     const [lang, body] = renderer(pipe)
 
     if (body) {
-      val = body
       if (lang) {
         const renderer = opt.renderers[lang]
         if (typeof renderer == 'function') {
-          val = await renderer({ ...args, val })
+          val = await renderer({ ...args, lang, body, val })
         }
+      } else {
+        val = body
       }
     } else {
       let [name, ...options] = pipe.split(' ').map((x) => x.trim())

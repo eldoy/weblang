@@ -328,7 +328,7 @@ Weblang can (and should) be extended with your own commands. Define an extension
 
 ```js
 // Function called db
-const db = function({
+function db({
   state,    // the runner's state with vars and return
   code,     // the actual code sent to weblang, untouched
   tree,     // the syntax tree like object, with ids
@@ -361,7 +361,7 @@ Write the _code_ like this:
 var code = '@db: user/create'
 ```
 
-the run the code like this, while also adding the extension:
+then run the code like this, while also adding the extension:
 ```js
 const state = await weblang(code, {
   ext: { db }
@@ -378,22 +378,38 @@ and the `result` variable will be available in `state.vars.result`.
 
 ### Renderers
 
-After setting up your data, you can pass them to _renderer functions_.
+After setting up your data, you can pass them to _renderer functions_:
 
-Have a look at this example with a mustache renderer:
+```js
+// Create a renderer supporting markdown and mustache
+const tomarkup = require('tomarkup')
+const formatter = tomarkup()
+
+function tomarkup({ val, body }) {
+  const { html } = formatter(body, val)
+  return html
+}
+```
+
+Use the tripe backtick syntax along with the name of the renderer you want to use.
+
+Renderer functions work very nicely with the built in `@return` extension:
 
 ````yml
 # Get your user from the database
 =user@db: user/get
 @return: $user |
-  ```mustache
-  <h1>{{user.name}}</h1>
+  ```tomarkup
+  <h1>{{name}}</h1>
   ```
 ````
 
-The renderer functions are added like with extensions and have access to the same parameters:
+The renderer functions are added like with extensions, and have access to the same parameters, and also the `body` and `lang` values.
+
+`body` is the template body between the triple backticks, and `lang` is the name of the renderer your specified, in the previous example called `tomarkup`.
 
 ```js
+// Add a renderer function like this
 const state = await weblang(code, {
   renderers: { mustache }
 })
