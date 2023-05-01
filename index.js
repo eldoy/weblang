@@ -9,7 +9,7 @@ const renderers = require('./lib/renderers.js')
 const regexp = {
   id: /#([a-z0-9]{24})/,
   renderer: /^```(\w+)?\s(.*)\s```$/s,
-  identifier: new RegExp(`^\\s*[=@].*?:`, 'gm')
+  identifier: /^\s*[=@].*?:/gm
 }
 
 // Convert yaml string to javascript object
