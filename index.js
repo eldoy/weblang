@@ -138,78 +138,77 @@ async function expand(obj = {}, state = {}, opt = {}, args = {}) {
   return wasString ? obj[0] : obj
 }
 
-module.exports = function (opt = {}) {
+async function init(code, opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
   opt.ext = { ...ext, ...opt.ext }
   opt.renderers = { ...renderers, ...opt.renderers }
 
-  return async function (code, params) {
-    const state = {
-      vars: {}
-    }
-
-    // Add custom vars
-    if (opt.vars) {
-      for (const name in opt.vars) {
-        state.vars[name] = opt.vars[name]
-      }
-    }
-
-    // Check if object validates
-    async function ok(val) {
-      for (const field in val) {
-        const obj = val[field]
-        const checks = get(field, state)
-        if (checks && (await validate(obj, checks))) {
-          return false
-        }
-      }
-      return true
-    }
-
-    const tree = load(code)
-
-    async function run(branch) {
-      for (const node in branch) {
-        if (typeof state.return != 'undefined') break
-
-        let [key, ext, id] = split(node)
-        let leaf = branch[node]
-        const args = {
-          state,
-          code,
-          tree,
-          branch,
-          node,
-          leaf,
-          set,
-          get,
-          key,
-          id,
-          run,
-          ok,
-          opt,
-          params,
-          expand,
-          load
-        }
-        let val = await expand(leaf, state, opt)
-
-        if (ext) {
-          const fn = opt.ext[ext]
-          if (typeof fn == 'function') {
-            val = await fn({ ...args, val })
-          }
-        }
-
-        if (typeof val != 'undefined' && key[0] == '=') {
-          set(key, val, state)
-        }
-      }
-    }
-
-    await run(tree)
-
-    return state
+  const state = {
+    vars: {}
   }
+
+  // Add custom vars
+  if (opt.vars) {
+    for (const name in opt.vars) {
+      state.vars[name] = opt.vars[name]
+    }
+  }
+
+  // Check if object validates
+  async function ok(val) {
+    for (const field in val) {
+      const obj = val[field]
+      const checks = get(field, state)
+      if (checks && (await validate(obj, checks))) {
+        return false
+      }
+    }
+    return true
+  }
+
+  const tree = load(code)
+
+  async function run(branch) {
+    for (const node in branch) {
+      if (typeof state.return != 'undefined') break
+
+      let [key, ext, id] = split(node)
+      let leaf = branch[node]
+      const args = {
+        state,
+        code,
+        tree,
+        branch,
+        node,
+        leaf,
+        set,
+        get,
+        key,
+        id,
+        run,
+        ok,
+        opt,
+        expand,
+        load
+      }
+      let val = await expand(leaf, state, opt)
+
+      if (ext) {
+        const fn = opt.ext[ext]
+        if (typeof fn == 'function') {
+          val = await fn({ ...args, val })
+        }
+      }
+
+      if (typeof val != 'undefined' && key[0] == '=') {
+        set(key, val, state)
+      }
+    }
+  }
+
+  await run(tree)
+
+  return state
 }
+
+module.exports = { init }

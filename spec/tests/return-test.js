@@ -1,14 +1,14 @@
 const weblang = require('../../index.js')
 
 it('should return a string', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '@return: hello'
   ].join('\n'))
   t.ok(state.return == 'hello')
 })
 
 it('should return an object', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '@return:',
     '  name: world'
   ].join('\n'))
@@ -16,7 +16,7 @@ it('should return an object', async ({ t }) => {
 })
 
 it('should return an array', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '@return:',
     '  - 1',
     '  - 2'
@@ -27,7 +27,7 @@ it('should return an array', async ({ t }) => {
 })
 
 it('should return a string variable', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello: world',
     '@return: $hello'
   ].join('\n'))
@@ -35,7 +35,7 @@ it('should return a string variable', async ({ t }) => {
 })
 
 it('should return an object variable', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: world',
     '@return: $hello'
@@ -44,7 +44,7 @@ it('should return an object variable', async ({ t }) => {
 })
 
 it('should return an array variable', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  - 1',
     '  - 2',
@@ -55,7 +55,7 @@ it('should return an array variable', async ({ t }) => {
 })
 
 it('should return a variable dot notation', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name:',
     '    baner: 1',
@@ -65,7 +65,7 @@ it('should return a variable dot notation', async ({ t }) => {
 })
 
 it('should return early', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '@return: early',
     '@return: late'
   ].join('\n'))

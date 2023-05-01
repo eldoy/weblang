@@ -5,7 +5,7 @@ const md = function() {
 }
 
 it('should return value if renderer not found', async ({ t }) => {
-  const state = await weblang({})([
+  const state = await weblang.init([
     '=hello: { a: 1 }',
     '@return: $hello |',
     '  ```md',
@@ -19,9 +19,7 @@ it('should return value if renderer not found', async ({ t }) => {
 })
 
 it('should support custom renderers', async ({ t }) => {
-  const state = await weblang({
-    renderers: { md }
-  })([
+  const state = await weblang.init([
     '=hello: { a: 1 }',
     '@return: $hello |',
     '  ```md',
@@ -30,6 +28,8 @@ it('should support custom renderers', async ({ t }) => {
     '',
     '  Bye',
     '  ```'
-  ].join('\n'))
+  ].join('\n'), {
+    renderers: { md }
+  })
   t.ok(state.return == 'nisse')
 })
