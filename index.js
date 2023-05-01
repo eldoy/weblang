@@ -118,11 +118,7 @@ function expand(obj = {}, state = {}, opt = {}) {
         }
         pipes = data
 
-        if (typeof data == 'string') {
-          // val = pipes
-        } else {
-          val = transform(val)
-
+        if (typeof data == 'object') {
           // Apply pipes
           for (const name in pipes) {
             const pipe = (opt.pipes || {})[name]
@@ -131,6 +127,8 @@ function expand(obj = {}, state = {}, opt = {}) {
             }
           }
         }
+
+        val = transform(val)
 
         // Remove undefined
         if (typeof val == 'undefined') {
