@@ -89,17 +89,19 @@ function expand(obj = {}, state = {}, opt = {}) {
 
         let [val, ...pipes] = statement.split('|').map((x) => x.trim())
 
+        val = get(val, state)
+
         let data = {}
         for (const pipe of pipes) {
           const [lang, body] = renderer(pipe)
 
           if (body) {
-            data = body
+            val = body
             if (lang) {
               const renderer = opt.renderers[lang]
               if (typeof renderer == 'function') {
                 // TODO: Async + pass args
-                data = renderer()
+                val = renderer()
               }
             }
           } else {
@@ -116,10 +118,8 @@ function expand(obj = {}, state = {}, opt = {}) {
         }
         pipes = data
 
-        val = get(val, state)
-
-        if (typeof pipes == 'string') {
-          val = pipes
+        if (typeof data == 'string') {
+          // val = pipes
         } else {
           val = transform(val)
 
