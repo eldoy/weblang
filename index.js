@@ -1,5 +1,5 @@
-const yaml = require('js-yaml')
 const _ = require('lodash')
+const yaml = require('js-yaml')
 const { cuid, transform, dot, undot, clean } = require('extras')
 const { validate } = require('d8a')
 const ext = require('./lib/ext.js')
@@ -31,6 +31,7 @@ function load(code) {
   return yaml.load(code, { json: true })
 }
 
+// Get state value
 function get(val, state) {
   if (val[0] == '$') {
     const name = val.slice(1)
@@ -39,6 +40,7 @@ function get(val, state) {
   return val
 }
 
+// Set state value
 function set(key, val, state) {
   if (key[0] == '=') key = key.slice(1)
   const dotted = dot({ [key]: _.cloneDeep(val) })
@@ -46,6 +48,18 @@ function set(key, val, state) {
     _.set(state.vars, k, dotted[k])
   }
   state.vars = clean(state.vars)
+}
+
+// Check if object validates
+async function ok(val, state) {
+  for (const field in val) {
+    const obj = val[field]
+    const checks = get(field, state)
+    if (checks && (await validate(obj, checks))) {
+      return false
+    }
+  }
+  return true
 }
 
 // Extract key, name and id
@@ -62,18 +76,17 @@ function split(str) {
 
 // Extract lang and body from renderer pipe
 function renderer(str) {
-  if (!str.startsWith('```') || !str.endsWith('```')) {
-    return []
-  }
-  const match = str.match(regexp.renderer)
-  if (match) {
-    return [match[1] || '', match[2] || '']
+  if (str.startsWith('```') && str.endsWith('```')) {
+    const match = str.match(regexp.renderer)
+    if (match) {
+      return [match[1] || '', match[2] || '']
+    }
   }
   return []
 }
 
 // Apply pipes
-async function applyPipes(val, pipes, state, opt, args) {
+async function piper(val, pipes, state, opt, args) {
   for (const pipe of pipes) {
     const [lang, body] = renderer(pipe)
 
@@ -104,66 +117,53 @@ async function applyPipes(val, pipes, state, opt, args) {
   return val
 }
 
-async function expand(obj = {}, state = {}, opt = {}, args = {}) {
-  const wasString = typeof obj == 'string'
-  if (wasString) obj = [obj]
+// Recursive builder
+async function build(obj, state, opt, args) {
+  for (const key in obj) {
+    if (obj[key] && typeof obj[key] == 'object') {
+      await build(obj[key], state, opt, args)
+    } else if (typeof obj[key] == 'string') {
+      let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
 
-  if (_.isPlainObject(obj)) {
-    obj = undot(_.cloneDeep(obj))
-  }
+      val = get(val, state)
+      val = await piper(val, pipes, state, opt, args)
+      val = transform(val)
 
-  async function build(obj, state, opt, args) {
-    for (const key in obj) {
-      if (obj[key] && typeof obj[key] == 'object') {
-        await build(obj[key], state, opt, args)
-      } else if (typeof obj[key] == 'string') {
-        let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
-
-        val = get(val, state)
-        val = await applyPipes(val, pipes, state, opt, args)
-        val = transform(val)
-
-        // Remove undefined
-        if (typeof val == 'undefined') {
-          delete obj[key]
-        } else {
-          obj[key] = val
-        }
+      // Remove undefined
+      if (typeof val == 'undefined') {
+        delete obj[key]
+      } else {
+        obj[key] = val
       }
     }
   }
+}
 
+// Expand dot and initiate build
+async function expand(obj = {}, state = {}, opt = {}, args = {}) {
+  const wasString = typeof obj == 'string'
+  if (wasString) obj = [obj]
+  if (_.isPlainObject(obj)) {
+    obj = undot(_.cloneDeep(obj))
+  }
   await build(obj, state, opt, args)
 
   return wasString ? obj[0] : obj
 }
 
+// Init weblang runner
 async function init(code, opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
   opt.ext = { ...ext, ...opt.ext }
   opt.renderers = { ...renderers, ...opt.renderers }
 
-  const state = {
-    vars: {}
-  }
+  const state = { vars: {} }
 
   // Add custom vars
   if (opt.vars) {
     for (const name in opt.vars) {
       state.vars[name] = opt.vars[name]
     }
-  }
-
-  // Check if object validates
-  async function ok(val) {
-    for (const field in val) {
-      const obj = val[field]
-      const checks = get(field, state)
-      if (checks && (await validate(obj, checks))) {
-        return false
-      }
-    }
-    return true
   }
 
   const tree = load(code)
@@ -184,15 +184,17 @@ async function init(code, opt = {}) {
         key,
         id,
         run,
-        ok,
         opt,
         expand,
         load,
+        get: function (key) {
+          return get(key, state)
+        },
         set: function (key, val) {
           return set(key, val, state)
         },
-        get: function (key) {
-          return get(key, state)
+        ok: function (val) {
+          return ok(val, state)
         }
       }
       let val = await expand(current, state, opt, args)
@@ -213,4 +215,15 @@ async function init(code, opt = {}) {
   return state
 }
 
-module.exports = { init, load, renderer, split }
+module.exports = {
+  load,
+  get,
+  set,
+  ok,
+  split,
+  renderer,
+  piper,
+  build,
+  expand,
+  init
+}
