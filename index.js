@@ -13,7 +13,7 @@ const regexp = {
 }
 
 // Convert yaml string to javascript object
-function load(code, opt = {}) {
+function load(code) {
   if (!code) return ''
   if (typeof code != 'string') return code
 
