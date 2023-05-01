@@ -197,11 +197,9 @@ async function init(code, opt = {}) {
       }
       let val = await expand(current, state, opt, args)
 
-      if (ext) {
-        const fn = opt.ext[ext]
-        if (typeof fn == 'function') {
-          val = await fn({ ...args, val })
-        }
+      const fn = opt.ext[ext]
+      if (typeof fn == 'function') {
+        val = await fn({ ...args, val })
       }
 
       if (typeof val != 'undefined' && key[0] == '=') {
