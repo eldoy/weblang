@@ -173,25 +173,29 @@ async function init(code, opt = {}) {
       if (typeof state.return != 'undefined') break
 
       let [key, ext, id] = split(node)
-      let leaf = branch[node]
+      let current = branch[node]
       const args = {
         state,
         code,
         tree,
         branch,
         node,
-        leaf,
-        set,
-        get,
+        current,
         key,
         id,
         run,
         ok,
         opt,
         expand,
-        load
+        load,
+        set: function (key, val) {
+          return set(key, val, state)
+        },
+        get: function (key) {
+          return get(key, state)
+        }
       }
-      let val = await expand(leaf, state, opt)
+      let val = await expand(current, state, opt, args)
 
       if (ext) {
         const fn = opt.ext[ext]

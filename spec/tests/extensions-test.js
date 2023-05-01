@@ -1,7 +1,7 @@
 const weblang = require('../../index.js')
 
-const db = function({ set, state }) {
-  set('=internal', 'hello', state)
+const db = function({ set }) {
+  set('=internal', 'hello')
   return { id: '1' }
 }
 
@@ -27,8 +27,8 @@ it('should not set variable if undefined', async ({ t }) => {
     '@return: $result'
   ].join('\n')
   const state = await weblang.init(code, {
-    ext: { db: function({ set, state }){
-      set('result', 'hello', state)
+    ext: { db: function({ set }){
+      set('result', 'hello')
     } } })
   t.ok(state.vars.result == 'hello')
 })
