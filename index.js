@@ -211,4 +211,4 @@ async function init(code, opt = {}) {
   return state
 }
 
-module.exports = { init }
+module.exports = { init, load, renderer, split }
