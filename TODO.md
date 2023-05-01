@@ -5,17 +5,18 @@
   - expand
   - parse
 - [√] Move core to ext.js
-- [ ] Move parse into build
-- [ ] Move build into expand
+- [√] Move parse into build
+- [√] Move build into expand
 - [ ] Move expand into index
-- [ ] Split into pure function files
+
+- [ ] Split into pure function files?
 - [ ] Export every single file?
   - might require we do weblang.init({}) instead
 
 - [ ] No need for pipes data, just replace val in-place
 
 - [ ] Get rid of node and leaf
-  - they are really key and val
+  - they are really key and val?
   - expand key with undot
   - expand val with vars
   - expand val with pipes
