@@ -1,16 +1,18 @@
 # Refactor
 
-- [ ] Feature tests instead of file tests
+- [√] Feature tests instead of file tests
   - build
   - expand
   - parse
-- [ ] Move core to ext.js
+- [√] Move core to ext.js
 - [ ] Move parse into build
 - [ ] Move build into expand
 - [ ] Move expand into index
 - [ ] Split into pure function files
 - [ ] Export every single file?
   - might require we do weblang.init({}) instead
+
+- [ ] No need for pipes data, just replace val in-place
 
 - [ ] Get rid of node and leaf
   - they are really key and val

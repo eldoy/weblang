@@ -3,13 +3,13 @@ const { validate } = require('d8a')
 const expand = require('./lib/expand.js')
 const load = require('./lib/load.js')
 const util = require('./lib/util.js')
-const core = require('./lib/core.js')
+const ext = require('./lib/ext.js')
 const pipes = require('./lib/pipes.js')
 const renderers = require('./lib/renderers.js')
 
 module.exports = function(opt = {}) {
   opt.pipes = { ...pipes, ...opt.pipes }
-  opt.ext = { ...core, ...opt.ext }
+  opt.ext = { ...ext, ...opt.ext }
   opt.renderers = { ...renderers, ...opt.renderers }
 
   return async function(code, params) {
@@ -76,10 +76,8 @@ module.exports = function(opt = {}) {
               opt,
               params,
               expand,
-              pipes,
               util,
-              load,
-              core
+              load
             }
             val = await fn(args)
           }
