@@ -1,7 +1,7 @@
 const weblang = require('../../index.js')
 
 it('should work with value if', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello: 1',
     '@if:',
     '  $hello: 1',
@@ -12,7 +12,7 @@ it('should work with value if', async ({ t }) => {
 })
 
 it('should work with object if', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
@@ -26,7 +26,7 @@ it('should work with object if', async ({ t }) => {
 })
 
 it('should work with multiple if checks', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '=req:',
@@ -45,7 +45,7 @@ it('should work with multiple if checks', async ({ t }) => {
 })
 
 it('should work with if dot notation', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
@@ -57,7 +57,7 @@ it('should work with if dot notation', async ({ t }) => {
 })
 
 it('should work with else', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
@@ -74,7 +74,7 @@ it('should work with else', async ({ t }) => {
 })
 
 it('should support double if', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
@@ -95,7 +95,7 @@ it('should support double if', async ({ t }) => {
 })
 
 it('should support double if with else', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
@@ -118,7 +118,7 @@ it('should support double if with else', async ({ t }) => {
 })
 
 it('should support nested if', async ({ t }) => {
-  const state = await weblang()([
+  const state = await weblang.init([
     '=hello:',
     '  name: nils',
     '@if:',
