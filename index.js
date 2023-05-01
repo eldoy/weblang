@@ -72,6 +72,39 @@ function renderer(str) {
   return []
 }
 
+// Apply pipes
+function applyPipes(val, pipes, state, opt) {
+  for (const pipe of pipes) {
+    const [lang, body] = renderer(pipe)
+
+    if (body) {
+      val = body
+      if (lang) {
+        const renderer = opt.renderers[lang]
+        if (typeof renderer == 'function') {
+          // TODO: Async + pass args
+          val = renderer()
+        }
+      }
+    } else {
+      let [name, ...options] = pipe.split(' ').map((x) => x.trim())
+
+      const query = {}
+      for (const opt of options) {
+        let [key, val] = opt.split('=')
+        val = get(val, state)
+        query[key] = val
+      }
+
+      const fn = (opt.pipes || {})[name]
+      if (typeof fn == 'function') {
+        val = fn(val, query)
+      }
+    }
+  }
+  return val
+}
+
 function expand(obj = {}, state = {}, opt = {}) {
   const wasString = typeof obj == 'string'
   if (wasString) obj = [obj]
@@ -88,36 +121,7 @@ function expand(obj = {}, state = {}, opt = {}) {
         let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
 
         val = get(val, state)
-
-        for (const pipe of pipes) {
-          const [lang, body] = renderer(pipe)
-
-          if (body) {
-            val = body
-            if (lang) {
-              const renderer = opt.renderers[lang]
-              if (typeof renderer == 'function') {
-                // TODO: Async + pass args
-                val = renderer()
-              }
-            }
-          } else {
-            let [name, ...options] = pipe.split(' ').map((x) => x.trim())
-
-            const query = {}
-            for (const opt of options) {
-              let [key, val] = opt.split('=')
-              val = get(val, state)
-              query[key] = val
-            }
-
-            const fn = (opt.pipes || {})[name]
-            if (typeof fn == 'function') {
-              val = fn(val, query)
-            }
-          }
-        }
-
+        val = applyPipes(val, pipes, state, opt)
         val = transform(val)
 
         // Remove undefined
