@@ -104,16 +104,16 @@ function expand(obj = {}, state = {}, opt = {}) {
           } else {
             let [name, ...options] = pipe.split(' ').map((x) => x.trim())
 
-            const params = {}
+            const query = {}
             for (const opt of options) {
               let [key, val] = opt.split('=')
               val = get(val, state)
-              params[key] = val
+              query[key] = val
             }
 
             const fn = (opt.pipes || {})[name]
             if (typeof fn == 'function') {
-              val = fn(val, params)
+              val = fn(val, query)
             }
           }
         }
@@ -171,9 +171,10 @@ module.exports = function (opt = {}) {
         if (typeof state.return != 'undefined') break
 
         const leaf = branch[node]
+        let [key, ext, id] = split(node)
+
         let val = expand(leaf, state, opt)
 
-        let [key, ext, id] = split(node)
         if (ext) {
           const fn = opt.ext[ext]
           if (typeof fn == 'function') {
