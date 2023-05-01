@@ -170,9 +170,8 @@ module.exports = function (opt = {}) {
       for (const node in branch) {
         if (typeof state.return != 'undefined') break
 
-        const leaf = branch[node]
         let [key, ext, id] = split(node)
-
+        let leaf = branch[node]
         let val = expand(leaf, state, opt)
 
         if (ext) {
