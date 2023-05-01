@@ -30,7 +30,7 @@ const state = await weblang.init(code)
 
 ### How it works
 
-Generally, setting a variable starts with `=`, variable lookup starts with the `$` character, and functions start with `@`.
+Generally, setting a variable starts with `=`, variable lookup starts with `$`, and functions start with `@`.
 
 Variables have dynamic types, just as with YAML. All variables are global, there is no scope, not even inside _if_ and _else_ blocks.
 
