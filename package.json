@@ -13,7 +13,8 @@
   "author": "Vidar Eldøy <vidar@eldoy.com>",
   "license": "MIT",
   "devDependencies": {
-    "spekk": "^0.2.1"
+    "spekk": "^0.2.1",
+    "tomarkup": "^0.9.1"
   },
   "dependencies": {
     "d8a": "^0.9.6",

@@ -1,8 +1,5 @@
 const { init, renderer } = require('../../index.js')
-
-const md = function() {
-  return 'nisse'
-}
+const { md, tomarkup } = require('../lib/renderers.js')
 
 it('should extract lang and body', async ({ t }) => {
   const content = '```md Hello\nBye ```'
@@ -16,7 +13,7 @@ it('should return value if renderer not found', async ({ t }) => {
   const state = await init([
     '=hello: { a: 1 }',
     '@return: $hello |',
-    '  ```md',
+    '  ```',
     '  Hello',
     '',
     '',
@@ -39,5 +36,18 @@ it('should support custom renderers', async ({ t }) => {
   ].join('\n'), {
     renderers: { md }
   })
-  t.ok(state.return == 'nisse')
+  t.ok(state.return == 'markdown')
+})
+
+it('should support renderers with data from val', async ({ t }) => {
+  const state = await init([
+    '=user: { name: "Bobby" }',
+    '@return: $user |',
+    '  ```tomarkup',
+    '  <h1>Hi {{name}}</h1>',
+    '  ```'
+  ].join('\n'), {
+    renderers: { tomarkup }
+  })
+  t.ok(state.return == '<h1>Hi Bobby</h1>')
 })
