@@ -1,9 +1,5 @@
 const weblang = require('../../index.js')
-
-const db = function({ set }) {
-  set('=internal', 'hello')
-  return { id: '1' }
-}
+const { db } = require('../lib/extensions.js')
 
 it('should support custom extensions', async ({ t }) => {
   const code = '@db: user/create'
