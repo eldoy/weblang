@@ -88,16 +88,16 @@ async function applyPipes(val, pipes, state, opt, args) {
     } else {
       let [name, ...options] = pipe.split(' ').map((x) => x.trim())
 
-      const query = {}
+      const params = {}
       for (const opt of options) {
         let [key, val] = opt.split('=')
         val = get(val, state)
-        query[key] = val
+        params[key] = val
       }
 
       const fn = (opt.pipes || {})[name]
       if (typeof fn == 'function') {
-        val = await fn(val, query, { ...args, val })
+        val = await fn(val, params, { ...args, val })
       }
     }
   }
