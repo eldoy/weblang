@@ -25,91 +25,109 @@ npm i weblang
 ```js
 const weblang = require('weblang')
 const code = '$hello: world'
-const state = await weblang()(code)
+const state = await weblang.init(code)
 ```
 
 ### How it works
 
-Generally, variables start with the `$` character, and functions start with `@`.
+Generally, setting a variable starts with `=`, variable lookup starts with the `$` character, and functions start with `@`.
 
 Variables have dynamic types, just as with YAML. All variables are global, there is no scope, not even inside _if_ and _else_ blocks.
 
 Functions are added through _extensions_. Even the core functionality can be overridden, Weblang is meant to be extended.
 
 
-### Set
+### Get and Set variables
 
-Set variables, _starting with $_, available in `state.vars`:
+Getting variables from `state.vars` _starts with $_.
+
+Set variables, _starting with =_, available in `state.vars`.
 
 ```yml
 # Set string variable
-$hello: world
+=hello: world
+
+# Set number variable
+=number: 1
+
+# Set bool variable
+=hello: true
 
 # Set object variable
-$hello:
+=hello:
   a: 1
   b: 2
 
+# Set object one liner syntax
+=hello: { a: 1, b: 2 }
+
 # Set array variable
-$hello:
+=hello:
   - 1
   - 2
 
-# Set bool variable
-$hello: true
+# Set array one liner syntax
+=hello: [1, 2]
 
 # Set variable from other variable
-$hello: world
-$bye: $hello
+=hello: world
+=bye: $hello
 
 # Set object value from other variable
-$hello: world
-$bye:
+=hello: world
+=bye:
   name: $hello
 
 # Set array index from other variable
-$hello: world
-$bye:
+=hello: world
+=bye:
   - $hello
 
 # Set variable, nested, dot notation
-$hello.name: world
+=hello.name: world
 
-# Delete variable
-$hello: null
+# Delete variable, $hello is undefined
+=hello: null
 
 # Delete value from object
-$hello:
+=hello:
   name: null
 
 # Delete value from object, dot notation
-$hello.name: null
+=hello.name: null
 
 # Delete array index, dot notation
-$hello[0]: null
+=hello[0]: null
 
 # Set variable from object, dot notation
-$hello:
+=hello:
   name:
     deep: 1
-$bye: $hello.name.deep
+=bye: $hello.name.deep
 
 # Set variable from array, dot notation
-$hello:
+=hello:
   - 1
   - 2
-$bye: $hello[0]
+=bye: $hello[0]
 
 # Set variable from object array, dot notation
-$hello:
+=hello:
   - name: nils
-$bye: $hello[0].name
+=bye: $hello[0].name
 
 # Non existing variables are empty strings
-$bye: $hello
+=bye: $hello
 
 # Set literal '$', prevents var lookup
-$bye: $$hello
+=bye: $$hello
+
+# Setting the same object variable merges the values
+=hello: { a: 1 }
+=hello: { b: 2 }
+
+@log: $hello
+# { a: 1, b: 2 }
 ```
 
 ### If then else
@@ -123,7 +141,7 @@ Minimal logic is achieved through _@if, @then and @else_:
     name:
       eq: nils
 @then:
-  $hello.name: hans
+  =hello.name: hans
 
 # Multiple checks
 @if:
@@ -134,13 +152,13 @@ Minimal logic is achieved through _@if, @then and @else_:
     pathname:
       eq: /hello
 @then:
-  $hello.name: hans
+  =hello.name: hans
 
 # Checks works with dot notation as well
 @if:
   $hello.name.eq: nils
 @then:
-  $hello.name: hans
+  =hello.name: hans
 
 # If then else
 @if:
@@ -148,9 +166,9 @@ Minimal logic is achieved through _@if, @then and @else_:
     name:
       eq: hans
 @then:
-  $hello.name: guri
+  =hello.name: guro
 @else:
-  $hello.name: kari
+  =hello.name: kari
 ```
 
 The validations inside the if-section are from [the d8a validations:](https://github.com/eldoy/d8a)
@@ -210,22 +228,22 @@ The _@return_ command sets a variable in `state.return`. Using _@return_ causes 
 @return: hello
 
 # Return a string variable
-$hello: world
+=hello: world
 @return: $hello
 
 # Return an object variable
-$hello:
+=hello:
   name: world
 @return: $hello
 
 # Return an array variable
-$hello:
+=hello:
   - 1
   - 2
 @return: $hello
 
 # Return a variable, dot notation
-$hello:
+=hello:
   name:
     baner: 1
 @return: $hello.name
@@ -245,7 +263,7 @@ const run = await weblang({
 Use some _code_ like this:
 ```yml
 # Modify pathname
-$req.pathname: /bye
+=req.pathname: /bye
 
 # Return the modified pathname
 @return: $req.pathname
@@ -270,17 +288,20 @@ Currently there are no built in pipes.
 
 ```yml
 # Use pipes with string
-$hello: hello | upcase
+=hello: hello | upcase
 
 # Use pipes with variables
-$hello: hello
-$bye: $hello | upcase
+=hello: hello
+=bye: $hello | upcase
 
 # Use pipes with return
 @return: hello | capitalize
 
 # Multiple pipes
 @return: hello | upcase | downcase | capitalize
+
+# Pipe parameters
+@return: hello | join delimiter=+ max=5
 ```
 
 You can add your own pipes or replace the existing ones using the _pipes_ option:
@@ -308,25 +329,21 @@ Weblang can (and should) be extended with your own commands. Define an extension
 ```js
 // Function called db
 const db = function({
-  state,  // the runner's state with vars and return
-  code,   // the actual code sent to weblang, untouched
-  ast,    // the abstract syntax tree like object, with ids
-  line,   // the current object being processed
-  val,    // the object, variables and pipes applied
-  key,    // the name of the function, here 'db'
-  setter, // store the result in this variable
-  id,     // the duplicate key id, if any
-  run,    // the run function that runs your code
-  set,    // use this to set variables, prefix with '$'
-  get,    // use this to get variables and run pipes
-  ok,     // the validation function used for if tests
-  opt,    // the options passed to weblang
-  params, // parameters passed to your extensions
-  expand, // the expander function used internally
-  pipes,  // the pipe functions
-  util,   // util functions
-  load,   // the loader, converts yml string to object
-  core    // the core extension functions
+  state,    // the runner's state with vars and return
+  code,     // the actual code sent to weblang, untouched
+  tree,     // the syntax tree like object, with ids
+  branch,   // the current object being processed
+  node,     // the key of the current branch
+  current,  // the value of the current branch
+  key,      // the setter key, usually starts with '='
+  id,       // the internal id of the node
+  run,      // the run function that runs your code
+  opt,      // the options passed to weblang
+  expand,   // the expander function used internally
+  load,     // the loader, converts yml string to object
+  get,      // use this to get variables and run pipes
+  set,      // use this to set variables
+  ok        // the validation function used for if tests
 }) {
 
   // Example use of set
@@ -339,57 +356,48 @@ const db = function({
 
 Add the function to the runner like this:
 
+Write the _code_ like this:
 ```js
-const run = await weblang({
+var code = '@db: user/create'
+```
+
+the run the code like this, while also adding the extension:
+```js
+const state = await weblang(code, {
   ext: { db }
 })
-```
-
-Write the _code_ like this:
-```yml
-@db: user/create
-```
-
-and run with the extension like this:
-```js
-const state = await run(code)
 ```
 
 To set the result of the function, use the _extension variable setter syntax_:
 
 ```yml
-@db$result: user/create
+=result@db: user/create
 ```
 
 and the `result` variable will be available in `state.vars.result`.
 
-### Duplicate keys
+### Renderers
 
-YAML doesn't normally support duplicate keys, but Weblang does! It is automatically handled for you:
+After setting up your data, you can pass them to _renderer functions_.
 
-```yml
-@if:
-  $req.pathname.eq: /users
-@then:
-  $hello: lasse
+Have a look at this example with a mustache renderer:
 
-# No problem with a second if here
-@if:
-  $req.pathname.eq: /projects
-@then:
-  $hello: nils
+````yml
+# Get your user from the database
+=user@db: user/get
+@return: $user |
+  ```mustache
+  <h1>{{user.name}}</h1>
+  ```
+````
+
+The renderer functions are added like with extensions and have access to the same parameters:
+
+```js
+const state = await weblang(code, {
+  renderers: { mustache }
+})
 ```
-
-If you use duplicate keys in a variable, the last one overwrites the first one:
-```yml
-$hello:
-  name: kari
-  name: ola
-
-# $hello.name is 'ola'
-```
-
-Internally the keys are added to anything starting with a `$` and `@`, using a unique identifier starting with the `#` character.
 
 ### License
 
