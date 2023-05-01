@@ -378,7 +378,7 @@ function tomarkup({ val, body }) {
 }
 ```
 
-Use the tripe backtick syntax along with the name of the renderer you want to use.
+Use the triple backtick syntax along with the name of the renderer you want to use.
 
 Renderer functions work very nicely with the built in `@return` extension:
 
