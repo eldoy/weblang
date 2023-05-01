@@ -85,13 +85,10 @@ function expand(obj = {}, state = {}, opt = {}) {
       if (obj[key] && typeof obj[key] == 'object') {
         build(obj[key], state, opt)
       } else if (typeof obj[key] == 'string') {
-        let statement = obj[key]
-
-        let [val, ...pipes] = statement.split('|').map((x) => x.trim())
+        let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
 
         val = get(val, state)
 
-        let data = {}
         for (const pipe of pipes) {
           const [lang, body] = renderer(pipe)
 
@@ -113,17 +110,10 @@ function expand(obj = {}, state = {}, opt = {}) {
               val = get(val, state)
               params[key] = val
             }
-            data[name] = params
-          }
-        }
-        pipes = data
 
-        if (typeof data == 'object') {
-          // Apply pipes
-          for (const name in pipes) {
-            const pipe = (opt.pipes || {})[name]
-            if (typeof pipe == 'function') {
-              val = pipe(val, pipes[name])
+            const fn = (opt.pipes || {})[name]
+            if (typeof fn == 'function') {
+              val = fn(val, params)
             }
           }
         }

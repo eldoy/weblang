@@ -13,7 +13,7 @@
 - [ ] Export every single file?
   - might require we do weblang.init({}) instead
 
-- [ ] No need for pipes data, just replace val in-place
+- [√] No need for pipes data, just replace val in-place
 
 - [ ] Get rid of node and leaf
   - they are really key and val?
