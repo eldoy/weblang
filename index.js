@@ -1,14 +1,34 @@
+const yaml = require('js-yaml')
 const _ = require('lodash')
-const { transform, dot, undot, clean } = require('extras')
+const { cuid, transform, dot, undot, clean } = require('extras')
 const { validate } = require('d8a')
-const load = require('./lib/load.js')
 const ext = require('./lib/ext.js')
 const pipes = require('./lib/pipes.js')
 const renderers = require('./lib/renderers.js')
 
 const regexp = {
   id: /#([a-z0-9]{24})/,
-  renderer: /^```(\w+)?\s(.*)\s```$/s
+  renderer: /^```(\w+)?\s(.*)\s```$/s,
+  identifier: new RegExp(`^\\s*[=@].*?:`, 'gm')
+}
+
+// Convert yaml string to javascript object
+function load(code, opt = {}) {
+  if (!code) return ''
+  if (typeof code != 'string') return code
+
+  // Replace tabs with spaces
+  code = code.replace(/\t/g, '  ')
+
+  // Add identifier to each variable and keyword node
+  // Avoids duplicate key errors when re-using keys
+  code = code.replace(regexp.identifier, (m) => {
+    const keys = m.slice(0, -1).split('.')
+    keys[0] += `#${cuid()}`
+    return keys.join('.') + ':'
+  })
+
+  return yaml.load(code, { json: true })
 }
 
 function get(val, state) {
