@@ -1,5 +1,21 @@
 const util = require('../../lib/util.js')
 
+/**
+ * util.renderer
+ */
+
+it('should extract lang and body', async ({ t }) => {
+  const content = '```md Hello\nBye ```'
+  const [lang, body] = util.renderer(content)
+
+  t.ok(lang == 'md')
+  t.ok(body == 'Hello\nBye')
+})
+
+/**
+ * util.split
+*/
+
 it('should split name without id', async ({ t }) => {
   let [key, ext, id] = util.split('=hello')
   t.ok(key == '=hello')
