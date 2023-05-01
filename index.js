@@ -1,11 +1,56 @@
 const _ = require('lodash')
-const { transform, undot } = require('extras')
+const { transform, dot, undot, clean } = require('extras')
 const { validate } = require('d8a')
 const load = require('./lib/load.js')
-const util = require('./lib/util.js')
 const ext = require('./lib/ext.js')
 const pipes = require('./lib/pipes.js')
 const renderers = require('./lib/renderers.js')
+
+const regexp = {
+  id: /#([a-z0-9]{24})/,
+  renderer: /^```(\w+)?\s(.*)\s```$/s
+}
+
+function get(val, state) {
+  if (val[0] == '$') {
+    const name = val.slice(1)
+    val = val[1] == '$' ? name : _.get(state.vars, name)
+  }
+  return val
+}
+
+function set(key, val, state) {
+  if (key[0] == '=') key = key.slice(1)
+  const dotted = dot({ [key]: _.cloneDeep(val) })
+  for (const k in dotted) {
+    _.set(state.vars, k, dotted[k])
+  }
+  state.vars = clean(state.vars)
+}
+
+// Extract key, name and id
+function split(str) {
+  let id = ''
+  const match = str.match(regexp.id)
+  if (match) {
+    str = str.replace(match[0], '')
+    id = match[1]
+  }
+  const [key, ext = ''] = str.trim().split('@')
+  return [key, ext, id]
+}
+
+// Extract lang and body from renderer pipe
+function renderer(str) {
+  if (!str.startsWith('```') || !str.endsWith('```')) {
+    return []
+  }
+  const match = str.match(regexp.renderer)
+  if (match) {
+    return [match[1] || '', match[2] || '']
+  }
+  return []
+}
 
 function expand(obj = {}, state = {}, opt = {}) {
   const wasString = typeof obj == 'string'
@@ -26,7 +71,7 @@ function expand(obj = {}, state = {}, opt = {}) {
 
         let data = {}
         for (const pipe of pipes) {
-          const [lang, body] = util.renderer(pipe)
+          const [lang, body] = renderer(pipe)
 
           if (body) {
             data = body
@@ -43,7 +88,7 @@ function expand(obj = {}, state = {}, opt = {}) {
             const params = {}
             for (const opt of options) {
               let [key, val] = opt.split('=')
-              val = util.get(val, state)
+              val = get(val, state)
               params[key] = val
             }
             data[name] = params
@@ -51,7 +96,7 @@ function expand(obj = {}, state = {}, opt = {}) {
         }
         pipes = data
 
-        val = util.get(val, state)
+        val = get(val, state)
 
         if (typeof pipes == 'string') {
           val = pipes
@@ -99,21 +144,11 @@ module.exports = function (opt = {}) {
       }
     }
 
-    // Get value from state
-    function get(val) {
-      return util.get(val, state)
-    }
-
-    // Set value in state
-    function set(key, val) {
-      return util.set(key, val, state)
-    }
-
     // Check if object validates
     async function ok(val) {
       for (const field in val) {
         const obj = val[field]
-        const checks = get(field)
+        const checks = get(field, state)
         if (checks && (await validate(obj, checks))) {
           return false
         }
@@ -130,7 +165,7 @@ module.exports = function (opt = {}) {
         const leaf = branch[node]
         let val = expand(leaf, state, opt)
 
-        let [key, ext, id] = util.split(node)
+        let [key, ext, id] = split(node)
         if (ext) {
           const fn = opt.ext[ext]
           if (typeof fn == 'function') {
@@ -141,17 +176,16 @@ module.exports = function (opt = {}) {
               branch,
               node,
               leaf,
+              set,
+              get,
               val,
               key,
               id,
               run,
-              set,
-              get,
               ok,
               opt,
               params,
               expand,
-              util,
               load
             }
             val = await fn(args)
@@ -159,7 +193,7 @@ module.exports = function (opt = {}) {
         }
 
         if (typeof val != 'undefined' && key[0] == '=') {
-          set(key, val)
+          set(key, val, state)
         }
       }
     }
