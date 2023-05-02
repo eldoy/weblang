@@ -256,7 +256,7 @@ You can prefill the state with your own variables:
 
 ```js
 const req = { pathname: '/hello' }
-const run = await weblang.init(code, {
+const state = await weblang.init(code, {
   vars: { req }
 })
 ```
@@ -290,7 +290,7 @@ Currently there are no built in pipes.
 You can add your own pipes or replace the existing ones using the _pipes_ option:
 ```js
 // Add a pipe named 'hello'
-const run = await weblang.init(code, {
+const state = await weblang.init(code, {
   pipes: {
     hello: function(str) {
       if (typeof str != 'string') return str
