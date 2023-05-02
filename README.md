@@ -367,7 +367,7 @@ The renderer functions are added like with extensions, and have access to the sa
 `body` is the template body between the triple backticks, and `lang` is the name of the renderer your specified, in the previous example called `tomarkup`:
 
 ```js
-// Create a renderer supporting markdown and mustache
+// Example renderer supporting markdown and mustache
 const tomarkup = require('tomarkup')
 const formatter = tomarkup()
 
@@ -397,10 +397,10 @@ const state = await weblang.init(code, {
 })
 ```
 
-You can also create an "empty" renderer that neither uses data or a renderer function like this:
+You can also create an "empty" renderer that neither uses data nor a renderer function like this:
 
 ````yml
-# Get your user from the database
+# Return a string from the empty renderer
 @return: _ |
   ```
   404 not found!
