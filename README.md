@@ -24,7 +24,7 @@ npm i weblang
 
 ```js
 const weblang = require('weblang')
-const code = '$hello: world'
+const code = '=hello: world'
 const state = await weblang.init(code)
 ```
 
@@ -37,12 +37,12 @@ Variables have dynamic types, just as with YAML. All variables are global, there
 Functions are added through _extensions_. Even the core functionality can be overridden, Weblang is meant to be extended.
 
 
-### Get and Set variables
+### Set and Get variables
 
 Variables are stored in `state.vars`:
 
-* Getting a variable starts with `$`
 * Setting a variable starts with `=`
+* Getting a variable starts with `$`
 
 ```yml
 # Set string variable
