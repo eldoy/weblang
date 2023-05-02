@@ -331,7 +331,7 @@ function db({
 }) {
 
   // Example use of set
-  set('$internal', 'hello')
+  set('=internal', 'hello')
 
   // Whatever you return will be in your setter
   return { id: '1' }
@@ -398,6 +398,16 @@ const state = await weblang.init(code, {
   renderers: { tomarkup }
 })
 ```
+
+You can also create an "empty" renderer that neither uses data or a renderer function like this:
+
+````yml
+# Get your user from the database
+@return: _ |
+  ```
+  404 not found!
+  ```
+````
 
 ### License
 
