@@ -31,15 +31,6 @@ function load(code) {
   return yaml.load(code, { json: true })
 }
 
-// Get state value
-function get(val, state) {
-  if (val[0] == '$') {
-    const name = val.slice(1)
-    val = val[1] == '$' ? name : _.get(state.vars, name)
-  }
-  return val
-}
-
 // Set state value
 function set(key, val, state) {
   if (key[0] == '=') key = key.slice(1)
@@ -48,6 +39,15 @@ function set(key, val, state) {
     _.set(state.vars, k, dotted[k])
   }
   state.vars = clean(state.vars)
+}
+
+// Get state value
+function get(val, state) {
+  if (val[0] == '$') {
+    const name = val.slice(1)
+    val = val[1] == '$' ? name : _.get(state.vars, name)
+  }
+  return val
 }
 
 // Check if object validates
@@ -218,8 +218,8 @@ async function init(code, opt = {}) {
 
 module.exports = {
   load,
-  get,
   set,
+  get,
   ok,
   split,
   renderer,
