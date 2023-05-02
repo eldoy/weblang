@@ -36,7 +36,6 @@ Variables have dynamic types, just as with YAML. All variables are global, there
 
 Functions are added through _extensions_. Even the core functionality can be overridden, Weblang is meant to be extended.
 
-
 ### Set and Get variables
 
 Variables are stored in `state.vars`:
@@ -287,7 +286,7 @@ Currently there are no built in pipes.
 @return: hello | join delimiter=+ max=5
 ```
 
-You can add your own pipes or replace the existing ones using the _pipes_ option:
+You can add your own pipes, or replace the built in ones, using the _pipes_ option:
 ```js
 // Add a pipe named 'hello'
 const state = await weblang.init(code, {
@@ -307,7 +306,9 @@ and the use it like this:
 
 ### Extensions
 
-Weblang can (and should) be extended with your own commands. Define an extension function like this:
+Weblang can (and should) be extended with your own commands.
+
+Define an extension function like this:
 
 ```js
 // Extension function called db
