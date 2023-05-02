@@ -266,8 +266,6 @@ Variables can be run through _pipes_, which are functions that transform a value
 
 If the pipe does not exist, it is ignored.
 
-Currently there are no built in pipes.
-
 ```yml
 # Use pipes with string
 =hello: hello | upcase
@@ -283,7 +281,7 @@ Currently there are no built in pipes.
 @return: hello | upcase | downcase | capitalize
 
 # Pipe parameters
-@return: hello | join delimiter=+ max=5
+@return: list | join delimiter=+ max=5
 ```
 
 You can add your own pipes, or replace the built in ones, using the _pipes_ option:
@@ -298,7 +296,7 @@ const state = await weblang.init(code, {
   }
 })
 ```
-and the use it like this:
+and then use it like this:
 
 ```yml
 @return: world | hello
