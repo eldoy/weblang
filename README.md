@@ -310,7 +310,7 @@ and the use it like this:
 Weblang can (and should) be extended with your own commands. Define an extension function like this:
 
 ```js
-// Function called db
+// Extension function called db
 function db({
   state,    // the runner's state with vars and return
   code,     // the actual code sent to weblang, untouched
