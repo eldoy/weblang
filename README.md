@@ -25,7 +25,7 @@ npm i weblang
 ```js
 const weblang = require('weblang')
 const code = '=hello: world'
-const state = await weblang.init(code)
+const state = await weblang.init().run(code)
 ```
 
 ### How it works
@@ -255,9 +255,9 @@ You can prefill the state with your own variables:
 
 ```js
 const req = { pathname: '/hello' }
-const state = await weblang.init(code, {
-  vars: { req }
-})
+const state = await weblang
+  .init({ vars: { req }})
+  .run(code)
 ```
 
 ### Pipes
@@ -287,14 +287,16 @@ If the pipe does not exist, it is ignored.
 You can add your own pipes, or replace the built in ones, using the _pipes_ option:
 ```js
 // Add a pipe named 'hello'
-const state = await weblang.init(code, {
-  pipes: {
-    hello: function(str) {
-      if (typeof str != 'string') return str
-      return 'hello ' + str
+const state = await weblang
+  .init({
+    pipes: {
+      hello: function(str) {
+        if (typeof str != 'string') return str
+        return 'hello ' + str
+      }
     }
-  }
-})
+  })
+  .run(code)
 ```
 and then use it like this:
 
@@ -345,9 +347,7 @@ var code = '@db: user/create'
 
 then run the code like this, while also adding the extension:
 ```js
-const state = await weblang.init(code, {
-  ext: { db }
-})
+const state = await weblang.init({ ext: { db } }).run(code)
 ```
 
 To set the result of the function, use the _extension variable setter syntax_:
@@ -392,9 +392,9 @@ Renderer functions work very nicely with the built in `@return` extension:
 
 Add a renderer function like this:
 ```js
-const state = await weblang.init(code, {
-  renderers: { tomarkup }
-})
+const state = await weblang
+  .init({ renderers: { tomarkup }})
+  .run(code)
 ```
 
 You can also create an "empty" renderer that neither uses data nor a renderer function like this:

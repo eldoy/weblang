@@ -152,21 +152,7 @@ async function expand(obj = {}, state = {}, config = {}, args = {}) {
   return wasString ? obj[0] : obj
 }
 
-// Init weblang runner
-async function init(code, config = {}) {
-  config.pipes = { ...pipes, ...config.pipes }
-  config.ext = { ...ext, ...config.ext }
-  config.renderers = { ...renderers, ...config.renderers }
-
-  const state = { vars: {} }
-
-  // Add custom vars
-  if (config.vars) {
-    for (const name in config.vars) {
-      state.vars[name] = config.vars[name]
-    }
-  }
-
+async function execute(code, config, state) {
   const syntax = compile(code)
 
   async function run(branch) {
@@ -214,6 +200,28 @@ async function init(code, config = {}) {
   await run(syntax)
 
   return state
+}
+
+// Init weblang runner
+function init(config = {}) {
+  config.pipes = { ...pipes, ...config.pipes }
+  config.ext = { ...ext, ...config.ext }
+  config.renderers = { ...renderers, ...config.renderers }
+
+  const state = { vars: {} }
+
+  // Add custom vars
+  if (config.vars) {
+    for (const name in config.vars) {
+      state.vars[name] = config.vars[name]
+    }
+  }
+
+  return {
+    run: function (code) {
+      return execute(code, config, state)
+    }
+  }
 }
 
 module.exports = {
