@@ -152,6 +152,7 @@ async function expand(obj = {}, state = {}, config = {}, args = {}) {
   return wasString ? obj[0] : obj
 }
 
+// Execute code
 async function execute(code, config, state) {
   const tree = compile(code)
 
