@@ -54,3 +54,19 @@ it('should support renderers with data from val', async ({ t }) => {
   }).run(code)
   t.ok(state.return == '<h1>Hi Bobby</h1>')
 })
+
+it('should return body on non-function renderers', async ({ t }) => {
+  const code = [
+    '=hello: { a: 1 }',
+    '@return: $hello |',
+    '  ```md',
+    '  Hello',
+    '  ```'
+  ].join('\n')
+
+  const state = await init({
+    renderers: { md: '' }
+  }).run(code)
+  console.log(state.return)
+  t.ok(state.return == 'Hello')
+})

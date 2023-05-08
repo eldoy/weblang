@@ -95,6 +95,8 @@ async function piper(val, pipes, state, config, args) {
         const renderer = config.renderers[lang]
         if (typeof renderer == 'function') {
           val = await renderer({ ...args, lang, body, val })
+        } else {
+          val = body
         }
       } else {
         val = body
