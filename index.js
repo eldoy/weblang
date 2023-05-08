@@ -167,7 +167,7 @@ async function init(code, config = {}) {
     }
   }
 
-  const tree = load(code)
+  const syntax = load(code)
 
   async function run(branch) {
     for (const node in branch) {
@@ -178,7 +178,7 @@ async function init(code, config = {}) {
       const args = {
         state,
         code,
-        tree,
+        syntax,
         branch,
         node,
         current,
@@ -211,7 +211,7 @@ async function init(code, config = {}) {
     }
   }
 
-  await run(tree)
+  await run(syntax)
 
   return state
 }
