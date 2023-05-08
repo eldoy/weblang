@@ -10,7 +10,7 @@ it('should extract lang and body', async ({ t }) => {
 })
 
 it('should return value if renderer not found', async ({ t }) => {
-  const state = await init([
+  const code = [
     '=hello: { a: 1 }',
     '@return: $hello |',
     '  ```',
@@ -19,12 +19,13 @@ it('should return value if renderer not found', async ({ t }) => {
     '',
     '  Bye',
     '  ```'
-  ].join('\n'))
+  ].join('\n')
+  const state = await init().run(code)
   t.ok(state.return == 'Hello\n\nBye')
 })
 
 it('should support custom renderers', async ({ t }) => {
-  const state = await init([
+  const code = [
     '=hello: { a: 1 }',
     '@return: $hello |',
     '  ```md',
@@ -33,21 +34,23 @@ it('should support custom renderers', async ({ t }) => {
     '',
     '  Bye',
     '  ```'
-  ].join('\n'), {
+  ].join('\n')
+  const state = await init({
     renderers: { md }
-  })
+  }).run(code)
   t.ok(state.return == 'markdown')
 })
 
 it('should support renderers with data from val', async ({ t }) => {
-  const state = await init([
+  const code = [
     '=user: { name: "Bobby" }',
     '@return: $user |',
     '  ```tomarkup',
     '  <h1>Hi {{name}}</h1>',
     '  ```'
-  ].join('\n'), {
+  ].join('\n')
+  const state = await init({
     renderers: { tomarkup }
-  })
+  }).run(code)
   t.ok(state.return == '<h1>Hi Bobby</h1>')
 })
