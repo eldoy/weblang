@@ -63,7 +63,7 @@ async function ok(val, state) {
 }
 
 // Extract key, name and id
-function extract(str) {
+function parse(str) {
   let id = ''
   const match = str.match(regexp.id)
   if (match) {
@@ -173,7 +173,7 @@ async function init(code, config = {}) {
     for (const node in branch) {
       if (typeof state.return != 'undefined') break
 
-      let [key, ext, id] = extract(node)
+      let [key, ext, id] = parse(node)
       let current = branch[node]
       const args = {
         state,
@@ -221,7 +221,7 @@ module.exports = {
   set,
   get,
   ok,
-  extract,
+  parse,
   renderer,
   piper,
   build,
