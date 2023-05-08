@@ -86,13 +86,13 @@ function renderer(str) {
 }
 
 // Apply pipes
-async function piper(val, pipes, state, opt, args) {
+async function piper(val, pipes, state, config, args) {
   for (const pipe of pipes) {
     const [lang, body] = renderer(pipe)
 
     if (body) {
       if (lang) {
-        const renderer = opt.renderers[lang]
+        const renderer = config.renderers[lang]
         if (typeof renderer == 'function') {
           val = await renderer({ ...args, lang, body, val })
         }
@@ -103,13 +103,13 @@ async function piper(val, pipes, state, opt, args) {
       let [name, ...options] = pipe.split(' ').map((x) => x.trim())
 
       const params = {}
-      for (const opt of options) {
-        let [key, val] = opt.split('=')
+      for (const config of options) {
+        let [key, val] = config.split('=')
         val = get(val, state)
         params[key] = val
       }
 
-      const fn = (opt.pipes || {})[name]
+      const fn = (config.pipes || {})[name]
       if (typeof fn == 'function') {
         val = await fn({ ...args, params, val })
       }
@@ -119,15 +119,15 @@ async function piper(val, pipes, state, opt, args) {
 }
 
 // Recursive builder
-async function build(obj, state, opt, args) {
+async function build(obj, state, config, args) {
   for (const key in obj) {
     if (obj[key] && typeof obj[key] == 'object') {
-      await build(obj[key], state, opt, args)
+      await build(obj[key], state, config, args)
     } else if (typeof obj[key] == 'string') {
       let [val, ...pipes] = obj[key].split('|').map((x) => x.trim())
 
       val = get(val, state)
-      val = await piper(val, pipes, state, opt, args)
+      val = await piper(val, pipes, state, config, args)
       val = transform(val)
 
       // Remove undefined
@@ -141,29 +141,29 @@ async function build(obj, state, opt, args) {
 }
 
 // Expand dot and initiate build
-async function expand(obj = {}, state = {}, opt = {}, args = {}) {
+async function expand(obj = {}, state = {}, config = {}, args = {}) {
   const wasString = typeof obj == 'string'
   if (wasString) obj = [obj]
   if (_.isPlainObject(obj)) {
     obj = undot(_.cloneDeep(obj))
   }
-  await build(obj, state, opt, args)
+  await build(obj, state, config, args)
 
   return wasString ? obj[0] : obj
 }
 
 // Init weblang runner
-async function init(code, opt = {}) {
-  opt.pipes = { ...pipes, ...opt.pipes }
-  opt.ext = { ...ext, ...opt.ext }
-  opt.renderers = { ...renderers, ...opt.renderers }
+async function init(code, config = {}) {
+  config.pipes = { ...pipes, ...config.pipes }
+  config.ext = { ...ext, ...config.ext }
+  config.renderers = { ...renderers, ...config.renderers }
 
   const state = { vars: {} }
 
   // Add custom vars
-  if (opt.vars) {
-    for (const name in opt.vars) {
-      state.vars[name] = opt.vars[name]
+  if (config.vars) {
+    for (const name in config.vars) {
+      state.vars[name] = config.vars[name]
     }
   }
 
@@ -185,7 +185,7 @@ async function init(code, opt = {}) {
         key,
         id,
         run,
-        opt,
+        config,
         expand,
         load,
         get: function (key) {
@@ -198,9 +198,9 @@ async function init(code, opt = {}) {
           return ok(val, state)
         }
       }
-      let val = await expand(current, state, opt, args)
+      let val = await expand(current, state, config, args)
 
-      const fn = opt.ext[ext]
+      const fn = config.ext[ext]
       if (typeof fn == 'function') {
         val = await fn({ ...args, val })
       }
