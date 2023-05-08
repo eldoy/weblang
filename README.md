@@ -69,6 +69,9 @@ Variables are stored in `state.vars`:
 # Set array one liner syntax
 =hello: [1, 2]
 
+# Set array index
+=hello[0]: 3
+
 # Set variable from other variable
 =hello: world
 =bye: $hello

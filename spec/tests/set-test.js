@@ -76,6 +76,16 @@ it('should set array index from other variable', async ({ t }) => {
   t.ok(state.vars.bye[0] == 'world')
 })
 
+it('should set array index inline', async ({ t }) => {
+  const code = [
+    '=hello: [1, 2, 3]',
+    '=hello[0]: 4'
+  ].join('\n')
+
+  const state = await weblang.init().run(code)
+  t.ok(state.vars.hello[0] == 4)
+})
+
 it('should set variable with object dot notation', async ({ t }) => {
   const code = [
     '=hello:',
