@@ -153,7 +153,7 @@ async function expand(obj = {}, state = {}, config = {}, args = {}) {
 }
 
 async function execute(code, config, state) {
-  const syntax = compile(code)
+  const tree = compile(code)
 
   async function run(branch) {
     for (const node in branch) {
@@ -164,7 +164,7 @@ async function execute(code, config, state) {
       const args = {
         state,
         code,
-        syntax,
+        tree,
         branch,
         node,
         current,
@@ -197,7 +197,7 @@ async function execute(code, config, state) {
     }
   }
 
-  await run(syntax)
+  await run(tree)
 
   return state
 }
