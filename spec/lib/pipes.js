@@ -1,28 +1,28 @@
 const pipes = {}
 
-pipes.upcase = function(str) {
-  if (typeof str != 'string') return str
-  return str.toUpperCase()
+pipes.upcase = function({ val }) {
+  if (typeof val != 'string') return val
+  return val.toUpperCase()
 }
 
-pipes.downcase = function(str) {
-  if (typeof str != 'string') return str
-  return str.toLowerCase()
+pipes.downcase = function({ val }) {
+  if (typeof val != 'string') return val
+  return val.toLowerCase()
 }
 
-pipes.capitalize = function(str) {
-  if (typeof str != 'string') return str
-  return str[0].toUpperCase() + str.slice(1)
+pipes.capitalize = function({ val }) {
+  if (typeof val != 'string') return val
+  return val[0].toUpperCase() + val.slice(1)
 }
 
-pipes.join = function(arr, opt = {}) {
-  if (!Array.isArray(arr)) return arr
-  opt.delimiter = opt.delimiter || ','
-  return arr.join(opt.delimiter)
+pipes.join = function({ val, params = {} }) {
+  if (!Array.isArray(val)) return val
+  params.delimiter = params.delimiter || ','
+  return val.join(params.delimiter)
 }
 
-pipes.concat = function(str, opt = {}) {
-  return str + ' ' + opt.a
+pipes.concat = function({ val, params = {} }) {
+  return val + ' ' + params.a
 }
 
 module.exports = pipes

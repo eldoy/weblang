@@ -111,7 +111,7 @@ async function piper(val, pipes, state, opt, args) {
 
       const fn = (opt.pipes || {})[name]
       if (typeof fn == 'function') {
-        val = await fn(val, params, { ...args, val })
+        val = await fn({ ...args, params, val })
       }
     }
   }
