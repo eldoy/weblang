@@ -13,7 +13,7 @@ const regexp = {
 }
 
 // Convert yaml string to javascript object
-function load(code) {
+function compile(code) {
   if (!code) return ''
   if (typeof code != 'string') return code
 
@@ -167,7 +167,7 @@ async function init(code, config = {}) {
     }
   }
 
-  const syntax = load(code)
+  const syntax = compile(code)
 
   async function run(branch) {
     for (const node in branch) {
@@ -187,7 +187,7 @@ async function init(code, config = {}) {
         run,
         config,
         expand,
-        load,
+        compile,
         get: function (key) {
           return get(key, state)
         },
@@ -217,7 +217,7 @@ async function init(code, config = {}) {
 }
 
 module.exports = {
-  load,
+  compile,
   set,
   get,
   ok,

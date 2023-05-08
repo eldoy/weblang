@@ -1,12 +1,12 @@
-const { load } = require('../../index.js')
+const { compile } = require('../../index.js')
 
-it('should load undefined code', async ({ t }) => {
-  const result = load()
+it('should compile undefined code', async ({ t }) => {
+  const result = compile()
   t.ok(result == '')
 })
 
-it('should load yaml with variable', async function({ t }) {
-  const result = load([
+it('should compile yaml with variable', async function({ t }) {
+  const result = compile([
     '=hello: world'
   ].join('\n'))
 
@@ -15,8 +15,8 @@ it('should load yaml with variable', async function({ t }) {
   t.ok(keys[0].startsWith('=hello#'))
 })
 
-it('should load yaml multiple variables', async function({ t }) {
-  const result = load([
+it('should compile yaml multiple variables', async function({ t }) {
+  const result = compile([
     '=hello: world',
     '=hello: moon'
   ].join('\n'))
@@ -27,8 +27,8 @@ it('should load yaml multiple variables', async function({ t }) {
   t.ok(keys[1].startsWith('=hello#'))
 })
 
-it('should load extension functions', async function({ t }) {
-  const result = load([
+it('should compile extension functions', async function({ t }) {
+  const result = compile([
     '@if:',
     '  name:',
     '    eq: hello',
