@@ -67,6 +67,5 @@ it('should return body on non-function renderers', async ({ t }) => {
   const state = await init({
     renderers: { md: '' }
   }).run(code)
-  console.log(state.return)
   t.ok(state.return == 'Hello')
 })
