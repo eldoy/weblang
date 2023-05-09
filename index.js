@@ -4,11 +4,9 @@ const { cuid, transform, dot, undot, clean } = require('extras')
 const { validate } = require('d8a')
 const ext = require('./lib/ext.js')
 const pipes = require('./lib/pipes.js')
-const renderers = require('./lib/renderers.js')
 
 const regexp = {
   id: /#([a-z0-9]{24})/,
-  renderer: /^```(\w+)?\s(.*)\s```$/s,
   identifier: /^\s*[=@].*?:/gm
 }
 
@@ -74,47 +72,21 @@ function parse(str) {
   return [key, ext, id]
 }
 
-// Extract lang and body from renderer pipe
-function renderer(str) {
-  if (str.startsWith('```') && str.endsWith('```')) {
-    const match = str.match(regexp.renderer)
-    if (match) {
-      return [match[1] || '', match[2] || '']
-    }
-  }
-  return []
-}
-
 // Apply pipes
 async function piper(val, pipes, state, config, args) {
   for (const pipe of pipes) {
-    const [lang, body] = renderer(pipe)
+    let [name, ...options] = pipe.split(' ').map((x) => x.trim())
 
-    if (body) {
-      if (lang) {
-        const renderer = config.renderers[lang]
-        if (typeof renderer == 'function') {
-          val = await renderer({ ...args, lang, body, val })
-        } else {
-          val = body
-        }
-      } else {
-        val = body
-      }
-    } else {
-      let [name, ...options] = pipe.split(' ').map((x) => x.trim())
+    const params = {}
+    for (const config of options) {
+      let [key, val] = config.split('=')
+      val = get(val, state)
+      params[key] = val
+    }
 
-      const params = {}
-      for (const config of options) {
-        let [key, val] = config.split('=')
-        val = get(val, state)
-        params[key] = val
-      }
-
-      const fn = (config.pipes || {})[name]
-      if (typeof fn == 'function') {
-        val = await fn({ ...args, params, val })
-      }
+    const fn = (config.pipes || {})[name]
+    if (typeof fn == 'function') {
+      val = await fn({ ...args, params, val })
     }
   }
   return val
@@ -209,7 +181,6 @@ async function execute(code, config, state) {
 function init(config = {}) {
   config.pipes = { ...pipes, ...config.pipes }
   config.ext = { ...ext, ...config.ext }
-  config.renderers = { ...renderers, ...config.renderers }
 
   const state = { vars: {} }
 
@@ -233,7 +204,6 @@ module.exports = {
   get,
   ok,
   parse,
-  renderer,
   piper,
   build,
   expand,
