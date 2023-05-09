@@ -263,50 +263,6 @@ const state = await weblang
   .run(code)
 ```
 
-### Pipes
-
-Variables can be run through _pipes_, which are functions that transform a value.
-
-If the pipe does not exist, it is ignored.
-
-```yml
-# Use pipes with string
-=hello: hello | upcase
-
-# Use pipes with variables
-=hello: hello
-=bye: $hello | upcase
-
-# Use pipes with return
-@return: hello | capitalize
-
-# Multiple pipes
-@return: hello | upcase | downcase | capitalize
-
-# Pipe parameters
-@return: list | join delimiter=+ max=5
-```
-
-You can add your own pipes, or replace the built in ones, using the _pipes_ option:
-```js
-// Add a pipe named 'hello'
-const state = await weblang
-  .init({
-    pipes: {
-      hello: function(str) {
-        if (typeof str != 'string') return str
-        return 'hello ' + str
-      }
-    }
-  })
-  .run(code)
-```
-and then use it like this:
-
-```yml
-@return: world | hello
-```
-
 ### Extensions
 
 Weblang can (and should) be extended with your own commands.
@@ -360,6 +316,53 @@ To set the result of the function, use the _extension variable setter syntax_:
 ```
 
 and the `result` variable will be available in `state.vars.result`.
+
+
+### Pipes
+
+Variables can be run through _pipes_, which are functions that transform a value.
+
+If the pipe does not exist, it is ignored.
+
+```yml
+# Use pipes with string
+=hello: hello | upcase
+
+# Use pipes with variables
+=hello: hello
+=bye: $hello | upcase
+
+# Use pipes with return
+@return: hello | capitalize
+
+# Multiple pipes
+@return: hello | upcase | downcase | capitalize
+
+# Pipe parameters
+@return: list | join delimiter=+ max=5
+```
+
+You can add your own pipes, or replace the built in ones, using the _pipes_ option:
+```js
+// Add a pipe named 'hello'
+const state = await weblang
+  .init({
+    pipes: {
+      hello: function({ val }) {
+        if (typeof val != 'string') return val
+        return 'hello ' + val
+      }
+    }
+  })
+  .run(code)
+```
+and then use it like this:
+
+```yml
+@return: world | hello
+```
+
+The pipes receive all the same variables as with extensions.
 
 ### License
 
