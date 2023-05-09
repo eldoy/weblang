@@ -127,8 +127,17 @@ async function expand(obj = {}, state = {}, config = {}, args = {}) {
 }
 
 // Execute code
-async function execute(code, config, state) {
+async function execute(code, config) {
   const tree = compile(code)
+
+  const state = { vars: {} }
+
+  // Add custom vars
+  if (config.vars) {
+    for (const name in config.vars) {
+      state.vars[name] = config.vars[name]
+    }
+  }
 
   async function run(branch) {
     for (const node in branch) {
@@ -182,18 +191,9 @@ function init(config = {}) {
   config.pipes = { ...pipes, ...config.pipes }
   config.ext = { ...ext, ...config.ext }
 
-  const state = { vars: {} }
-
-  // Add custom vars
-  if (config.vars) {
-    for (const name in config.vars) {
-      state.vars[name] = config.vars[name]
-    }
-  }
-
   return {
     run: function (code) {
-      return execute(code, config, state)
+      return execute(code, config)
     }
   }
 }
