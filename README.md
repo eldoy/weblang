@@ -343,7 +343,7 @@ function db({
 
 Add the function to the runner like this:
 
-Write the _code_ like this:
+Write some code like this:
 ```js
 var code = '@db: user/create'
 ```
@@ -360,55 +360,6 @@ To set the result of the function, use the _extension variable setter syntax_:
 ```
 
 and the `result` variable will be available in `state.vars.result`.
-
-### Renderers
-
-After setting up your data, you can pass them to _renderer functions_.
-
-The renderer functions are added like with extensions, and have access to the same parameters, and also the `body` and `lang` values.
-
-`body` is the template body between the triple backticks, and `lang` is the name of the renderer your specified, in the previous example called `tomarkup`:
-
-```js
-// Example renderer supporting markdown and mustache
-const tomarkup = require('tomarkup')
-const formatter = tomarkup()
-
-function tomarkup({ val, body }) {
-  const { html } = formatter(body, val)
-  return html
-}
-```
-
-Use the triple backtick syntax along with the name of the renderer you want to use.
-
-Renderer functions work very nicely with the built in `@return` extension:
-
-````yml
-# Get your user from the database
-=user@db: user/get
-@return: $user |
-  ```tomarkup
-  <h1>{{name}}</h1>
-  ```
-````
-
-Add a renderer function like this:
-```js
-const state = await weblang
-  .init({ renderers: { tomarkup }})
-  .run(code)
-```
-
-You can also create an "empty" renderer that neither uses data nor a renderer function like this:
-
-````yml
-# Return a string from the empty renderer
-@return: _ |
-  ```
-  404 not found!
-  ```
-````
 
 ### License
 
