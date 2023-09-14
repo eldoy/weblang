@@ -1,4 +1,4 @@
-const pipes = {}
+let pipes = {}
 
 pipes.upcase = function({ val }) {
   if (typeof val != 'string') return val

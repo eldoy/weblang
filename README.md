@@ -23,9 +23,9 @@ npm i weblang
 ### Usage
 
 ```js
-const weblang = require('weblang')
-const code = '=hello: world'
-const state = await weblang.init().run(code)
+let weblang = require('weblang')
+let code = '=hello: world'
+let state = await weblang.init().run(code)
 ```
 
 ### How it works
@@ -257,8 +257,8 @@ The _@return_ command sets a variable in `state.return`. Using _@return_ causes 
 You can prefill the state with your own variables:
 
 ```js
-const req = { pathname: '/hello' }
-const state = await weblang
+let req = { pathname: '/hello' }
+let state = await weblang
   .init({ vars: { req }})
   .run(code)
 ```
@@ -306,7 +306,7 @@ var code = '@db: user/create'
 
 then run the code like this, while also adding the extension:
 ```js
-const state = await weblang.init({ ext: { db } }).run(code)
+let state = await weblang.init({ ext: { db } }).run(code)
 ```
 
 To set the result of the function, use the _extension variable setter syntax_:
@@ -345,7 +345,7 @@ If the pipe does not exist, it is ignored.
 You can add your own pipes, or replace the built in ones, using the _pipes_ option:
 ```js
 // Add a pipe named 'hello'
-const state = await weblang
+let state = await weblang
   .init({
     pipes: {
       hello: function({ val }) {

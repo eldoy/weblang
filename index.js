@@ -1,6 +1,6 @@
-const ext = require('./lib/ext.js')
-const pipes = require('./lib/pipes.js')
-const execute = require('./lib/execute.js')
+let ext = require('./lib/ext.js')
+let pipes = require('./lib/pipes.js')
+let execute = require('./lib/execute.js')
 
 // Init weblang runner
 function init(config = {}) {

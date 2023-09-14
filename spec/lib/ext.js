@@ -1,4 +1,4 @@
-const ext = {}
+let ext = {}
 
 ext.db = function({ set }) {
   set('=internal', 'hello')
