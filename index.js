@@ -1,13 +1,13 @@
 const _ = require('lodash')
 const yaml = require('js-yaml')
-const { cuid, transform, dot, undot, clean } = require('extras')
+const { transform, dot, undot, clean } = require('extras')
 const { validate } = require('d8a')
 const ext = require('./lib/ext.js')
 const pipes = require('./lib/pipes.js')
+const tag = require('./lib/tag.js')
 
 const regexp = {
-  id: /#([a-z0-9]{24})/,
-  identifier: /^\s*[=@].*?:/gm
+  id: /#([a-z0-9]{24})/
 }
 
 // Convert yaml string to javascript object
@@ -20,11 +20,7 @@ function compile(code) {
 
   // Add identifier to each variable and keyword node
   // Avoids duplicate key errors when re-using keys
-  code = code.replace(regexp.identifier, (m) => {
-    const keys = m.slice(0, -1).split('.')
-    keys[0] += `#${cuid()}`
-    return keys.join('.') + ':'
-  })
+  code = tag(code)
 
   return yaml.load(code, { json: true })
 }
