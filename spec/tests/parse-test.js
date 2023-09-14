@@ -1,4 +1,4 @@
-const parse = require('../../lib/parse.js')
+let parse = require('../../lib/parse.js')
 
 it('should parse name without id', async ({ t }) => {
   let [key, ext, id] = parse('=hello')

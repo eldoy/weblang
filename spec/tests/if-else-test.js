@@ -1,19 +1,19 @@
-const weblang = require('../../index.js')
+let weblang = require('../../index.js')
 
 it('should work with value if', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello: 1',
     '@if:',
     '  $hello: 1',
     '@then:',
     '  =hello: 2'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello == 2)
 })
 
 it('should work with object if', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -23,12 +23,12 @@ it('should work with object if', async ({ t }) => {
     '@then:',
     '  =hello.name: hans'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'hans')
 })
 
 it('should work with multiple if checks', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '=req:',
@@ -43,12 +43,12 @@ it('should work with multiple if checks', async ({ t }) => {
     '@then:',
     '  =hello.name: hans'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'hans')
 })
 
 it('should work with if dot notation', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -56,12 +56,12 @@ it('should work with if dot notation', async ({ t }) => {
     '@then:',
     '  =hello.name: hans'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'hans')
 })
 
 it('should work with else', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -73,12 +73,12 @@ it('should work with else', async ({ t }) => {
     '@else:',
     '  =hello.name: kari'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'kari')
 })
 
 it('should support double if', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -94,12 +94,12 @@ it('should support double if', async ({ t }) => {
     '@then:',
     '  =hello.name: sol'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'sol')
 })
 
 it('should support double if with else', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -117,13 +117,13 @@ it('should support double if with else', async ({ t }) => {
     '@else:',
     '  =hello.name: maane'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
 
   t.ok(state.vars.hello.name == 'maane')
 })
 
 it('should support nested if', async ({ t }) => {
-  const code = [
+  let code = [
     '=hello:',
     '  name: nils',
     '@if:',
@@ -139,6 +139,6 @@ it('should support nested if', async ({ t }) => {
     '  @then:',
     '    =hello.name: sol'
   ].join('\n')
-  const state = await weblang.init().run(code)
+  let state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'sol')
 })
