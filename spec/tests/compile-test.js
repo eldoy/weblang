@@ -1,4 +1,4 @@
-const { compile } = require('../../index.js')
+const compile = require('../../lib/compile.js')
 
 it('should compile undefined code', async ({ t }) => {
   const result = compile()
