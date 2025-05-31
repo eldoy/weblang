@@ -1,13 +1,9 @@
 var weblang = require('../../index.js')
 
 it('should work with value if', async ({ t }) => {
-  var code = [
-    '=hello: 1',
-    '@if:',
-    '  $hello: 1',
-    '@then:',
-    '  =hello: 2'
-  ].join('\n')
+  var code = ['=hello: 1', '@if:', '  $hello: 1', '@then:', '  =hello: 2'].join(
+    '\n'
+  )
   var state = await weblang.init().run(code)
   t.ok(state.vars.hello == 2)
 })
