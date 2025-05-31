@@ -1,4 +1,4 @@
-let ext = {}
+var ext = {}
 
 ext.db = function({ set }) {
   set('=internal', 'hello')

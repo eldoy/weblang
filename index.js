@@ -1,6 +1,6 @@
-let ext = require('./lib/ext.js')
-let pipes = require('./lib/pipes.js')
-let execute = require('./lib/execute.js')
+var ext = require('./lib/ext.js')
+var pipes = require('./lib/pipes.js')
+var execute = require('./lib/execute.js')
 
 // Init weblang runner
 function init(config = {}) {
