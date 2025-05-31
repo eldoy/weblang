@@ -5,21 +5,16 @@ it('should compile undefined code', async ({ t }) => {
   t.ok(result == '')
 })
 
-it('should compile yaml with variable', async function({ t }) {
-  var result = compile([
-    '=hello: world'
-  ].join('\n'))
+it('should compile yaml with variable', async function ({ t }) {
+  var result = compile(['=hello: world'].join('\n'))
 
   var keys = Object.keys(result)
   t.ok(keys.length == 1)
   t.ok(keys[0].startsWith('=hello#'))
 })
 
-it('should compile yaml multiple variables', async function({ t }) {
-  var result = compile([
-    '=hello: world',
-    '=hello: moon'
-  ].join('\n'))
+it('should compile yaml multiple variables', async function ({ t }) {
+  var result = compile(['=hello: world', '=hello: moon'].join('\n'))
 
   var keys = Object.keys(result)
   t.ok(keys.length == 2)
@@ -27,16 +22,18 @@ it('should compile yaml multiple variables', async function({ t }) {
   t.ok(keys[1].startsWith('=hello#'))
 })
 
-it('should compile extension functions', async function({ t }) {
-  var result = compile([
-    '@if:',
-    '  name:',
-    '    eq: hello',
-    '@then:',
-    '  =hello: moon',
-    '@else:',
-    '  =hello: sun'
-  ].join('\n'))
+it('should compile extension functions', async function ({ t }) {
+  var result = compile(
+    [
+      '@if:',
+      '  name:',
+      '    eq: hello',
+      '@then:',
+      '  =hello: moon',
+      '@else:',
+      '  =hello: sun'
+    ].join('\n')
+  )
 
   var keys = Object.keys(result)
   t.ok(keys.length == 3)

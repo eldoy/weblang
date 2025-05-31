@@ -2,18 +2,16 @@ var weblang = require('../../index.js')
 
 it('should support custom vars', async ({ t }) => {
   var req = { pathname: '/hello' }
-  var code = [
-    '=req.pathname: /bye',
-    '@return: $req.pathname'
-  ].join('\n')
-  var state = await weblang.init({
-    vars: { req }
-  }).run(code)
+  var code = ['=req.pathname: /bye', '@return: $req.pathname'].join('\n')
+  var state = await weblang
+    .init({
+      vars: { req }
+    })
+    .run(code)
 
   t.ok(req.pathname == '/bye')
   t.ok(state.return == '/bye')
 })
-
 
 it('should reset vars between each run', async ({ t }) => {
   var instance = await weblang.init()
