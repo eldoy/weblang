@@ -20,14 +20,14 @@ Each HTML element is represented as a function:
 
 ### ✅ Text Content
 
-Use inline strings or `text:` explicitly:
+Use inline strings or `@text:` explicitly:
 
 ```yaml
 @p: This is inline text
 
 @button:
   type: submit
-  text: Save
+  @text: Save
 ```
 
 ---
