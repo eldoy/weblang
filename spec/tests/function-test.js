@@ -216,7 +216,7 @@ test('should assign twice:        =a,b@func?', async ({ t }) => {
   })
 })
 
-test('should assgn,return error:  =a,b@func!', async ({ t }) => {
+test('should assign,return error: =a,b@func!', async ({ t }) => {
   // Sum returns a value
   var code = ['=var1,var2@sum!:', ' a: 2', ' b: 3'].join('\n')
   var state = await weblang.init({ ext: { sum } }).run(code)
@@ -331,6 +331,55 @@ test('should assign twice,return: =result,err@func?!', async ({ t }) => {
     vars: {
       result: null,
       err: errResult(code)
+    }
+  })
+})
+
+test('should assign result:       =result@func', async ({ t }) => {
+  // Sum returns an error
+  var code = ['=result@sum:', ' a: 2', ' c: 3'].join('\n')
+  var state = await weblang.init({ ext: { sum } }).run(code)
+
+  t.deepEqual(state, {
+    vars: {
+      result: null
+    }
+  })
+
+  // Sum returns an error
+  var code = ['=result@sum?!:', ' a: 2', ' c: 3'].join('\n')
+  var state = await weblang.init({ ext: { sum } }).run(code)
+
+  t.deepEqual(state, {
+    return: sumErrResult,
+    vars: {
+      result: null,
+      err: sumErrResult
+    }
+  })
+})
+
+test('should assign one var:      =a@func', async ({ t }) => {
+  // Sum returns an error
+  var code = ['=var1@sum:', ' a: 2', ' c: 3'].join('\n')
+  var state = await weblang.init({ ext: { sum } }).run(code)
+
+  t.deepEqual(state, {
+    vars: {
+      var1: null
+    }
+  })
+
+  // Sum returns an error
+  var code = ['=var1@sum?!:', ' a: 2', ' c: 3'].join('\n')
+  var state = await weblang.init({ ext: { sum } }).run(code)
+
+  t.deepEqual(state, {
+    return: sumErrResult,
+    vars: {
+      var1: null,
+      result: null,
+      err: sumErrResult
     }
   })
 })
