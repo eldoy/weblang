@@ -106,13 +106,13 @@ it('should set to undefined if variable does not exist', async ({ t }) => {
   t.ok(typeof state.vars.bye == 'undefined')
 })
 
-it('should delete a variable', async ({ t }) => {
+it('should not delete a null variable', async ({ t }) => {
   var code = ['=hello: world', '=hello: null'].join('\n')
   var state = await weblang.init().run(code)
-  t.ok(typeof state.vars.hello == 'undefined')
+  t.ok(state.vars.hello === null)
 })
 
-it('should delete a value from object', async ({ t }) => {
+it('should not delete a null value from object', async ({ t }) => {
   var code = [
     '=hello:',
     '  name: world',
@@ -121,10 +121,10 @@ it('should delete a value from object', async ({ t }) => {
   ].join('\n')
   var state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'world')
-  t.ok(typeof state.vars.hello.email == 'undefined')
+  t.ok(state.vars.hello.email === null)
 })
 
-it('should delete a value from object', async ({ t }) => {
+it('should not delete a null value from object', async ({ t }) => {
   var code = [
     '=hello:',
     '  name: world',
@@ -133,14 +133,14 @@ it('should delete a value from object', async ({ t }) => {
   ].join('\n')
   var state = await weblang.init().run(code)
   t.ok(state.vars.hello.name == 'world')
-  t.ok(typeof state.vars.hello.email == 'undefined')
+  t.ok(state.vars.hello.email === null)
 })
 
-it('should delete an array index', async ({ t }) => {
+it('should not delete an array index null', async ({ t }) => {
   var code = ['=hello:', '  - a', '  - b', '=hello[0]: null'].join('\n')
   var state = await weblang.init().run(code)
-  t.ok(state.vars.hello.length == 1)
-  t.ok(state.vars.hello[0] == 'b')
+  t.ok(state.vars.hello.length == 2)
+  t.ok(state.vars.hello[0] == null)
 })
 
 it('should not mutate existing var', async ({ t }) => {
@@ -194,7 +194,7 @@ it('should merge objects', async ({ t }) => {
   t.ok(state.vars.translation.name == 'hello')
 })
 
-it('should reset objects', async ({ t }) => {
+it('should not reset objects', async ({ t }) => {
   var code = [
     '=translation:',
     '  data:',
@@ -204,7 +204,7 @@ it('should reset objects', async ({ t }) => {
     '    a: null'
   ].join('\n')
   var state = await weblang.init().run(code)
-  t.ok(state.vars.translation.data.a === undefined)
+  t.ok(state.vars.translation.data.a === null)
 })
 
 it('should reset objects deeply', async ({ t }) => {
