@@ -1,3 +1,5 @@
+var { parse } = require('himalaya')
+
 var ext = {}
 
 ext.db = function ({ set }) {
@@ -18,6 +20,17 @@ ext.sum = function ({ get, current }) {
 
 ext.log = function ({ get, current }) {
   console.log(get(current))
+}
+
+ext.div = function ({ get, set, current }) {
+  var content = ''
+  var input = get(current)
+
+  if (typeof input === 'string') content = input
+  var htmlContent = `<div>${content}</div>`
+
+  var contentParsed = parse(htmlContent)
+  set('tags', contentParsed)
 }
 
 module.exports = ext
