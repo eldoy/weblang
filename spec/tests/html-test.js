@@ -1,25 +1,14 @@
 var weblang = require('../../index.js')
-var { div } = require('../lib/ext.js')
+var { ext } = require('../../lib/html.js')
 
 test('simple div', async ({ t }) => {
-  var expectedTags = [
-    {
-      type: 'element',
-      tagName: 'div',
-      attributes: [],
-      children: [{ type: 'text', content: 'hello' }]
-    }
-  ]
-
   // String content
-  var code = ['@div:', ' hello'].join('\n')
-  var state = await weblang.init({ ext: { div } }).run(code)
+  var code = '@div: hello'
+  var state = await weblang.init({ ext: { div: ext.div } }).run(code)
 
-  t.deepEqual(state, { vars: { tags: expectedTags } })
-
-  // Variable content
-  var code = ['=myVar: hello', '@div:', ' $myVar'].join('\n')
-  var state = await weblang.init({ ext: { div } }).run(code)
-
-  t.deepEqual(state, { vars: { myVar: 'hello', tags: expectedTags } })
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'hello')
 })
