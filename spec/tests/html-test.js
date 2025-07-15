@@ -1,10 +1,10 @@
 var weblang = require('../../index.js')
-var { ext } = require('../../lib/html.js')
+var { div } = require('../../lib/html.js')
 
 test('simple div', async ({ t }) => {
   // String content
   var code = '@div: hello'
-  var state = await weblang.init({ ext: { div: ext.div } }).run(code)
+  var state = await weblang.init({ ext: { div } }).run(code)
 
   t.equal(state.vars.tags[0].type, 'element')
   t.equal(state.vars.tags[0].tagName, 'div')
