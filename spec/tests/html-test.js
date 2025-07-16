@@ -1,5 +1,5 @@
 var weblang = require('../../index.js')
-var { div } = require('../../lib/html.js')
+var { div, p } = require('../../lib/html.js')
 
 test('simple div', async ({ t }) => {
   var code = '@div: hello'
@@ -191,4 +191,15 @@ test('nested obj with attributes', async ({ t }) => {
   t.equal(state.vars.tags[0].children[1].attributes.length, 1)
   t.equal(state.vars.tags[0].children[1].attributes[0].key, 'class')
   t.equal(state.vars.tags[0].children[1].attributes[0].value, 'a')
+})
+
+test('simple paragraph', async ({ t }) => {
+  var code = '@p: hello'
+  var state = await weblang.init({ ext: { p } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'p')
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'hello')
 })
