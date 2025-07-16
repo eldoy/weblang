@@ -203,3 +203,37 @@ test('simple paragraph', async ({ t }) => {
   t.equal(state.vars.tags[0].children[0].type, 'text')
   t.equal(state.vars.tags[0].children[0].content, 'hello')
 })
+
+test('simple div, paragraph', async ({ t }) => {
+  var code = ['@div: hello', '@p: bye'].join('\n')
+  var state = await weblang.init({ ext: { div, p } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'hello')
+
+  t.equal(state.vars.tags[1].type, 'element')
+  t.equal(state.vars.tags[1].tagName, 'p')
+  t.equal(state.vars.tags[1].children.length, 1)
+  t.equal(state.vars.tags[1].children[0].type, 'text')
+  t.equal(state.vars.tags[1].children[0].content, 'bye')
+})
+
+test('nested div, paragraph', async ({ t }) => {
+  var code = ['@div:', ' text: hello', ' @p: bye'].join('\n')
+  var state = await weblang.init({ ext: { div, p } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].children.length, 2)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'hello')
+
+  t.equal(state.vars.tags[0].children[1].type, 'element')
+  t.equal(state.vars.tags[0].children[1].tagName, 'p')
+  t.equal(state.vars.tags[0].children[1].children.length, 1)
+  t.equal(state.vars.tags[0].children[1].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[1].children[0].content, 'bye')
+})
