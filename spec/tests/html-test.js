@@ -65,3 +65,47 @@ test('simple nested', async ({ t }) => {
   t.equal(state.vars.tags[0].children[0].children[0].type, 'text')
   t.equal(state.vars.tags[0].children[0].children[0].content, 'hello')
 })
+
+test('empty object', async ({ t }) => {
+  var code = '@div: {}'
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 0)
+})
+
+test('null value', async ({ t }) => {
+  var code = '@div: null'
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 0)
+})
+
+test('number value', async ({ t }) => {
+  var code = '@div: 5'
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 5)
+})
+
+test('boolean value', async ({ t }) => {
+  var code = '@div: true'
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, true)
+})
