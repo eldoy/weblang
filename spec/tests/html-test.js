@@ -109,3 +109,27 @@ test('boolean value', async ({ t }) => {
   t.equal(state.vars.tags[0].children[0].type, 'text')
   t.equal(state.vars.tags[0].children[0].content, true)
 })
+
+test('variable value', async ({ t }) => {
+  var code = ['=hello: world', '@div: $hello'].join('\n')
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'world')
+})
+
+test('variable text value', async ({ t }) => {
+  var code = ['=hello: world', '@div:', ' text: $hello'].join('\n')
+  var state = await weblang.init({ ext: { div } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].attributes.length, 0)
+  t.equal(state.vars.tags[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[0].content, 'world')
+})
