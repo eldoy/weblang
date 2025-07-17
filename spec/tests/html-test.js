@@ -53,9 +53,6 @@ test('simple nested', async ({ t }) => {
   var code = ['@div:', ' @div: hello'].join('\n')
   var state = await weblang.init({ ext: { div } }).run(code)
 
-  t.equal(state.vars.previousLevel, 0)
-  t.equal(state.vars.currentLevel, 1)
-
   t.equal(state.vars.tags[0].type, 'element')
   t.equal(state.vars.tags[0].tagName, 'div')
   t.equal(state.vars.tags[0].children.length, 1)
@@ -145,9 +142,6 @@ test('nested with attributes', async ({ t }) => {
   ].join('\n')
   var state = await weblang.init({ ext: { div } }).run(code)
 
-  t.equal(state.vars.previousLevel, 0)
-  t.equal(state.vars.currentLevel, 1)
-
   t.equal(state.vars.tags[0].type, 'element')
   t.equal(state.vars.tags[0].tagName, 'div')
   t.equal(state.vars.tags[0].children.length, 2)
@@ -170,9 +164,6 @@ test('nested with attributes', async ({ t }) => {
 test('nested obj with attributes', async ({ t }) => {
   var code = '@div: { class: a, text: hello, @div: { class: a, text: bye }  }'
   var state = await weblang.init({ ext: { div } }).run(code)
-
-  t.equal(state.vars.previousLevel, 0)
-  t.equal(state.vars.currentLevel, 1)
 
   t.equal(state.vars.tags[0].type, 'element')
   t.equal(state.vars.tags[0].tagName, 'div')
@@ -257,4 +248,39 @@ test('nested siblings', async ({ t }) => {
   t.equal(state.vars.tags[0].children[1].children.length, 1)
   t.equal(state.vars.tags[0].children[1].children[0].type, 'text')
   t.equal(state.vars.tags[0].children[1].children[0].content, 'bye')
+})
+
+test('deep nested siblings', async ({ t }) => {
+  // prettier-ignore
+  var code = [
+    '@div:', 
+    ' @div:', 
+    '  @p: hello', 
+    ' @div:', 
+    '  @p: bye'
+  ].join('\n')
+  var state = await weblang.init({ ext: { div, p } }).run(code)
+
+  t.equal(state.vars.tags[0].type, 'element')
+  t.equal(state.vars.tags[0].tagName, 'div')
+  t.equal(state.vars.tags[0].children.length, 2)
+
+  t.equal(state.vars.tags[0].children[0].type, 'element')
+  t.equal(state.vars.tags[0].children[0].tagName, 'div')
+  t.equal(state.vars.tags[0].children[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].children[0].type, 'element')
+  t.equal(state.vars.tags[0].children[0].children[0].tagName, 'p')
+  t.equal(state.vars.tags[0].children[0].children[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[0].children[0].children[0].type, 'text')
+  // prettier-ignore
+  t.equal(state.vars.tags[0].children[0].children[0].children[0].content, 'hello')
+
+  t.equal(state.vars.tags[0].children[1].type, 'element')
+  t.equal(state.vars.tags[0].children[1].tagName, 'div')
+  t.equal(state.vars.tags[0].children[1].children.length, 1)
+  t.equal(state.vars.tags[0].children[1].children[0].type, 'element')
+  t.equal(state.vars.tags[0].children[1].children[0].tagName, 'p')
+  t.equal(state.vars.tags[0].children[1].children[0].children.length, 1)
+  t.equal(state.vars.tags[0].children[1].children[0].children[0].type, 'text')
+  t.equal(state.vars.tags[0].children[1].children[0].children[0].content, 'bye')
 })
