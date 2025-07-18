@@ -6,13 +6,17 @@
 
 ### Syntax
 
-- [ ] Support @try @catch @finally
+- [ ] Support @try @catch @finally?
+- [ ] Deconstruct syntax: =var1,var2: [1, 2]
 - [ ] Use \$ instead of $$?
 - [ ] Make sure interpolation works inside quoted strings
   - do not interpolate outside quoted strings?
 - [ ] Add optional "!" after functions that can throw
-- [ ] Flatten functions, dot notation not allowed on functions:
-  - @db.insert -> @insert or @db_insert
+- [ ] Allow dot notation on functions: @db.insert -> @insert or @db_insert
+- [ ] Validate syntax before execute
+- [ ] Inline function: =@func: { @func1: {}, @func2: {} }
+- [ ] Parallel processing: [@func1, @func2, @func3]
+
 
 ### Docs
 
