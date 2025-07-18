@@ -123,3 +123,11 @@ $var[0].key
 @func!: hello
 
 @func!?: hello
+
+NOTES[1]:
+
+To simplify the language, and make it more flexible, we can remove the postfix syntaxes but let extension authors use them in the function name.
+
+NOTES[2]:
+
+This should seriously be rewritting in Golang or else it will be hard to scale.
