@@ -1,47 +1,140 @@
-var compile = require('../../lib/compile.js')
+var weblang = require('../../index.js')
 
-it('should compile undefined code', async ({ t }) => {
-  var result = compile()
-  t.ok(result == '')
-})
-
-it('should compile yaml with variable', async function ({ t }) {
-  var result = compile(['=hello: world'].join('\n'))
-
-  var keys = Object.keys(result)
-  t.ok(keys.length == 1)
-  t.ok(keys[0].startsWith('=hello#'))
-})
-
-it('should compile yaml multiple variables', async function ({ t }) {
-  var result = compile(['=hello: world', '=hello: moon'].join('\n'))
-
-  var keys = Object.keys(result)
-  t.ok(keys.length == 2)
-  t.ok(keys[0].startsWith('=hello#'))
-  t.ok(keys[1].startsWith('=hello#'))
-})
-
-it('should compile extension functions', async function ({ t }) {
-  var result = compile(
-    [
-      '@if:',
-      '  name:',
-      '    eq: hello',
-      '@then:',
-      '  =hello: moon',
-      '@else:',
-      '  =hello: sun'
-    ].join('\n')
+it('should work with value if', async ({ t }) => {
+  var code = ['=hello: 1', '@if:', '  $hello: 1', '@then:', '  =hello: 2'].join(
+    '\n'
   )
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello == 2)
+})
 
-  var keys = Object.keys(result)
-  t.ok(keys.length == 3)
-  t.ok(keys[0].startsWith('@if#'))
-  t.ok(keys[1].startsWith('@then#'))
-  t.ok(keys[2].startsWith('@else#'))
+it('should work with object if', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: nils',
+    '@then:',
+    '  =hello.name: hans'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'hans')
+})
 
-  // Check deeply
-  var hello = Object.keys(result[keys[1]])
-  t.ok(hello[0].startsWith('=hello#'))
+it('should work with multiple if checks', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '=req:',
+    '  pathname: /hello',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: nils',
+    '  $req:',
+    '    pathname:',
+    '      eq: /hello',
+    '@then:',
+    '  =hello.name: hans'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'hans')
+})
+
+it('should work with if dot notation', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello.name.eq: nils',
+    '@then:',
+    '  =hello.name: hans'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'hans')
+})
+
+it('should work with else', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: hans',
+    '@then:',
+    '  =hello.name: guri',
+    '@else:',
+    '  =hello.name: kari'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'kari')
+})
+
+it('should support double if', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: nils',
+    '@then:',
+    '  =hello.name: guri',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: guri',
+    '@then:',
+    '  =hello.name: sol'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'sol')
+})
+
+it('should support double if with else', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: nils',
+    '@then:',
+    '  =hello.name: guri',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: hans',
+    '@then:',
+    '  =hello.name: sol',
+    '@else:',
+    '  =hello.name: maane'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+
+  t.ok(state.vars.hello.name == 'maane')
+})
+
+it('should support nested if', async ({ t }) => {
+  var code = [
+    '=hello:',
+    '  name: nils',
+    '@if:',
+    '  $hello:',
+    '    name:',
+    '      eq: nils',
+    '@then:',
+    '  =hello.name: guri',
+    '  @if:',
+    '    $hello:',
+    '      name:',
+    '        eq: guri',
+    '  @then:',
+    '    =hello.name: sol'
+  ].join('\n')
+  var state = await weblang.init().run(code)
+  t.ok(state.vars.hello.name == 'sol')
 })
