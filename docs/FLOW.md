@@ -51,6 +51,7 @@ This allows us to run a cached tree directly without compile.
 - [x] Create new function compile (based on execute?)
 
 - Built in extensions
+  # logic
   - if
   - elsif
   - else
@@ -58,4 +59,26 @@ This allows us to run a cached tree directly without compile.
   - each
   - delete
   - return
+
+  # files
   - import?
+  - read?
+  - write?
+  - stream?
+
+  # terminal
+  - list
+  - move
+  - copy
+
+  # converters
+  - tojson
+
+
+`then` should act as promise then to await all promise-based functions:
+
+```yaml
+@stream: https://example.com/file.json
+@then:
+  # do something
+```

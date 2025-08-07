@@ -1,6 +1,6 @@
 var compile = require('../../lib/compile.js')
 
-it('should compile', async ({ t }) => {
+test('compile', async ({ t }) => {
   // Placeholder:
   // var code = ['=hello: 1', '@if:', '  $hello: 1', '@then:', '  =hello: 2'].join(
   //   '\n'

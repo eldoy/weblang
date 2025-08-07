@@ -1,11 +1,11 @@
 var parse = require('../../lib/parse.js')
 
-it('should parse undefined code', async ({ t }) => {
+test('parse undefined code', async ({ t }) => {
   var result = parse()
   t.ok(result == '')
 })
 
-it('should parse yaml with variable', async function ({ t }) {
+test('parse yaml with variable', async function ({ t }) {
   var result = parse(['=hello: world'].join('\n'))
 
   var keys = Object.keys(result)
@@ -13,7 +13,7 @@ it('should parse yaml with variable', async function ({ t }) {
   t.ok(keys[0].startsWith('=hello#'))
 })
 
-it('should parse yaml multiple variables', async function ({ t }) {
+test('parse yaml multiple variables', async function ({ t }) {
   var result = parse(['=hello: world', '=hello: moon'].join('\n'))
 
   var keys = Object.keys(result)
@@ -22,7 +22,7 @@ it('should parse yaml multiple variables', async function ({ t }) {
   t.ok(keys[1].startsWith('=hello#'))
 })
 
-it('should parse extension functions', async function ({ t }) {
+test('parse extension functions', async function ({ t }) {
   var result = parse(
     [
       '@if:',
