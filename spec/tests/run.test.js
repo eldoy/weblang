@@ -1,20 +1,20 @@
-var compile = require('../../lib/compile.js')
+var parse = require('../../lib/parse.js')
 
-it('should compile undefined code', async ({ t }) => {
-  var result = compile()
+it('should parse undefined code', async ({ t }) => {
+  var result = parse()
   t.ok(result == '')
 })
 
-it('should compile yaml with variable', async function ({ t }) {
-  var result = compile(['=hello: world'].join('\n'))
+it('should parse yaml with variable', async function ({ t }) {
+  var result = parse(['=hello: world'].join('\n'))
 
   var keys = Object.keys(result)
   t.ok(keys.length == 1)
   t.ok(keys[0].startsWith('=hello#'))
 })
 
-it('should compile yaml multiple variables', async function ({ t }) {
-  var result = compile(['=hello: world', '=hello: moon'].join('\n'))
+it('should parse yaml multiple variables', async function ({ t }) {
+  var result = parse(['=hello: world', '=hello: moon'].join('\n'))
 
   var keys = Object.keys(result)
   t.ok(keys.length == 2)
@@ -22,8 +22,8 @@ it('should compile yaml multiple variables', async function ({ t }) {
   t.ok(keys[1].startsWith('=hello#'))
 })
 
-it('should compile extension functions', async function ({ t }) {
-  var result = compile(
+it('should parse extension functions', async function ({ t }) {
+  var result = parse(
     [
       '@if:',
       '  name:',
@@ -31,8 +31,8 @@ it('should compile extension functions', async function ({ t }) {
       '@then:',
       '  =hello: moon',
       '@else:',
-      '  =hello: sun'
-    ].join('\n')
+      '  =hello: sun',
+    ].join('\n'),
   )
 
   var keys = Object.keys(result)
