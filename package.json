@@ -4,7 +4,8 @@
   "description": "Weblang low code programming language",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon -q --exec spekk"
+    "test": "spekk",
+    "test:watch": "nodemon -q --exec spekk"
   },
   "repository": {
     "type": "git",
