@@ -1,5 +1,11 @@
 # TODO
 
+### Rewrite
+
+- [ ] Tag - remove "-" from @ and = and add to id (a = async, s = sync)
+  - could we "group" all of the consecutive asyncs?
+- [ ] Create tree from shape
+
 ### CLI
 
 - [ ] Need a CLI that runs weblang
