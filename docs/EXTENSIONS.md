@@ -10,6 +10,7 @@ Extensions look like this:
   },
   throws: 'always' // never, optional,
   assigns: 'always', // never, optional
+  thenable: 'always', // never, optional
   options: {
     name: {
       is: 'string',
