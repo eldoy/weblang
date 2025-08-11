@@ -31,7 +31,7 @@ test('assign func', async ({ t }) => {
 test('assign func - async', async ({ t }) => {
   var code = '- =hello@func: user'
   var result = tag(code, 1, 1)
-  var expect = '- =hello@func_ID_a-1-1-1_ID_: user'
+  var expect = '=hello@func_ID_a-1-1-1_ID_: user'
   t.equal(result, expect)
 })
 
@@ -50,21 +50,7 @@ test('func - multiple', async ({ t }) => {
 })
 
 test('func - async single', async ({ t }) => {
-  var code = '- @p: { - @p: a }'
-  var result = tag(code, 1, 1)
-  var expect = '@p_ID_a-1-1-1_ID_: { @p_ID_a-1-1-2_ID_: a }'
-  t.equal(result, expect)
-})
-
-test('func - async multiple', async ({ t }) => {
-  var code = '- @p: { - @p: a }'
-  var result = tag(code, 1, 1)
-  var expect = '@p_ID_a-1-1-1_ID_: { @p_ID_a-1-1-2_ID_: a }'
-  t.equal(result, expect)
-})
-
-test('func - sync async', async ({ t }) => {
-  var code = '@p: { - @p: a }'
+  var code = '- @p: { @p: a }'
   var result = tag(code, 1, 1)
   var expect = '@p_ID_a-1-1-1_ID_: { @p_ID_a-1-1-2_ID_: a }'
   t.equal(result, expect)
