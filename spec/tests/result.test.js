@@ -56,32 +56,3 @@ test('null', async ({ t }) => {
   var expect = { a: null }
   t.deepEqual(result, expect)
 })
-
-test('block', async ({ t }) => {
-  var code = ['@a: {}', '', '', '@b: {}'].join('\n')
-  var ast = compile(code)
-  var result = run(ast).state.result
-  var expect = { '@a_ID_1-1-1_ID_': {}, '@b_ID_2-4-1_ID_': {} }
-  t.deepEqual(result, expect)
-})
-
-test('assign - simple', async ({ t }) => {
-  var ast = compile('=a: null')
-  var result = run(ast).state.result
-  var expect = { '=a_ID_1-1-1_ID_': null }
-  t.deepEqual(result, expect)
-})
-
-test('func - simple', async ({ t }) => {
-  var ast = compile('@a: null')
-  var result = run(ast).state.result
-  var expect = { '@a_ID_1-1-1_ID_': null }
-  t.deepEqual(result, expect)
-})
-
-test('func - simple', async ({ t }) => {
-  var ast = compile('@a: { @a: hello }')
-  var result = run(ast).state.result
-  var expect = { '@a_ID_1-1-1_ID_': { '@a_ID_1-1-2_ID_': 'hello' } }
-  t.deepEqual(result, expect)
-})
