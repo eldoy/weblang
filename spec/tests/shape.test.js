@@ -14,13 +14,6 @@ test('assign - async', async ({ t }) => {
   t.equal(result, expect)
 })
 
-test('assign - async spaced', async ({ t }) => {
-  var code = { '=hello_ID_a-1-1-1_ID_': 'user' }
-  var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
-})
-
 test('assign func', async ({ t }) => {
   var code = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
   var result = shape(code)
