@@ -1,13 +1,7 @@
 var run = require('../../lib/run.js')
 
-test('undefined', async ({ t }) => {
-  var result = run()
-  var expect = {}
-  t.deepEqual(result, expect)
-})
-
 test('empty', async ({ t }) => {
-  var result = run('')
+  var result = run({})
   var expect = {}
   t.deepEqual(result, expect)
 })

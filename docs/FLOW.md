@@ -44,7 +44,7 @@ This allows us to run a cached tree directly without compile.
 - Map each function to a test
 
 - `run` mostly just runs extensions
-- `run.test.js` is like `render.test.js`, the general integration tests
+- `result.test.js` is like `render.test.js`, the general integration tests
 
 - [x] Rename parse to extract
 - [x] Rename compile to parse

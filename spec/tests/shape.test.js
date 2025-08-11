@@ -15,13 +15,15 @@ test('assign', async ({ t }) => {
   t.equal(result.concurrency, 'sync')
   t.equal(result.type, 'assign')
   t.equal(result.parent, null)
-  t.equal(result.index, 0)
   t.equal(result.next, null)
   t.equal(result.previous, null)
   t.deepEqual(result.children, [])
   t.deepEqual(result.attributes, [])
-  t.deepEqual(result.siblings, [])
   t.deepEqual(result.group, [])
+
+  t.equal(result.index, 0)
+  t.equal(result.siblings.length, 1)
+  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('assign - async', async ({ t }) => {
