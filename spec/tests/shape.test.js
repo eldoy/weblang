@@ -29,22 +29,79 @@ test('assign', async ({ t }) => {
 test('assign - async', async ({ t }) => {
   var code = { '=hello_ID_a-1-1-1_ID_': 'user' }
   var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+
+  t.equal(result.id, 'a-1-1-1')
+  t.equal(result.key, 'hello')
+  t.equal(result.value, 'user')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'async')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.children, [])
+  t.deepEqual(result.attributes, [])
+  t.deepEqual(result.group, [])
+
+  t.equal(result.index, 0)
+  t.equal(result.siblings.length, 1)
+  t.equal(result.siblings[0].id, 'a-1-1-1')
 })
 
 test('assign func', async ({ t }) => {
   var code = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
   var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+
+  t.equal(result.id, 's-1-1-1')
+  t.equal(result.key, 'hello@func')
+  t.equal(result.value, 'user')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'sync')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.children, [])
+  t.deepEqual(result.attributes, [])
+  t.deepEqual(result.group, [])
+
+  t.equal(result.index, 0)
+  t.equal(result.siblings.length, 1)
+  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('assign func - async', async ({ t }) => {
   var code = { '=hello@func_ID_a-1-1-1_ID_': 'user' }
   var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+
+  t.equal(result.id, 'a-1-1-1')
+  t.equal(result.key, 'hello@func')
+  t.equal(result.value, 'user')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'async')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.children, [])
+  t.deepEqual(result.attributes, [])
+  t.deepEqual(result.group, [])
+
+  t.equal(result.index, 0)
+  t.equal(result.siblings.length, 1)
+  t.equal(result.siblings[0].id, 'a-1-1-1')
 })
 
 test('func - one', async ({ t }) => {
