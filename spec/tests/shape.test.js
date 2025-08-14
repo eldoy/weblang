@@ -107,8 +107,28 @@ test('assign func - async', async ({ t }) => {
 test('func - one', async ({ t }) => {
   var code = { '@db_ID_s-1-1-1_ID_': {} }
   var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+
+  t.equal(result.id, 's-1-1-1')
+  t.equal(result.key, '@db')
+  t.equal(typeof result.value, 'object')
+  t.equal(Object.keys(result.value).length, 0)
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'sync')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.children, [])
+  t.deepEqual(result.attributes, [])
+  t.deepEqual(result.group, [])
+
+  t.equal(result.index, 0)
+  t.equal(result.siblings.length, 1)
+  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('func - multiple', async ({ t }) => {
