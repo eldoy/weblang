@@ -1,8 +1,8 @@
 var shape = require('../../lib/shape.js')
 
 test('assign', async ({ t }) => {
-  var code = { '=hello_ID_s-1-1-1_ID_': 'user' }
-  var result = shape(code)
+  var irt = { hello: 'world', '=hello_ID_s-1-1-1_ID_': 'user' }
+  var result = shape(irt)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, 'hello')
@@ -27,8 +27,8 @@ test('assign', async ({ t }) => {
 })
 
 test('assign - async', async ({ t }) => {
-  var code = { '=hello_ID_a-1-1-1_ID_': 'user' }
-  var result = shape(code)
+  var irt = { '=hello_ID_a-1-1-1_ID_': 'user' }
+  var result = shape(irt)
 
   t.equal(result.id, 'a-1-1-1')
   t.equal(result.key, 'hello')
@@ -53,8 +53,8 @@ test('assign - async', async ({ t }) => {
 })
 
 test('assign func', async ({ t }) => {
-  var code = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
-  var result = shape(code)
+  var irt = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
+  var result = shape(irt)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, 'hello@func')
@@ -79,8 +79,8 @@ test('assign func', async ({ t }) => {
 })
 
 test('assign func - async', async ({ t }) => {
-  var code = { '=hello@func_ID_a-1-1-1_ID_': 'user' }
-  var result = shape(code)
+  var irt = { '=hello@func_ID_a-1-1-1_ID_': 'user' }
+  var result = shape(irt)
 
   t.equal(result.id, 'a-1-1-1')
   t.equal(result.key, 'hello@func')
@@ -105,8 +105,8 @@ test('assign func - async', async ({ t }) => {
 })
 
 test('func - one', async ({ t }) => {
-  var code = { '@db_ID_s-1-1-1_ID_': {} }
-  var result = shape(code)
+  var irt = { '@db_ID_s-1-1-1_ID_': {} }
+  var result = shape(irt)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, '@db')
@@ -132,15 +132,69 @@ test('func - one', async ({ t }) => {
 })
 
 test('func - multiple', async ({ t }) => {
-  var code = { '@p_ID_s-1-1-1_ID_': { '@p_ID_s-1-1-2_ID_': 'a' } }
-  var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+  var irt = { '@p_ID_s-1-1-1_ID_': { '@span_ID_s-1-1-2_ID_': 'a' } }
+  var result = shape(irt)
+
+  t.equal(result.id, 's-1-1-1')
+  t.equal(result.key, '@p')
+  t.equal(result.value, '')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'sync')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+
+  t.equal(result.children[0].key, '@span')
+  t.equal(result.children[0].id, 's-1-1-2')
+  t.equal(result.children[0].value, 'a')
+  t.equal(result.children[0].level, 1)
+  t.equal(result.children[0].block, 1)
+  t.equal(result.children[0].line, 1)
+  t.equal(result.children[0].occurrence, 2)
+  t.equal(result.children[0].path, '')
+  t.equal(result.children[0].concurrency, 'sync')
+  t.equal(result.children[0].type, 'assign')
+  t.equal(result.children[0].parent.id, 's-1-1-1')
+  t.equal(result.children[0].parent.key, '@p')
+  t.equal(result.children[0].next, null)
+  t.equal(result.children[0].previous, null)
 })
 
 test('func - async single', async ({ t }) => {
-  var code = { '@p_ID_a-1-1-1_ID_': { '@p_ID_a-1-1-2_ID_': 'a' } }
-  var result = shape(code)
-  var expect = {}
-  t.equal(result, expect)
+  var irt = { '@p_ID_a-1-1-1_ID_': { '@span_ID_a-1-1-2_ID_': 'a' } }
+  var result = shape(irt)
+
+  t.equal(result.id, 'a-1-1-1')
+  t.equal(result.key, '@p')
+  t.equal(result.value, '')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.occurrence, 1)
+  t.equal(result.path, '')
+  t.equal(result.concurrency, 'async')
+  t.equal(result.type, 'assign')
+  t.equal(result.parent, null)
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+
+  t.equal(result.children[0].key, '@span')
+  t.equal(result.children[0].id, 'a-1-1-2')
+  t.equal(result.children[0].value, 'a')
+  t.equal(result.children[0].level, 1)
+  t.equal(result.children[0].block, 1)
+  t.equal(result.children[0].line, 1)
+  t.equal(result.children[0].occurrence, 2)
+  t.equal(result.children[0].path, '')
+  t.equal(result.children[0].concurrency, 'async')
+  t.equal(result.children[0].type, 'assign')
+  t.equal(result.children[0].parent.id, 'a-1-1-1')
+  t.equal(result.children[0].parent.key, '@p')
+  t.equal(result.children[0].next, null)
+  t.equal(result.children[0].previous, null)
 })
