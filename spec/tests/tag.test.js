@@ -52,6 +52,6 @@ test('func - multiple', async ({ t }) => {
 test('func - async single', async ({ t }) => {
   var code = '- @p: { @p: a }'
   var result = tag(code, 1, 1)
-  var expect = '@p_ID_a-1-1-1_ID_: { @p_ID_a-1-1-2_ID_: a }'
+  var expect = '@p_ID_a-1-1-1_ID_: { @p_ID_s-1-1-2_ID_: a }'
   t.equal(result, expect)
 })
