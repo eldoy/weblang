@@ -16,7 +16,7 @@ This will be used to execute your interpreted function, but can also be stored f
         id: '1-1-1',
         block: 1,
         line: 1,
-        occurrence: 1,
+        count: 1,
         key: 'hello',
         value: {},
         level: 1,
