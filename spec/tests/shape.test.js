@@ -1,8 +1,8 @@
 var shape = require('../../lib/shape.js')
 
 test('assign', async ({ t }) => {
-  var irt = { hello: 'world', '=hello_ID_s-1-1-1_ID_': 'user' }
-  var result = shape(irt)
+  var node = { '=hello_ID_s-1-1-1_ID_': 'user' }
+  var result = shape(node)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, 'hello')
@@ -10,25 +10,15 @@ test('assign', async ({ t }) => {
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'sync')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'sync')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
   t.deepEqual(result.children, [])
-  t.deepEqual(result.attributes, [])
-  t.deepEqual(result.group, [])
-
-  t.equal(result.index, 0)
-  t.equal(result.siblings.length, 1)
-  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('assign - async', async ({ t }) => {
-  var irt = { '=hello_ID_a-1-1-1_ID_': 'user' }
-  var result = shape(irt)
+  var node = { '=hello_ID_a-1-1-1_ID_': 'user' }
+  var result = shape(node)
 
   t.equal(result.id, 'a-1-1-1')
   t.equal(result.key, 'hello')
@@ -36,25 +26,15 @@ test('assign - async', async ({ t }) => {
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'async')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'async')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
   t.deepEqual(result.children, [])
-  t.deepEqual(result.attributes, [])
-  t.deepEqual(result.group, [])
-
-  t.equal(result.index, 0)
-  t.equal(result.siblings.length, 1)
-  t.equal(result.siblings[0].id, 'a-1-1-1')
 })
 
 test('assign func', async ({ t }) => {
-  var irt = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
-  var result = shape(irt)
+  var node = { '=hello@func_ID_s-1-1-1_ID_': 'user' }
+  var result = shape(node)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, 'hello@func')
@@ -62,25 +42,15 @@ test('assign func', async ({ t }) => {
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'sync')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'sync')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
   t.deepEqual(result.children, [])
-  t.deepEqual(result.attributes, [])
-  t.deepEqual(result.group, [])
-
-  t.equal(result.index, 0)
-  t.equal(result.siblings.length, 1)
-  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('assign func - async', async ({ t }) => {
-  var irt = { '=hello@func_ID_a-1-1-1_ID_': 'user' }
-  var result = shape(irt)
+  var node = { '=hello@func_ID_a-1-1-1_ID_': 'user' }
+  var result = shape(node)
 
   t.equal(result.id, 'a-1-1-1')
   t.equal(result.key, 'hello@func')
@@ -88,113 +58,80 @@ test('assign func - async', async ({ t }) => {
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'async')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'async')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
   t.deepEqual(result.children, [])
-  t.deepEqual(result.attributes, [])
-  t.deepEqual(result.group, [])
-
-  t.equal(result.index, 0)
-  t.equal(result.siblings.length, 1)
-  t.equal(result.siblings[0].id, 'a-1-1-1')
 })
 
 test('func - one', async ({ t }) => {
-  var irt = { '@db_ID_s-1-1-1_ID_': {} }
-  var result = shape(irt)
+  var node = { '@db_ID_s-1-1-1_ID_': {} }
+  var result = shape(node)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, '@db')
-  t.equal(typeof result.value, 'object')
-  t.equal(Object.keys(result.value).length, 0)
+  t.deepEqual(result.value, {})
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'sync')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'sync')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
   t.deepEqual(result.children, [])
-  t.deepEqual(result.attributes, [])
-  t.deepEqual(result.group, [])
-
-  t.equal(result.index, 0)
-  t.equal(result.siblings.length, 1)
-  t.equal(result.siblings[0].id, 's-1-1-1')
 })
 
 test('func - multiple', async ({ t }) => {
-  var irt = { '@p_ID_s-1-1-1_ID_': { '@span_ID_s-1-1-2_ID_': 'a' } }
-  var result = shape(irt)
+  var node = { '@p_ID_s-1-1-1_ID_': { '@span_ID_s-1-1-2_ID_': 'a' } }
+  var result = shape(node)
 
   t.equal(result.id, 's-1-1-1')
   t.equal(result.key, '@p')
-  t.equal(result.value, '')
+  t.deepEqual(result.value, {})
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'sync')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'sync')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
 
-  t.equal(result.children[0].key, '@span')
-  t.equal(result.children[0].id, 's-1-1-2')
-  t.equal(result.children[0].value, 'a')
-  t.equal(result.children[0].level, 1)
-  t.equal(result.children[0].block, 1)
-  t.equal(result.children[0].line, 1)
-  t.equal(result.children[0].occurrence, 2)
-  t.equal(result.children[0].path, '')
-  t.equal(result.children[0].concurrency, 'sync')
-  t.equal(result.children[0].type, 'assign')
-  t.equal(result.children[0].parent.id, 's-1-1-1')
-  t.equal(result.children[0].parent.key, '@p')
-  t.equal(result.children[0].next, null)
-  t.equal(result.children[0].previous, null)
+  var child = result.children[0]
+
+  t.equal(child.key, '@span')
+  t.equal(child.id, 's-1-1-2')
+  t.equal(child.value, 'a')
+  t.equal(child.level, 1)
+  t.equal(child.block, 1)
+  t.equal(child.line, 1)
+  t.equal(child.count, 2)
+  t.equal(child.mode, 'sync')
+  t.equal(child.parent.id, 's-1-1-1')
+  t.equal(child.parent.key, '@p')
 })
 
 test('func - async single', async ({ t }) => {
-  var irt = { '@p_ID_a-1-1-1_ID_': { '@span_ID_a-1-1-2_ID_': 'a' } }
-  var result = shape(irt)
+  var node = { '@p_ID_a-1-1-1_ID_': { '@span_ID_a-1-1-2_ID_': 'a' } }
+  var result = shape(node)
 
   t.equal(result.id, 'a-1-1-1')
   t.equal(result.key, '@p')
-  t.equal(result.value, '')
+  t.deepEqual(result.value, {})
   t.equal(result.level, 1)
   t.equal(result.block, 1)
   t.equal(result.line, 1)
-  t.equal(result.occurrence, 1)
-  t.equal(result.path, '')
-  t.equal(result.concurrency, 'async')
-  t.equal(result.type, 'assign')
+  t.equal(result.count, 1)
+  t.equal(result.mode, 'async')
   t.equal(result.parent, null)
-  t.equal(result.next, null)
-  t.equal(result.previous, null)
 
-  t.equal(result.children[0].key, '@span')
-  t.equal(result.children[0].id, 'a-1-1-2')
-  t.equal(result.children[0].value, 'a')
-  t.equal(result.children[0].level, 1)
-  t.equal(result.children[0].block, 1)
-  t.equal(result.children[0].line, 1)
-  t.equal(result.children[0].occurrence, 2)
-  t.equal(result.children[0].path, '')
-  t.equal(result.children[0].concurrency, 'async')
-  t.equal(result.children[0].type, 'assign')
-  t.equal(result.children[0].parent.id, 'a-1-1-1')
-  t.equal(result.children[0].parent.key, '@p')
-  t.equal(result.children[0].next, null)
-  t.equal(result.children[0].previous, null)
+  var child = result.children[0]
+
+  t.equal(child.key, '@span')
+  t.equal(child.id, 'a-1-1-2')
+  t.equal(child.value, 'a')
+  t.equal(child.level, 1)
+  t.equal(child.block, 1)
+  t.equal(child.line, 1)
+  t.equal(child.count, 2)
+  t.equal(child.mode, 'async')
+  t.equal(child.parent.id, 'a-1-1-1')
+  t.equal(child.parent.key, '@p')
 })
