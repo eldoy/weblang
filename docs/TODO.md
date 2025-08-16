@@ -2,6 +2,12 @@
 
 ### Rewrite
 
+- [ ] Create a linker.js that adds the following fields to ast tree nodes:
+  next: null,
+  previous: null,
+  siblings: [],
+  index: 0,
+]
 - [ ] Tag - remove "-" from @ and = and add to id (a = async, s = sync)
   - could we "group" all of the consecutive asyncs?
 - [ ] Create tree from shape

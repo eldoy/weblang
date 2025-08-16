@@ -1,28 +1,38 @@
 var build = require('../../lib/build.js')
 
-test('correct order', async ({ t }) => {
-  var code = {
-    a: { a1: 1, a2: 2 },
-    b: { b1: { b11: 11 } },
-    c: [{ c1: 10 }, { c2: 20 }],
-    d: 3,
+test('object', ({ t }) => {
+  var irt = {
+    hello: {},
   }
+  var result = build(irt)
+  t.deepEqual(result, [])
+})
 
-  var keysVisited = []
+test('simple', ({ t }) => {
+  var irt = {
+    '@p_ID_s-1-1-1_ID_': {},
+  }
+  var result = build(irt)
+  t.equal(result[0].id, 's-1-1-1')
+})
 
-  build(code, (key) => {
-    keysVisited.push(key)
-  })
+test('multiple', ({ t }) => {
+  var irt = {
+    '@p_ID_s-1-1-1_ID_': {},
+    '@a_ID_s-1-2-1_ID_': {},
+  }
+  var result = build(irt)
+  t.equal(result[0].id, 's-1-1-1')
+  t.equal(result[1].id, 's-1-2-1')
+})
 
-  // Test expected DFS post-order:
-  t.equal(keysVisited[0], 'a1')
-  t.equal(keysVisited[1], 'a2')
-  t.equal(keysVisited[2], 'a')
-  t.equal(keysVisited[3], 'b11')
-  t.equal(keysVisited[4], 'b1')
-  t.equal(keysVisited[5], 'b')
-  t.equal(keysVisited[6], 'c1')
-  t.equal(keysVisited[7], 'c2')
-  t.equal(keysVisited[8], 'c')
-  t.equal(keysVisited[9], 'd')
+test('nested', ({ t }) => {
+  var irt = {
+    '@p_ID_s-1-1-1_ID_': {
+      '@a_ID_s-1-2-1_ID_': {},
+    },
+  }
+  var result = build(irt)
+  t.equal(result[0].id, 's-1-1-1')
+  t.equal(result[0].children[0].id, 's-1-2-1')
 })
