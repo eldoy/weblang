@@ -1,5 +1,11 @@
 var shape = require('../../lib/shape.js')
 
+test('object', async ({ t }) => {
+  var node = { hello: 'user' }
+  var result = shape(node)
+  t.equal(result, null)
+})
+
 test('assign', async ({ t }) => {
   var node = { '=hello_ID_s-1-1-1_ID_': 'user' }
   var result = shape(node)

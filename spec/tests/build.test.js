@@ -1,5 +1,13 @@
 var build = require('../../lib/build.js')
 
+test('object', ({ t }) => {
+  var irt = {
+    hello: {},
+  }
+  var result = build(irt)
+  t.deepEqual(result, [])
+})
+
 test('simple', ({ t }) => {
   var irt = {
     '@p_ID_s-1-1-1_ID_': {},
