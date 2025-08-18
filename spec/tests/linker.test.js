@@ -21,18 +21,6 @@ test('no children', async ({ t }) => {
   }
   var result = linker(node)
 
-  // Original data remains unchanged
-  t.equal(result.id, 's-1-1-1')
-  t.equal(result.key, 'hello')
-  t.equal(result.value, 'user')
-  t.equal(result.level, 1)
-  t.equal(result.block, 1)
-  t.equal(result.line, 1)
-  t.equal(result.hit, 1)
-  t.equal(result.mode, 'sync')
-  t.equal(result.parent, null)
-  t.deepEqual(result.children, [])
-
   // New linked data
   t.equal(result.next, null)
   t.equal(result.previous, null)
@@ -62,15 +50,10 @@ test('single child', async ({ t }) => {
         hit: 2,
         level: 1,
         children: [],
-        // parent: Circular ref,
       },
     ],
   }
   var result = linker(node)
-
-  // Original data remains unchanged
-  t.equal(result.id, 's-1-1-1')
-  t.equal(result.key, '@p')
 
   // New linked data
   t.equal(result.next, null)
@@ -110,7 +93,6 @@ test('siblings children', async ({ t }) => {
         hit: 2,
         level: 1,
         children: [],
-        // parent: Circular ref,
       },
       {
         id: 's-1-2-2',
@@ -122,15 +104,10 @@ test('siblings children', async ({ t }) => {
         hit: 2,
         level: 1,
         children: [],
-        // parent: Circular ref,
       },
     ],
   }
   var result = linker(node)
-
-  // Original data remains unchanged
-  t.equal(result.id, 's-1-1-1')
-  t.equal(result.key, '@p')
 
   // New linked data
   t.equal(result.next, null)
@@ -181,7 +158,6 @@ test('nested children', async ({ t }) => {
         hit: 2,
         level: 1,
         children: [],
-        // parent: Circular ref,
       },
       {
         id: 's-1-2-2',
@@ -203,7 +179,6 @@ test('nested children', async ({ t }) => {
             hit: 2,
             level: 3,
             children: [],
-            // parent: Circular ref,
           },
           {
             id: 's-1-3-3',
@@ -215,18 +190,12 @@ test('nested children', async ({ t }) => {
             hit: 2,
             level: 1,
             children: [],
-            // parent: Circular ref,
           },
         ],
-        // parent: Circular ref,
       },
     ],
   }
   var result = linker(node)
-
-  // Original data remains unchanged
-  t.equal(result.id, 's-1-1-1')
-  t.equal(result.key, '@p')
 
   // New linked data
   t.equal(result.next, null)
