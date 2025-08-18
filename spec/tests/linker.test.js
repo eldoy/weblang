@@ -1,0 +1,259 @@
+var linker = require('../../lib/linker.js')
+
+test('object', async ({ t }) => {
+  var node = null
+  var result = linker(node)
+  t.equal(result, null)
+})
+
+test('no children', async ({ t }) => {
+  var node = {
+    id: 's-1-1-1',
+    key: 'hello',
+    value: 'user',
+    mode: 'sync',
+    block: 1,
+    line: 1,
+    hit: 1,
+    level: 1,
+    parent: null,
+    children: [],
+  }
+  var result = linker(node)
+
+  // Original data remains unchanged
+  t.equal(result.id, 's-1-1-1')
+  t.equal(result.key, 'hello')
+  t.equal(result.value, 'user')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.hit, 1)
+  t.equal(result.mode, 'sync')
+  t.equal(result.parent, null)
+  t.deepEqual(result.children, [])
+
+  // New linked data
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.siblings, [])
+  t.equal(result.index, 0)
+})
+
+test('single child', async ({ t }) => {
+  var node = {
+    id: 's-1-1-1',
+    key: '@p',
+    value: {},
+    mode: 'sync',
+    block: 1,
+    line: 1,
+    hit: 1,
+    level: 1,
+    parent: null,
+    children: [
+      {
+        id: 's-1-1-2',
+        key: '@span',
+        value: 'a',
+        mode: 'sync',
+        block: 1,
+        line: 1,
+        hit: 2,
+        level: 1,
+        children: [],
+        // parent: Circular ref,
+      },
+    ],
+  }
+  var result = linker(node)
+
+  // Original data remains unchanged
+  t.equal(result.id, 's-1-1-1')
+
+  // New linked data
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.siblings, [])
+  t.equal(result.index, 0)
+
+  var child = result.children[0]
+
+  t.equal(child.next, null)
+  t.equal(child.previous, null)
+  t.deepEqual(child.siblings, result.children)
+  t.equal(child.index, 0)
+})
+
+test('siblings children', async ({ t }) => {
+  var node = {
+    id: 's-1-1-1',
+    key: '@p',
+    value: {},
+    mode: 'sync',
+    block: 1,
+    line: 1,
+    hit: 1,
+    level: 1,
+    parent: null,
+    children: [
+      {
+        id: 's-1-1-2',
+        key: '@span',
+        value: 'a',
+        mode: 'sync',
+        block: 1,
+        line: 1,
+        hit: 2,
+        level: 1,
+        children: [],
+        // parent: Circular ref,
+      },
+      {
+        id: 's-1-2-2',
+        key: '@span',
+        value: 'a',
+        mode: 'sync',
+        block: 1,
+        line: 2,
+        hit: 2,
+        level: 1,
+        children: [],
+        // parent: Circular ref,
+      },
+    ],
+  }
+  var result = linker(node)
+
+  // Original data remains unchanged
+  t.equal(result.id, 's-1-1-1')
+
+  // New linked data
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.siblings, [])
+  t.equal(result.index, 0)
+
+  var fstChild = result.children[0]
+
+  t.equal(fstChild.next.id, 's-1-2-2')
+  t.equal(fstChild.next.key, '@span')
+  t.equal(fstChild.previous, null)
+  t.deepEqual(fstChild.siblings, result.children)
+  t.equal(fstChild.index, 0)
+
+  var sndChild = result.children[1]
+
+  t.equal(sndChild.next, null)
+  t.equal(sndChild.previous.id, 's-1-1-2')
+  t.equal(sndChild.previous.key, '@span')
+  t.deepEqual(sndChild.siblings, result.children)
+  t.equal(sndChild.index, 1)
+})
+
+test('nested children', async ({ t }) => {
+  var node = {
+    id: 's-1-1-1',
+    key: '@p',
+    value: {},
+    mode: 'sync',
+    block: 1,
+    line: 1,
+    hit: 1,
+    level: 1,
+    parent: null,
+    children: [
+      {
+        id: 's-1-1-2',
+        key: '@span',
+        value: 'a',
+        mode: 'sync',
+        block: 1,
+        line: 1,
+        hit: 2,
+        level: 1,
+        children: [],
+        // parent: Circular ref,
+      },
+      {
+        id: 's-1-2-2',
+        key: '@span',
+        value: 'a',
+        mode: 'sync',
+        block: 1,
+        line: 2,
+        hit: 2,
+        level: 1,
+        children: [
+          {
+            id: 's-1-2-3',
+            key: '@a',
+            value: 'a',
+            mode: 'sync',
+            block: 1,
+            line: 1,
+            hit: 2,
+            level: 3,
+            children: [],
+            // parent: Circular ref,
+          },
+          {
+            id: 's-1-3-3',
+            key: '@a',
+            value: 'a',
+            mode: 'sync',
+            block: 1,
+            line: 1,
+            hit: 2,
+            level: 1,
+            children: [],
+            // parent: Circular ref,
+          },
+        ],
+        // parent: Circular ref,
+      },
+    ],
+  }
+  var result = linker(node)
+
+  // Original data remains unchanged
+  t.equal(result.id, 's-1-1-1')
+
+  // New linked data
+  t.equal(result.next, null)
+  t.equal(result.previous, null)
+  t.deepEqual(result.siblings, [])
+  t.equal(result.index, 0)
+
+  var fstChild = result.children[0]
+
+  t.equal(fstChild.next.id, 's-1-2-2')
+  t.equal(fstChild.next.key, '@span')
+  t.equal(fstChild.previous, null)
+  t.deepEqual(fstChild.siblings, result.children)
+  t.equal(fstChild.index, 0)
+
+  var sndChild = result.children[1]
+
+  t.equal(sndChild.next, null)
+  t.equal(sndChild.previous.id, 's-1-1-2')
+  t.equal(sndChild.previous.key, '@span')
+  t.deepEqual(sndChild.siblings, result.children)
+  t.equal(sndChild.index, 1)
+
+  var fstGrandchild = sndChild.children[0]
+
+  t.equal(fstGrandchild.next.id, 's-1-3-3')
+  t.equal(fstGrandchild.next.key, '@a')
+  t.equal(fstGrandchild.previous, null)
+  t.deepEqual(fstGrandchild.siblings, sndChild.children)
+  t.equal(fstGrandchild.index, 0)
+
+  var sndGrandchild = sndChild.children[1]
+
+  t.equal(sndGrandchild.next, null)
+  t.equal(sndGrandchild.previous.id, 's-1-2-3')
+  t.equal(sndGrandchild.previous.key, '@a')
+  t.deepEqual(sndGrandchild.siblings, sndChild.children)
+  t.equal(sndGrandchild.index, 1)
+})
