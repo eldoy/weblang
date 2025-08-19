@@ -60,12 +60,41 @@ test('throw on missing func', async ({ t }) => {
   t.equal(hasError, true)
 })
 
+test('assign multiple', async ({ t }) => {
+  var ast = compile('=a,b,c: [1,2,3]')
+  var output = await run(ast)
+  t.equal(output.state.vars.a, 1)
+  t.equal(output.state.vars.b, 2)
+  t.equal(output.state.vars.c, 3)
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
+test('assign multiple func', async ({ t }) => {
+  var ast = compile('=a,b,c@func: world')
+  var func = {
+    name: 'func',
+    handler: function (ast, node) {
+      return node.value + '!'
+    },
+  }
+  var opt = {
+    ext: { func },
+  }
+  var output = await run(ast, opt)
+  t.deepEqual(output.state.vars.a, 'world!')
+  t.deepEqual(output.state.vars.b, 'world!')
+  t.deepEqual(output.state.vars.c, 'world!')
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
 // Create tests for, and possible variations:
 // =hello: world ✅
 // =bye: $hello ✅
 // =hello@func: world ✅
-// =a,b,c: [1,2,3]
-// =a,b@func: {}
+// =a,b,c: [1,2,3] ✅
+// =a,b@func: {} ✅
 // @func: {}
 // @func: { @func: {} }
 // @func: [$a, 1, 2]
