@@ -11,12 +11,21 @@ test('empty', async ({ t }) => {
 test('value', async ({ t }) => {
   var ast = compile('a: hello')
   var output = run(ast)
+  t.deepEqual(output.state.vars, {})
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
+test('assign value', async ({ t }) => {
+  var ast = compile('=hello: world')
+  var output = run(ast)
+  t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
 
 // Create tests for, and possible variations:
-// =hello: world
+// =hello: world ✅
 // =bye: $hello
 // =hello@func: world
 // =a,b,c: [1,2,3]
