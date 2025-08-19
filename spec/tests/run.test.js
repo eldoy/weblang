@@ -3,14 +3,14 @@ var run = require('../../lib/run.js')
 
 test('empty', async ({ t }) => {
   var ast = compile('')
-  var output = run(ast)
+  var output = await run(ast)
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
 
 test('value', async ({ t }) => {
   var ast = compile('a: hello')
-  var output = run(ast)
+  var output = await run(ast)
   t.deepEqual(output.state.vars, {})
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
@@ -18,7 +18,7 @@ test('value', async ({ t }) => {
 
 test('assign value', async ({ t }) => {
   var ast = compile('=hello: world')
-  var output = run(ast)
+  var output = await run(ast)
   t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
@@ -26,17 +26,44 @@ test('assign value', async ({ t }) => {
 
 test('assign, get value', async ({ t }) => {
   var ast = compile('=hello: world\n =bye: $hello')
-  var output = run(ast)
+  var output = await run(ast)
   t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.vars.bye, 'world')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
 
+test('assign func value', async ({ t }) => {
+  var ast = compile('=hello@func: world')
+  var func = {
+    name: 'func',
+    handler: function (ast, node) {
+      return node.value + '!'
+    },
+  }
+  var opt = {
+    ext: { func },
+  }
+  var output = await run(ast, opt)
+  t.equal(output.state.vars.hello, 'world!')
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
+test('throw on missing func', async ({ t }) => {
+  var ast = compile('=hello@func: world')
+  var opt = {
+    ext: {},
+  }
+  var hasError = false
+  await run(ast, opt).catch(() => (hasError = true))
+  t.equal(hasError, true)
+})
+
 // Create tests for, and possible variations:
 // =hello: world ✅
 // =bye: $hello ✅
-// =hello@func: world
+// =hello@func: world ✅
 // =a,b,c: [1,2,3]
 // =a,b@func: {}
 // @func: {}
