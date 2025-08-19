@@ -18,7 +18,7 @@ test('value', async ({ t }) => {
 test('assign value', async ({ t }) => {
   var ast = compile('=hello: world')
   var output = run(ast)
-  t.equal(output.state.hello, 'world')
+  t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
