@@ -11,6 +11,7 @@ test('empty', async ({ t }) => {
 test('value', async ({ t }) => {
   var ast = compile('a: hello')
   var output = run(ast)
+  t.deepEqual(output.state.vars, {})
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
