@@ -15,8 +15,16 @@ test('value', async ({ t }) => {
   t.equal(output.state.err, null)
 })
 
+test('assign value', async ({ t }) => {
+  var ast = compile('=hello: world')
+  var output = run(ast)
+  t.equal(output.state.hello, 'world')
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
 // Create tests for, and possible variations:
-// =hello: world
+// =hello: world ✅
 // =bye: $hello
 // =hello@func: world
 // =a,b,c: [1,2,3]
