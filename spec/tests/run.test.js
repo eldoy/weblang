@@ -146,6 +146,57 @@ test('throw only on func', async ({ t }) => {
   t.equal(output.state.err, 'error on line 1 column 1: explicit throw')
 })
 
+test('execute nested func', async ({ t }) => {
+  var ast = compile('@func1: { @func2: {} }')
+  var string = ''
+  var func1 = {
+    name: 'func1',
+    handler: function (ast, node) {
+      string += 'hello '
+    },
+  }
+  var func2 = {
+    name: 'func2',
+    handler: function (ast, node) {
+      string += 'world'
+    },
+  }
+  var opt = {
+    ext: { func1, func2 },
+  }
+  var output = await run(ast, opt)
+  t.equal(string, 'hello world')
+  t.deepEqual(output.state.vars, {})
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
+test('assign nested func', async ({ t }) => {
+  var ast = compile('=hello@func1: { @func2: {} }')
+  var string = ''
+  var func1 = {
+    name: 'func1',
+    handler: function (ast, node) {
+      string += 'hello '
+      return 'hi'
+    },
+  }
+  var func2 = {
+    name: 'func2',
+    handler: function (ast, node) {
+      string += 'world'
+    },
+  }
+  var opt = {
+    ext: { func1, func2 },
+  }
+  var output = await run(ast, opt)
+  t.equal(string, 'hello world')
+  t.equal(output.state.vars.hello, 'hi')
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, null)
+})
+
 // Create tests for, and possible variations:
 // =hello: world ✅
 // =bye: $hello ✅
@@ -153,7 +204,7 @@ test('throw only on func', async ({ t }) => {
 // =a,b,c: [1,2,3] ✅
 // =a,b@func: {} ✅
 // @func: {} ✅
-// @func: { @func: {} }
+// @func: { @func: {} } ✅
 // @func: [$a, 1, 2]
 // @func: { a: $a, b: $b, c: 2 }
 // - @func1: {}
