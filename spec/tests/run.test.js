@@ -50,14 +50,35 @@ test('assign func value', async ({ t }) => {
   t.equal(output.state.err, null)
 })
 
+test('explicit throw on func', async ({ t }) => {
+  var ast = compile('=hello@func: world')
+  var func = {
+    name: 'func',
+    handler: function (ast, node) {
+      throw new Error('explicit throw')
+    },
+  }
+  var opt = {
+    ext: { func },
+  }
+  var output = await run(ast, opt)
+  t.deepEqual(output.state.vars, {})
+  t.equal(output.state.result, null)
+  t.equal(output.state.err, 'error on line 1 column 1: explicit throw')
+})
+
 test('throw on missing func', async ({ t }) => {
   var ast = compile('=hello@func: world')
   var opt = {
     ext: {},
   }
-  var hasError = false
-  await run(ast, opt).catch(() => (hasError = true))
-  t.equal(hasError, true)
+  var output = await run(ast, opt)
+  t.deepEqual(output.state.vars, {})
+  t.equal(output.state.result, null)
+  t.equal(
+    output.state.err,
+    'error on line 1 column 1: the function "func" does not exist',
+  )
 })
 
 test('assign multiple', async ({ t }) => {
