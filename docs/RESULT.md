@@ -1,0 +1,1 @@
+Every @func adds to $result if it returns something else than undefined.

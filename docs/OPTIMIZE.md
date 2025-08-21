@@ -1,0 +1,1 @@
+- Expand can be optimized, we already know in compile what kind of expands we need, and if they are even needed.
