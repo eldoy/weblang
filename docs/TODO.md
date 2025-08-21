@@ -1,5 +1,9 @@
 # TODO
 
+- [ ] Make column work
+- [ ] Rename number to row in tag and node
+
+
 ### Rewrite
 
 - [ ] Create a linker.js that adds the following fields to ast tree nodes:

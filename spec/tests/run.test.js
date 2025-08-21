@@ -64,7 +64,7 @@ test('explicit throw on func', async ({ t }) => {
   var output = await run(ast, opt)
   t.deepEqual(output.state.vars, {})
   t.equal(output.state.result, null)
-  t.equal(output.state.err, 'error on line 1 column 1: explicit throw')
+  t.equal(output.state.err, 'error on line 1 column 7: explicit throw')
 })
 
 test('throw on missing func', async ({ t }) => {
@@ -77,7 +77,7 @@ test('throw on missing func', async ({ t }) => {
   t.equal(output.state.result, null)
   t.equal(
     output.state.err,
-    'error on line 1 column 1: the function "func" does not exist',
+    'error on line 1 column 7: the function "func" does not exist',
   )
 })
 
