@@ -98,7 +98,7 @@ test('assign func value', async ({ t }) => {
   var state = { vars: {} }
   var func = {
     name: 'func',
-    handler: async function (ast, node) {
+    handler: async function () {
       return 'bye'
     },
   }
@@ -116,7 +116,7 @@ test('explicit throw on func', async ({ t }) => {
   var state = { vars: {} }
   var func = {
     name: 'func',
-    handler: function (ast, node) {
+    handler: function () {
       throw new Error('explicit throw')
     },
   }
@@ -147,7 +147,7 @@ test('assign deconstruct func', async ({ t }) => {
   var state = { vars: {} }
   var func = {
     name: 'func',
-    handler: function (ast, node) {
+    handler: function () {
       return [1, 2, 3]
     },
   }
