@@ -4,6 +4,7 @@ var run = require('../../lib/run.js')
 test('empty', async ({ t }) => {
   var ast = compile('')
   var output = await run(ast)
+  t.deepEqual(output.state.vars, {})
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
@@ -19,14 +20,16 @@ test('value', async ({ t }) => {
 test('assign value', async ({ t }) => {
   var ast = compile('=hello: world')
   var output = await run(ast)
+  t.equal(Object.keys(output.state.vars).length, 1)
   t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
 
-test('assign, get value', async ({ t }) => {
-  var ast = compile('=hello: world\n =bye: $hello')
+test('assign - get value', async ({ t }) => {
+  var ast = compile('=hello: world\n=bye: $hello')
   var output = await run(ast)
+  t.equal(Object.keys(output.state.vars).length, 2)
   t.equal(output.state.vars.hello, 'world')
   t.equal(output.state.vars.bye, 'world')
   t.equal(output.state.result, null)
@@ -45,6 +48,7 @@ test('assign func value', async ({ t }) => {
     ext: { func },
   }
   var output = await run(ast, opt)
+  t.equal(Object.keys(output.state.vars).length, 1)
   t.equal(output.state.vars.hello, 'world!')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
@@ -103,9 +107,9 @@ test('assign multiple func', async ({ t }) => {
     ext: { func },
   }
   var output = await run(ast, opt)
-  t.deepEqual(output.state.vars.a, 'world!')
-  t.deepEqual(output.state.vars.b, 'world!')
-  t.deepEqual(output.state.vars.c, 'world!')
+  t.equal(output.state.vars.a, 'world!')
+  t.equal(output.state.vars.b, 'world!')
+  t.equal(output.state.vars.c, 'world!')
   t.equal(output.state.result, null)
   t.equal(output.state.err, null)
 })
