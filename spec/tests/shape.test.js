@@ -141,3 +141,20 @@ test('func - async single', async ({ t }) => {
   t.equal(child.parent.id, 'a-1-1-1')
   t.equal(child.parent.key, '@p')
 })
+
+test('pipe', async ({ t }) => {
+  var node = { '=hello_ID_s-1-1-1_ID_': 'user |> pipe' }
+  var result = shape(node)
+
+  t.equal(result.id, 's-1-1-1')
+  t.equal(result.key, 'hello')
+  t.equal(result.value, 'user')
+  t.equal(result.level, 1)
+  t.equal(result.block, 1)
+  t.equal(result.line, 1)
+  t.equal(result.column, 1)
+  t.equal(result.mode, 'sync')
+  t.equal(result.parent, null)
+  t.deepEqual(result.children, [])
+  t.deepEqual(result.pipes, [{ name: 'pipe' }])
+})

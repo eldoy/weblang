@@ -1,5 +1,23 @@
 var piper = require('../../lib/piper.js')
 
+test('no pipe', async ({ t }) => {
+  var [input, pipes] = piper('hello')
+  t.equal(input, 'hello')
+  t.deepEqual(pipes, [])
+})
+
+test('object', async ({ t }) => {
+  var [input, pipes] = piper({})
+  t.deepEqual(input, {})
+  t.deepEqual(pipes, [])
+})
+
+test('array', async ({ t }) => {
+  var [input, pipes] = piper([])
+  t.deepEqual(input, [])
+  t.deepEqual(pipes, [])
+})
+
 test('single', async ({ t }) => {
   var [input, pipes] = piper('hello |> pipe')
   t.equal(input, 'hello')
