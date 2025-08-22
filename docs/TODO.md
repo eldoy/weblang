@@ -1,5 +1,9 @@
 # TODO
 
+- [ ] Add node.pipes to compile step
+  - use in execute after val is transformed
+  - need to pass state to unpack $var
+
 - [ ] Rename number to row in tag and node
 
 - [ ] Tests for dot-notation
