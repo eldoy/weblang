@@ -1,20 +1,10 @@
 # TODO
 
-- [ ] Add node.pipes to compile step
-  - use in execute after val is transformed
-  - need to pass state to unpack $var
-
-- [ ] Rename number to row in tag and node
-
+- [ ] Pipes
 - [ ] Tests for dot-notation
 - [ ] Test ok.js with dot notation
-- [ ] Pipes
-- [ ] Test for literal \$
 
-- [ ] Make sure interpolation works inside quoted strings
-  - do not interpolate outside quoted strings?
-
-- [ ] Allow dot notation on functions: @db.insert -> @insert or @db_insert
+- [ ] Test dot notation on functions: @db.insert -> @insert or @db_insert
 
 - [ ] Parallel processing: [@func1, @func2, @func3]
 
