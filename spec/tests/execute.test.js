@@ -110,7 +110,26 @@ test('assign func value', async ({ t }) => {
   t.strictEqual(err, null)
 })
 
-test('explicit throw on func', async ({ t }) => {
+test('assign deconstruct func', async ({ t }) => {
+  var ast = compile('=a,b,c@func: {}')
+  var node = ast[0]
+  var state = { vars: {} }
+  var func = {
+    name: 'func',
+    handler: function () {
+      return [1, 2, 3]
+    },
+  }
+  var opt = { ext: { func } }
+  var [val, err] = await execute(ast, node, state, opt)
+  t.equal(state.vars.a, 1)
+  t.equal(state.vars.b, 2)
+  t.equal(state.vars.c, 3)
+  t.deepEqual(state.result, undefined)
+  t.strictEqual(err, null)
+})
+
+test('throw explicit from func', async ({ t }) => {
   var ast = compile('=hello@func: world')
   var node = ast[0]
   var state = { vars: {} }
@@ -136,25 +155,6 @@ test('throw on missing func', async ({ t }) => {
   t.deepEqual(state.vars, {})
   t.strictEqual(val, null)
   t.equal(err, 'the function "func" does not exist')
-})
-
-test('assign deconstruct func', async ({ t }) => {
-  var ast = compile('=a,b,c@func: {}')
-  var node = ast[0]
-  var state = { vars: {} }
-  var func = {
-    name: 'func',
-    handler: function () {
-      return [1, 2, 3]
-    },
-  }
-  var opt = { ext: { func } }
-  var [val, err] = await execute(ast, node, state, opt)
-  t.equal(state.vars.a, 1)
-  t.equal(state.vars.b, 2)
-  t.equal(state.vars.c, 3)
-  t.deepEqual(state.result, undefined)
-  t.strictEqual(err, null)
 })
 
 test('pipes - non-existence', async ({ t }) => {
@@ -211,44 +211,109 @@ test('pipes - assign indirect args', async ({ t }) => {
   t.equal(state.vars.bye, 'wo')
 })
 
-// test('support pipes with return', async ({ t }) => {
-//   var code = ['@return: hello | upcase'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.return == 'HELLO')
-// })
+test('pipes - func string', async ({ t }) => {
+  var ast = compile('@func: hello |> upcase')
+  var node = ast[0]
+  var state = { vars: {} }
+  var func = {
+    name: 'func',
+    handler: function ({ val }) {
+      return val
+    },
+  }
+  var pipes = {
+    upcase: function (input) {
+      return input.toUpperCase()
+    },
+  }
+  var opt = { ext: { func }, pipes }
+  var [val, err] = await execute(ast, node, state, opt)
+  t.equal(val, 'HELLO')
+})
 
-// test('strip pipes with return', async ({ t }) => {
-//   var code = ['@return: hello | unknown'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.return == 'hello')
-// })
+test('pipes - unknown to func', async ({ t }) => {
+  var ast = compile('@func: hello |> unknown')
+  var node = ast[0]
+  var state = { vars: {} }
+  var func = {
+    name: 'func',
+    handler: function ({ val }) {
+      return val
+    },
+  }
+  var pipes = {}
 
-// test('work with multiple pipes', async ({ t }) => {
-//   var code = ['@return: hello | upcase | downcase | capitalize'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.return == 'Hello')
-// })
+  var opt = { ext: { func }, pipes }
+  var [val, err] = await execute(ast, node, state, opt)
+  t.strictEqual(val, null)
+  t.strictEqual(err, 'the pipe "unknown" does not exist')
+})
 
-// test('support pipe options', async ({ t }) => {
-//   var code = ['=arr: [a, b, c]', '@return: $arr | join delimiter=+'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.return == 'a+b+c')
-// })
+test('pipes - func multi', async ({ t }) => {
+  var ast = compile('@return: hello |> upcase |> truncate')
+  var node = ast[0]
+  var state = { vars: {} }
+  var ext = {
+    return: {
+      name: 'return',
+      handler: function ({ val, state }) {
+        state.result = val
+      },
+    },
+  }
 
-// test('not pipe unknown pipe', async ({ t }) => {
-//   var code = ['=hello: hello | unknown'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.vars.hello == 'hello')
-// })
+  var pipes = {
+    upcase: function (input) {
+      return input.toUpperCase()
+    },
+    truncate: function (input) {
+      return input.slice(0, 2)
+    },
+  }
 
-// test('expand string var with pipe', async ({ t }) => {
-//   var code = ['=hello: hei', '=result: $hello | upcase'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.vars.result == 'HEI')
-// })
+  var opt = { ext, pipes }
+  var [val, err] = await execute(ast, node, state, opt)
 
-// test('pass var through pipe parameter', async ({ t }) => {
-//   var code = ['=hello: book', '=result: bye | concat a=$hello'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.vars.result == 'bye book')
-// })
+  t.strictEqual(val, null)
+  t.strictEqual(err, null)
+
+  t.equal(state.result, 'HE')
+})
+
+test('pipes - indirect', async ({ t }) => {
+  var ast = compile('=result: $hello |> upcase')
+  var node = ast[0]
+  var state = { vars: { hello: 'world' } }
+  var func = {}
+  var pipes = {
+    upcase: function (input) {
+      return input.toUpperCase()
+    },
+  }
+  var opt = { ext: { func }, pipes }
+  var [val, err] = await execute(ast, node, state, opt)
+
+  t.equal(state.vars.hello, 'world')
+  t.equal(state.vars.result, 'WORLD')
+  t.strictEqual(val, 'WORLD')
+  t.strictEqual(err, null)
+})
+
+test('pipes - expand value', async ({ t }) => {
+  var ast = compile('=result: bye |> keyed a=$hello')
+  var node = ast[0]
+  var state = { vars: { hello: 'world' } }
+  var func = {}
+  var pipes = {
+    keyed: function (input, args) {
+      return args.a + '!'
+    },
+  }
+  var opt = { ext: {}, pipes }
+  var [val, err] = await execute(ast, node, state, opt)
+
+  t.equal(state.vars.hello, 'world')
+  t.equal(state.vars.result, 'world!')
+  t.strictEqual(val, 'world!')
+  t.strictEqual(err, null)
+})
