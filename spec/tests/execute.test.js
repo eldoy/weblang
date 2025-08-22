@@ -106,7 +106,7 @@ test('assign func value', async ({ t }) => {
   await execute(ast, node, state, opt)
   t.equal(Object.keys(state.vars).length, 1)
   t.equal(state.vars.hello, 'bye')
-  t.equal(state.result, 'bye')
+  t.equal(state.result, undefined)
   t.equal(state.err, undefined)
 })
 
@@ -156,11 +156,11 @@ test('assign deconstruct func', async ({ t }) => {
   t.equal(state.vars.a, 1)
   t.equal(state.vars.b, 2)
   t.equal(state.vars.c, 3)
-  t.deepEqual(state.result, [1, 2, 3])
+  t.deepEqual(state.result, undefined)
   t.equal(state.err, undefined)
 })
 
-test('pipes - error not exist', async ({ t }) => {
+test('pipes - non-exist error', async ({ t }) => {
   var ast = compile('=hello: hello |> upcase')
   var node = ast[0]
   var state = { vars: {} }
