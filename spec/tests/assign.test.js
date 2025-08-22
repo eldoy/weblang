@@ -67,7 +67,7 @@ test('sparse array preserves holes as undefined', ({ t }) => {
   t.equal(state.vars.o, 9)
 })
 
-test('single: undefined and null pass through', ({ t }) => {
+test('single - undefined and null pass through', ({ t }) => {
   var state = { vars: {} }
   assign(state, 'u', undefined)
   assign(state, 'n', null)

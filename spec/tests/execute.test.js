@@ -160,18 +160,61 @@ test('assign deconstruct func', async ({ t }) => {
   t.equal(state.err, undefined)
 })
 
-// test('support pipes with set', async ({ t }) => {
-//   var code = ['=hello: hello | upcase'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.vars.hello == 'HELLO')
-// })
+test('pipes - error not exist', async ({ t }) => {
+  var ast = compile('=hello: hello |> upcase')
+  var node = ast[0]
+  var state = { vars: {} }
+  var pipes = {}
+  var opt = { pipes }
+  await execute(ast, node, state, opt)
+  t.equal(state.vars.hello, undefined)
+  t.equal(
+    state.err,
+    'error on line 1 column 1: the pipe "upcase" does not exist',
+  )
+})
 
-// test('support pipes with set variables', async ({ t }) => {
-//   var code = ['=hello: hello', '=bye: $hello | upcase'].join('\n')
-//   var state = await weblang.init({ pipes }).run(code)
-//   t.ok(state.vars.hello == 'hello')
-//   t.ok(state.vars.bye == 'HELLO')
-// })
+test('pipes - assign', async ({ t }) => {
+  var ast = compile('=hello: hello |> upcase')
+  var node = ast[0]
+  var state = { vars: {} }
+  var pipes = {
+    upcase: function (input) {
+      return input.toUpperCase()
+    },
+  }
+  var opt = { pipes }
+  await execute(ast, node, state, opt)
+  t.equal(state.vars.hello, 'HELLO')
+})
+
+test('pipes - assign args', async ({ t }) => {
+  var ast = compile('=hello: hello |> truncate 2')
+  var node = ast[0]
+  var state = { vars: {} }
+  var pipes = {
+    truncate: function (input, n) {
+      return input.slice(0, n)
+    },
+  }
+  var opt = { pipes }
+  await execute(ast, node, state, opt)
+  t.equal(state.vars.hello, 'he')
+})
+
+test('pipes - assign indirect args', async ({ t }) => {
+  var ast = compile('=bye: $hello |> truncate 2')
+  var node = ast[0]
+  var state = { vars: { hello: 'world' } }
+  var pipes = {
+    truncate: function (input, n) {
+      return input.slice(0, n)
+    },
+  }
+  var opt = { pipes }
+  await execute(ast, node, state, opt)
+  t.equal(state.vars.bye, 'wo')
+})
 
 // test('support pipes with return', async ({ t }) => {
 //   var code = ['@return: hello | upcase'].join('\n')
