@@ -1,6 +1,18 @@
 # TODO
 
-- [ ] Tests for dot-notation
+See OPERATE.md:
+
+- [ ] Adjust pipes args to { kind: "var", path: ["n"] }   // $n
+
+- [ ] Create operator.test.js
+  - add support for assigns
+  - remove expand, or rename operator to expand (move to compile)
+
+- [ ] Update execute to use node shape operators instead of value
+
+--------------------
+
+- [ ] Tests for dot-notation in run.test.js
   - func dot                       @db.insert: {}
   - assign index access            =result: hello[0]
   - assign indirect index access   =result: $hello[0]
@@ -9,6 +21,7 @@
 - [ ] Test ok.js with dot notation
 
 - [ ] Test dot notation on functions: @db.insert -> @insert or @db_insert
+  - add to shape.js as subfunction?
 
 - [ ] Parallel processing: [@func1, @func2, @func3]
 
