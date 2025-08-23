@@ -32,7 +32,7 @@ test('escaped multi mix', ({ t }) => {
   t.equal(result, 'what world $bye why')
 })
 
-test('string', ({ t }) => {
+test('value', ({ t }) => {
   var state = {
     vars: { hello: 'world' },
   }
@@ -40,7 +40,7 @@ test('string', ({ t }) => {
   t.equal(result, 'world')
 })
 
-test('string - multiple occurrences', ({ t }) => {
+test('value - multiple occurrences', ({ t }) => {
   var state = {
     vars: { hello: 'world', bye: 'moon' },
   }
@@ -48,7 +48,7 @@ test('string - multiple occurrences', ({ t }) => {
   t.equal(result, 'say world and then moon')
 })
 
-test('string - adjacent occurrences', ({ t }) => {
+test('value - adjacent occurrences', ({ t }) => {
   var state = {
     vars: { x: '1', y: '2' },
   }
