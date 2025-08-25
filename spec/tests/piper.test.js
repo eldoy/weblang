@@ -1,64 +1,40 @@
 var piper = require('../../lib/piper.js')
 
-test('no pipe', async ({ t }) => {
-  var [input, pipes] = piper('hello')
-  t.equal(input, 'hello')
+test('no pipes', async ({ t }) => {
+  var { head, pipes } = piper('hello')
+  t.equal(head, 'hello')
   t.deepEqual(pipes, [])
 })
 
-test('object', async ({ t }) => {
-  var [input, pipes] = piper({})
-  t.deepEqual(input, {})
-  t.deepEqual(pipes, [])
+test('single pipe no args', async ({ t }) => {
+  var { head, pipes } = piper('foo |> bar')
+  t.equal(head, 'foo')
+  t.deepEqual(pipes, [{ name: 'bar', argsRaw: [] }])
 })
 
-test('array', async ({ t }) => {
-  var [input, pipes] = piper([])
-  t.deepEqual(input, [])
-  t.deepEqual(pipes, [])
+test('single pipe with args', async ({ t }) => {
+  var { head, pipes } = piper('foo |> bar x y')
+  t.equal(head, 'foo')
+  t.deepEqual(pipes, [{ name: 'bar', argsRaw: ['x', 'y'] }])
 })
 
-test('single', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe' }])
-})
-
-test('single - string', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe hello')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe', args: ['hello'] }])
-})
-
-test('single - number', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe 2')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe', args: [2] }])
-})
-
-test('single - bool', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe true')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe', args: [true] }])
-})
-
-test('single - array', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe 1,2,3')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe', args: [[1, 2, 3]] }])
-})
-
-test('single - object', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe a=1 b=2')
-  t.equal(input, 'hello')
-  t.deepEqual(pipes, [{ name: 'pipe', args: [{ a: 1, b: 2 }] }])
-})
-
-test('multiple', async ({ t }) => {
-  var [input, pipes] = piper('hello |> pipe 2 |> fipe a=b')
-  t.equal(input, 'hello')
+test('multiple pipes chained', async ({ t }) => {
+  var { head, pipes } = piper('foo |> bar x |> baz y z')
+  t.equal(head, 'foo')
   t.deepEqual(pipes, [
-    { name: 'pipe', args: [2] },
-    { name: 'fipe', args: [{ a: 'b' }] },
+    { name: 'bar', argsRaw: ['x'] },
+    { name: 'baz', argsRaw: ['y', 'z'] },
   ])
+})
+
+test('pipe with comma args', async ({ t }) => {
+  var { head, pipes } = piper('foo |> bar a,b,c')
+  t.equal(head, 'foo')
+  t.deepEqual(pipes, [{ name: 'bar', argsRaw: ['a,b,c'] }])
+})
+
+test('pipe with equals args', async ({ t }) => {
+  var { head, pipes } = piper('foo |> bar x=1 y=$val')
+  t.equal(head, 'foo')
+  t.deepEqual(pipes, [{ name: 'bar', argsRaw: ['x=1', 'y=$val'] }])
 })
