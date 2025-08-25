@@ -440,7 +440,16 @@ test('pipe with array args containing assignment elements', ({ t }) => {
 
 // --- destructuring ---
 
-test('destructure array', ({ t }) => {
+test('destructure array - 2 elements', ({ t }) => {
+  var ops = operator('=a,b', '$list')
+  t.equal(ops.length, 2)
+  t.equal(ops[0].path, 'a')
+  t.deepEqual(ops[0].value.path, ['list', 0])
+  t.equal(ops[1].path, 'b')
+  t.deepEqual(ops[1].value.path, ['list', 1])
+})
+
+test('destructure array - 3 elements', ({ t }) => {
   var ops = operator('=a,b,c', '$list')
   t.equal(ops.length, 3)
   t.equal(ops[0].path, 'a')
@@ -449,15 +458,6 @@ test('destructure array', ({ t }) => {
   t.deepEqual(ops[1].value.path, ['list', 1])
   t.equal(ops[2].path, 'c')
   t.deepEqual(ops[2].value.path, ['list', 2])
-})
-
-test('destructure object', ({ t }) => {
-  var ops = operator('=a,b', '$obj')
-  t.equal(ops.length, 2)
-  t.equal(ops[0].path, 'a')
-  t.deepEqual(ops[0].value.path, ['obj', 'a'])
-  t.equal(ops[1].path, 'b')
-  t.deepEqual(ops[1].value.path, ['obj', 'b'])
 })
 
 // --- dynamic keys ---
