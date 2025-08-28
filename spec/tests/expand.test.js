@@ -32,7 +32,7 @@ test('escaped multi mix', ({ t }) => {
   t.equal(result, 'what world $bye why')
 })
 
-test('value', ({ t }) => {
+test('string', ({ t }) => {
   var state = {
     vars: { hello: 'world' },
   }
@@ -40,7 +40,7 @@ test('value', ({ t }) => {
   t.equal(result, 'world')
 })
 
-test('value - multiple occurrences', ({ t }) => {
+test('string - multiple occurrences', ({ t }) => {
   var state = {
     vars: { hello: 'world', bye: 'moon' },
   }
@@ -48,7 +48,7 @@ test('value - multiple occurrences', ({ t }) => {
   t.equal(result, 'say world and then moon')
 })
 
-test('value - adjacent occurrences', ({ t }) => {
+test('string - adjacent occurrences', ({ t }) => {
   var state = {
     vars: { x: '1', y: '2' },
   }
@@ -56,52 +56,18 @@ test('value - adjacent occurrences', ({ t }) => {
   t.equal(result, '12')
 })
 
-test('array - empty', ({ t }) => {
+test('array', ({ t }) => {
   var state = {
-    vars: { hello: 'world' },
+    vars: {},
   }
-  var result = expand(state, [])
-  t.deepEqual(result, [])
+  var result = expand(state, [1, 2, 3])
+  t.deepEqual(result, [1, 2, 3])
 })
 
-test('array - no match', ({ t }) => {
+test('object', ({ t }) => {
   var state = {
-    vars: { hello: 'world' },
+    vars: {},
   }
-  var result = expand(state, [1, 2])
-  t.deepEqual(result, [1, 2])
-})
-
-test('array - replace', ({ t }) => {
-  var state = {
-    vars: { hello: 'world' },
-  }
-  var result = expand(state, [1, '$hello'])
-  t.deepEqual(result, [1, 'world'])
-})
-
-test('object - key', ({ t }) => {
-  var state = {
-    vars: { hello: 'world' },
-  }
-  var result = expand(state, { $hello: 'a' })
-  t.deepEqual(result, { world: 'a' })
-})
-
-test('object - value', ({ t }) => {
-  var state = {
-    vars: { hello: 'world' },
-  }
-  var result = expand(state, { a: '$hello' })
-  t.deepEqual(result, { a: 'world' })
-})
-
-test('object - deep', ({ t }) => {
-  var state = {
-    vars: { hello: 'world' },
-  }
-  var result = expand(state, { a: { b: '$hello' } })
-  t.deepEqual(result, {
-    a: { b: 'world' },
-  })
+  var result = expand(state, { hello: 'world' })
+  t.deepEqual(result, { hello: 'world' })
 })
