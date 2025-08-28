@@ -4,33 +4,39 @@ This will be used to execute your interpreted function, but can also be stored f
 
 ```js
 {
-  map: {},
-  state: {
-    vars: {},
-    result: null,
-    err: null,
+  {
+    id: '1-1-1',
+    block: 1,
+    line: 1,
+    column: 1,
+    key: 'hello',
+    value: {},
+    operation: {},
+    parent: null,
+    siblings: [],
+    index: 0,
+    next: null,
+    previous: null,
+    mode: 'sync',
+    children: []
   },
-  root: {
-    children: [
-      {
-        id: '1-1-1',
-        block: 1,
-        line: 1,
-        count: 1,
-        key: 'hello',
-        value: {},
-        level: 1,
-        parent: null,
-        siblings: [],
-        index: 0,
-        next: null,
-        previous: null,
-        attributes: [],
-        children: [],
-        mode: 'sync',
-        group: []
-      },
-    ],
-  },
+}
+```
+
+Entries with keys that start with "=" and "@" are removed from values. The `operation` is extracted from the irt key.
+
+`operation` describes the operation performed on this execution node. The pattern we need to support is:
+
+```sh
+=a,b@func!
+```
+
+which can be converted to this structure:
+
+```js
+{
+  assigns: ['a'],
+  ext: 'func',
+  bang: true
 }
 ```
