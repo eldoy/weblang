@@ -1,5 +1,7 @@
 # TODO
 
+- [ ] Remove assign.js? It's not being used.
+
 - [ ] Scope for children nodes
 
 - [ ] Tests for dot-notation in run.test.js
