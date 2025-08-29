@@ -16,7 +16,7 @@ test('no children', async ({ t }) => {
       block: 1,
       line: 1,
       hit: 1,
-      level: 1,
+      column: 1,
       parent: null,
       children: [],
     },
@@ -40,7 +40,7 @@ test('single child', async ({ t }) => {
       block: 1,
       line: 1,
       hit: 1,
-      level: 1,
+      column: 1,
       parent: null,
       children: [
         {
@@ -51,7 +51,7 @@ test('single child', async ({ t }) => {
           block: 1,
           line: 1,
           hit: 2,
-          level: 1,
+          column: 7,
           children: [],
         },
       ],
@@ -85,7 +85,7 @@ test('siblings children', async ({ t }) => {
       block: 1,
       line: 1,
       hit: 1,
-      level: 1,
+      column: 1,
       parent: null,
       children: [
         {
@@ -96,7 +96,7 @@ test('siblings children', async ({ t }) => {
           block: 1,
           line: 1,
           hit: 2,
-          level: 1,
+          column: 1,
           children: [],
         },
         {
@@ -107,7 +107,7 @@ test('siblings children', async ({ t }) => {
           block: 1,
           line: 2,
           hit: 2,
-          level: 1,
+          column: 1,
           children: [],
         },
       ],
@@ -152,7 +152,7 @@ test('nested children', async ({ t }) => {
       block: 1,
       line: 1,
       hit: 1,
-      level: 1,
+      column: 1,
       parent: null,
       children: [
         {
@@ -163,7 +163,7 @@ test('nested children', async ({ t }) => {
           block: 1,
           line: 1,
           hit: 2,
-          level: 1,
+          column: 1,
           children: [],
         },
         {
@@ -174,7 +174,7 @@ test('nested children', async ({ t }) => {
           block: 1,
           line: 2,
           hit: 2,
-          level: 1,
+          column: 1,
           children: [
             {
               id: 's-1-2-3',
@@ -184,7 +184,7 @@ test('nested children', async ({ t }) => {
               block: 1,
               line: 1,
               hit: 2,
-              level: 3,
+              column: 3,
               children: [],
             },
             {
@@ -195,7 +195,7 @@ test('nested children', async ({ t }) => {
               block: 1,
               line: 1,
               hit: 2,
-              level: 1,
+              column: 1,
               children: [],
             },
           ],
