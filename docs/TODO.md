@@ -1,27 +1,20 @@
 # TODO
 
-- [ ] Remove assign.js? It's not being used.
-
-- [ ] Scope for children nodes
-
-- [ ] Tests for dot-notation in run.test.js
-  - func dot                       @db.insert: {}
-  - assign index access            =result: hello[0]
-  - assign indirect index access   =result: $hello[0]
-  - assign dot access              =result: $hello.name
-
-- [ ] Parallel processing: [@func1, @func2, @func3]
-
-- [ ] Test ok.js with dot notation
-
-- [ ] Test dot notation on functions: @db.insert -> @insert or @db_insert
-  - add to shape.js as subfunction?
-
-- [ ] Need a CLI that runs weblang
-
 - [ ] Implement core extensions
   - [ ] @if
+  - [ ] @then
+    - if
+    - each
   - [ ] @else
   - [ ] @each
   - [ ] @return
   - [ ] @delete
+
+- [ ] Return result of last node
+
+- [ ] Parallel processing (mode async)
+
+- [ ] Binary
+- [ ] index.js
+- [ ] Docs
+- [ ] Merge and release
