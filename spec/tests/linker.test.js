@@ -26,8 +26,9 @@ test('no children', async ({ t }) => {
 
   t.equal(result[0].next, null)
   t.equal(result[0].previous, null)
-  t.deepEqual(result[0].siblings[0].id, 's-1-1-1')
+  t.equal(result[0].siblings[0].id, 's-1-1-1')
   t.equal(result[0].index, 0)
+  t.equal(result[0].scopeid, 1)
 })
 
 test('single child', async ({ t }) => {
@@ -62,8 +63,9 @@ test('single child', async ({ t }) => {
 
   t.equal(result[0].next, null)
   t.equal(result[0].previous, null)
-  t.deepEqual(result[0].siblings[0].id, 's-1-1-1')
+  t.equal(result[0].siblings[0].id, 's-1-1-1')
   t.equal(result[0].index, 0)
+  t.equal(result[0].scopeid, 1)
 
   var child = result[0].children[0]
 
@@ -73,6 +75,7 @@ test('single child', async ({ t }) => {
   t.equal(child.siblings[0].id, 's-1-1-2')
   t.equal(child.siblings[0].key, '@span')
   t.equal(child.index, 0)
+  t.equal(child.scopeid, 2)
 })
 
 test('siblings children', async ({ t }) => {
@@ -118,7 +121,7 @@ test('siblings children', async ({ t }) => {
 
   t.equal(result[0].next, null)
   t.equal(result[0].previous, null)
-  t.deepEqual(result[0].siblings[0].id, 's-1-1-1')
+  t.equal(result[0].siblings[0].id, 's-1-1-1')
   t.equal(result[0].index, 0)
 
   var child1 = result[0].children[0]
@@ -208,7 +211,7 @@ test('nested children', async ({ t }) => {
 
   t.equal(result[0].next, null)
   t.equal(result[0].previous, null)
-  t.deepEqual(result[0].siblings[0].id, 's-1-1-1')
+  t.equal(result[0].siblings[0].id, 's-1-1-1')
   t.equal(result[0].index, 0)
 
   var child1 = result[0].children[0]
