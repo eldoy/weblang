@@ -61,8 +61,7 @@ test('assign func error', async ({ t }) => {
 })
 
 test('execute children', async ({ t }) => {
-  var code = '@div:\n  @p: hello'
-  var ast = compile(code)
+  var ast = compile('@div:\n  @p: hello')
   var node = ast[0]
   var state = { vars: {} }
   var opt = {
@@ -87,8 +86,7 @@ test('execute children', async ({ t }) => {
 })
 
 test('execute children - break', async ({ t }) => {
-  var code = '@div:\n  @p: hello'
-  var ast = compile(code)
+  var ast = compile('@div:\n  @p: hello')
   var node = ast[0]
   var state = { vars: {} }
   var opt = {
