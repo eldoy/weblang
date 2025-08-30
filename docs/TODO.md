@@ -3,6 +3,7 @@
 - [ ] Store and use $var everywhere
 - [√] Return on state.return
 - [√] Return result of last node
+- [ ] Bang (!)
 
 - [ ] Implement core extensions
   - [√] @if
