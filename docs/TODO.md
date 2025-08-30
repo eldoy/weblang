@@ -1,16 +1,13 @@
 # TODO
 
-- [ ] Rewrite get, set, ok to use state.current instead of node
-
 - [ ] Implement core extensions
-  - [ ] @if
-  - [ ] @then
-    - if
-    - each
-  - [ ] @else
+  - [√] @if
+  - [√] @then
+  - [√] @else
+  - [√] @return
+  - [√] @delete
   - [ ] @each
-  - [ ] @return
-  - [ ] @delete
+  - [ ] @html
 
 - [ ] Return result of last node
 - [ ] Test dotted and indexed variable
@@ -19,7 +16,7 @@
 
 - [ ] Parallel processing (mode async)
 
-- [ ] Binary
+- [ ] Create Binary Runner and compiler
 - [ ] index.js
 - [ ] Docs
 - [ ] Delete x folder
