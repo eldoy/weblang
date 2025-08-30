@@ -1,5 +1,13 @@
 var expand = require('../../lib/expand.js')
 
+test('plain string', ({ t }) => {
+  var state = {
+    vars: {},
+  }
+  var result = expand(state, 'hello')
+  t.equal(result, 'hello')
+})
+
 test('no match', ({ t }) => {
   var state = {
     vars: {},
