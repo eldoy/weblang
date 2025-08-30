@@ -1,15 +1,18 @@
 # TODO
 
+- [ ] Store and use $var everywhere
+- [ ] Return on state.return
+- [ ] Return result of last node
+
 - [ ] Implement core extensions
   - [√] @if
   - [√] @then
   - [√] @else
   - [√] @return
   - [√] @delete
-  - [ ] @each
+  - [√] @each
   - [ ] @html
 
-- [ ] Return result of last node
 - [ ] Test dotted and indexed variable
   - assign
   - expand
