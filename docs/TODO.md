@@ -1,8 +1,8 @@
 # TODO
 
 - [ ] Store and use $var everywhere
-- [ ] Return on state.return
-- [ ] Return result of last node
+- [√] Return on state.return
+- [√] Return result of last node
 
 - [ ] Implement core extensions
   - [√] @if

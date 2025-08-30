@@ -23,8 +23,24 @@ test('state', async ({ t }) => {
 test('return', async ({ t }) => {
   var ast = compile(['@return: hello', '=hello: world'].join('\n'))
   var opt = {}
-
   var result = await run(ast, opt)
   t.equal(result.state.return, 'hello')
   t.strictEqual(result.state.vars.hello, undefined)
+})
+
+test('last', async ({ t }) => {
+  var ast = compile('@func: hello')
+  var opt = {
+    ext: {
+      func: {
+        name: 'func',
+        handler: async function () {
+          return 'hello'
+        },
+      },
+    },
+  }
+  var result = await run(ast, opt)
+  t.equal(result.state.last, 'hello')
+  t.equal(result.state.return, 'hello')
 })
