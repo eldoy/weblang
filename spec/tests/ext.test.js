@@ -11,10 +11,7 @@ test('if-then', async ({ t }) => {
     '  =hello: then',
   ].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { if: ext.if, then: ext.then },
-    vars: { hello: 'world' },
-  }
+  var opt = { vars: { hello: 'world' } }
   var result = await run(ast, opt)
   t.strictEqual(result.state.test, undefined)
   t.equal(result.state.vars.hello, 'then')
@@ -31,10 +28,7 @@ test('if-then-else', async ({ t }) => {
     '  =hello: else',
   ].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { if: ext.if, then: ext.then, else: ext.else },
-    vars: { hello: 5 },
-  }
+  var opt = { vars: { hello: 5 } }
   var result = await run(ast, opt)
   t.strictEqual(result.state.test, undefined)
   t.equal(result.state.vars.hello, 'else')
@@ -43,10 +37,7 @@ test('if-then-else', async ({ t }) => {
 test('delete', async ({ t }) => {
   var code = ['@delete: $hello'].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { delete: ext.delete },
-    vars: { hello: 'world' },
-  }
+  var opt = { vars: { hello: 'world' } }
   var result = await run(ast, opt)
   t.strictEqual(result.state.vars.hello, undefined)
 })
@@ -54,10 +45,7 @@ test('delete', async ({ t }) => {
 test('return - value', async ({ t }) => {
   var code = ['@return: hello'].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { return: ext.return },
-    vars: {},
-  }
+  var opt = { vars: {} }
   var result = await run(ast, opt)
   t.strictEqual(result.state.return, 'hello')
 })
@@ -65,10 +53,7 @@ test('return - value', async ({ t }) => {
 test('return - var', async ({ t }) => {
   var code = ['@return: $hello'].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { return: ext.return },
-    vars: { hello: 'world' },
-  }
+  var opt = { vars: { hello: 'world' } }
   var result = await run(ast, opt)
   t.strictEqual(result.state.return, 'world')
 })
@@ -77,7 +62,6 @@ test('each-do - default', async ({ t }) => {
   var code = ['@each: $numbers', '@do:', '  =a: $item', '  =b: $i'].join('\n')
   var ast = compile(code)
   var opt = {
-    ext: { each: ext.each, do: ext.do },
     vars: { numbers: [1, 2, 3, 4, 5] },
   }
   var result = await run(ast, opt)
@@ -98,11 +82,10 @@ test('each-do - specified', async ({ t }) => {
   ].join('\n')
   var ast = compile(code)
   var opt = {
-    ext: { each: ext.each, do: ext.do },
     vars: { numbers: [1, 2, 3, 4, 5] },
   }
   var result = await run(ast, opt)
-  t.deepStrictEqual(result.state.iterator, undefined)
+  t.strictEqual(result.state.iterator, undefined)
   t.equal(result.state.vars.a, 5)
   t.equal(result.state.vars.b, 4)
 })
@@ -116,10 +99,7 @@ test('each-do - unavailable', async ({ t }) => {
     '  =b: $i',
   ].join('\n')
   var ast = compile(code)
-  var opt = {
-    ext: { each: ext.each, do: ext.do },
-    vars: {},
-  }
+  var opt = { vars: {} }
   var result = await run(ast, opt)
   t.strictEqual(result.state.iterator, undefined)
   t.strictEqual(result.state.in, undefined)
@@ -127,4 +107,23 @@ test('each-do - unavailable', async ({ t }) => {
   t.strictEqual(result.state.n, undefined)
   t.strictEqual(result.state.vars.a, undefined)
   t.strictEqual(result.state.vars.b, undefined)
+})
+
+test('each-do-else', async ({ t }) => {
+  var code = [
+    '@each:',
+    '  in: $numbers',
+    '  as: item',
+    '  n: i',
+    '@do: {}',
+    '@else:',
+    '  =a: hello',
+  ].join('\n')
+  var ast = compile(code)
+  var opt = {
+    vars: { numbers: [] },
+  }
+  var result = await run(ast, opt)
+  t.strictEqual(result.state.iterator, undefined)
+  t.equal(result.state.vars.a, 'hello')
 })
