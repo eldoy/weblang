@@ -20,7 +20,5 @@
 - [ ] Parallel processing (mode async)
 
 - [ ] Create Binary Runner and compiler
-- [ ] index.js
 - [ ] Docs
-- [ ] Delete x folder
 - [ ] Merge and release
