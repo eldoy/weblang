@@ -1,20 +1,32 @@
 var compile = require('../../lib/compile.js')
 var run = require('../../lib/run.js')
+var ext = require('../../lib/ext.js')
 
 test('opt - vars', async ({ t }) => {
   var ast = compile('')
-  var output = await run(ast, { vars: { hello: 'world' } })
-  t.deepEqual(output.state.vars.hello, 'world')
+  var opt = { vars: { hello: 'world' } }
+  var result = await run(ast, opt)
+  t.deepEqual(result.state.vars.hello, 'world')
 })
 
 test('empty', async ({ t }) => {
   var ast = compile('')
-  var output = await run(ast)
-  t.deepEqual(output.state.vars, {})
+  var result = await run(ast)
+  t.deepEqual(result.state.vars, {})
 })
 
 test('state', async ({ t }) => {
   var ast = compile('=hello: world')
-  var output = await run(ast)
-  t.deepEqual(output.state.vars, { hello: 'world' })
+  var result = await run(ast)
+  t.deepEqual(result.state.vars, { hello: 'world' })
+})
+
+test('return', async ({ t }) => {
+  var ast = compile(['@return: hello', '=hello: world'].join('\n'))
+  var opt = {
+    ext: { return: ext.return },
+  }
+  var result = await run(ast, opt)
+  t.equal(result.state.return, 'hello')
+  t.strictEqual(result.state.vars.hello, undefined)
 })
