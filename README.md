@@ -24,8 +24,12 @@ npm i weblang
 
 ```js
 var weblang = require('weblang')
-var code = '=hello: world'
-var state = await weblang.init().run(code)
+
+var code = '@return: hello'
+var ast = weblang.compile(code)
+var result = await weblang.run(ast)
+
+console.log(result.state.return)
 ```
 
 ### How it works
@@ -88,19 +92,6 @@ Variables are stored in `state.vars`:
 
 # Set variable, nested, dot notation
 =hello.name: world
-
-# Delete variable, making $hello undefined
-=hello: null
-
-# Delete value from object
-=hello:
-  name: null
-
-# Delete value from object, dot notation
-=hello.name: null
-
-# Delete array index, dot notation
-=hello[0]: null
 
 # Set variable from object, dot notation
 =hello:
@@ -270,29 +261,22 @@ Weblang can (and should) be extended with your own commands.
 Define an extension function like this:
 
 ```js
-// Extension function called db
-function db({
-  state,    // the runner's state with vars and return
-  code,     // the actual code sent to weblang, untouched
-  tree,     // the syntax tree like object, with ids
-  branch,   // the current object being processed
-  node,     // the key of the current branch
-  current,  // the value of the current branch
-  key,      // the setter key, usually starts with '='
-  id,       // the internal id of the node
-  run,      // the run function that runs your code
-  opt,      // the options passed to weblang
-  expand,   // the expander function used internally
-  load,     // the loader, converts yml string to object
-  get,      // use this to get variables and run pipes
-  set,      // use this to set variables
-  ok        // the validation function used for if tests
+// Extension function called func
+function func({
+  ast,    // The entire execution tree
+  node,   // The current execution node
+  state,  // The state, contains variables and signals
+  opt,    // Options, ext, vars
+  data,   // Data values, right hand side of node
+  ok,     // Validator function
+  get,    // Gets variables from state.vars
+  set,    // Sets variables in state.vars
 }) {
 
   // Example use of set
-  set('=internal', 'hello')
+  set('=hello', 'world')
 
-  // Whatever you return will be in your setter
+  // Whatever you return will update the data
   return { id: '1' }
 }
 ```
@@ -314,53 +298,6 @@ To set the result of the function, use the _extension variable setter syntax_:
 ```
 
 and the `result` variable will be available in `state.vars.result`.
-
-
-### Pipes
-
-Variables can be run through _pipes_, which are functions that transform a value.
-
-If the pipe does not exist, it is ignored.
-
-```yml
-# Use pipes with string
-=hello: hello | upcase
-
-# Use pipes with variables
-=hello: hello
-=bye: $hello | upcase
-
-# Use pipes with return
-@return: hello | capitalize
-
-# Multiple pipes
-@return: hello | upcase | downcase | capitalize
-
-# Pipe parameters
-@return: list | join delimiter=+ max=5
-```
-
-You can add your own pipes, or replace the built in ones, using the _pipes_ option:
-```js
-// Add a pipe named 'hello'
-var state = await weblang
-  .init({
-    pipes: {
-      hello: function({ val }) {
-        if (typeof val != 'string') return val
-        return 'hello ' + val
-      }
-    }
-  })
-  .run(code)
-```
-and then use it like this:
-
-```yml
-@return: world | hello
-```
-
-The pipes receive all the same variables as with extensions.
 
 ### License
 
