@@ -1,4 +1,4 @@
-These are the signals used in Weblang state to communicate with the runner from extensions:
+These are the traps used in Weblang state to communicate with the runner from extensions:
 
 1. state.break - cancels further execution of a node's children
 2. state.test - used for @if @then @else to setup which branch to run
@@ -9,6 +9,5 @@ These are the signals used in Weblang state to communicate with the runner from 
 7. state.index - the index of the current iteration
 8. state.item - the name of the current iteration item
 
-* Instead of passing the node to set, get and ok, we can use the state.current instead.
 * state current is set for each execution node
 * iterator, index, item is set from within the extension
