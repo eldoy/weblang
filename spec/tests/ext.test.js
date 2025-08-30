@@ -72,3 +72,24 @@ test('return - var', async ({ t }) => {
   var result = await run(ast, opt)
   t.strictEqual(result.state.return, 'world')
 })
+
+test('each-do', async ({ t }) => {
+  var code = [
+    '@each:',
+    '  in: numbers',
+    '  as: item',
+    '  n: i',
+    '@do:',
+    '  =a: $item',
+    '  =b: $i',
+  ].join('\n')
+  var ast = compile(code)
+  var opt = {
+    ext: { each: ext.each, do: ext.do },
+    vars: { numbers: [1, 2, 3, 4, 5] },
+  }
+  var result = await run(ast, opt)
+  t.deepStrictEqual(result.state.iterator, undefined)
+  t.equal(result.state.vars.a, 5)
+  t.equal(result.state.vars.b, 4)
+})
