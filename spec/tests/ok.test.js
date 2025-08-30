@@ -1,8 +1,8 @@
 var ok = require('../../lib/ok.js')
 
-test('string', async ({ t }) => {
-  var val = { hello: { is: 'string' } }
+test('value', async ({ t }) => {
+  var schema = { $hello: { is: 'string' } }
   var state = { vars: { hello: 'world' } }
-  var result = await ok(val, state.vars)
+  var result = await ok(schema, state)
   t.equal(result, true)
 })

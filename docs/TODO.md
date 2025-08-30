@@ -1,5 +1,7 @@
 # TODO
 
+- [ ] Rewrite get, set, ok to use state.current instead of node
+
 - [ ] Implement core extensions
   - [ ] @if
   - [ ] @then
