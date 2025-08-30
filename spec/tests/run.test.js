@@ -1,6 +1,5 @@
 var compile = require('../../lib/compile.js')
 var run = require('../../lib/run.js')
-var ext = require('../../lib/ext.js')
 
 test('opt - vars', async ({ t }) => {
   var ast = compile('')
@@ -23,9 +22,8 @@ test('state', async ({ t }) => {
 
 test('return', async ({ t }) => {
   var ast = compile(['@return: hello', '=hello: world'].join('\n'))
-  var opt = {
-    ext: { return: ext.return },
-  }
+  var opt = {}
+
   var result = await run(ast, opt)
   t.equal(result.state.return, 'hello')
   t.strictEqual(result.state.vars.hello, undefined)
