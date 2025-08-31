@@ -1,6 +1,15 @@
 var compile = require('../../lib/compile.js')
 var execute = require('../../lib/execute.js')
 
+test('state', async ({ t }) => {
+  var ast = compile('=hello: world')
+  var node = ast[0]
+  var state = { vars: {} }
+  var opt = {}
+  await execute(ast, node, state, opt)
+  t.equal(state.current.id, node.id)
+})
+
 test('assign value', async ({ t }) => {
   var ast = compile('=hello: world')
   var node = ast[0]

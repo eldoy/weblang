@@ -3,7 +3,7 @@ These are the traps used in Weblang state to communicate with the runner from ex
 1. state.break - cancels further execution of a node's children
 2. state.test - used for @if @then @else to setup which branch to run
 3. state.return - used for @return and bang errors. if it exists we return the value immediately.
-4. node.last - the result from this node, which is usually the last root node, will write to state.result (last function returns automatically.)
+4. state.last - the result the last function call, which is usually the last root node, will write to state.result making the last function return automatically.
 5. state.current - the node we're currently executing
 6. state.iterator - the array or object we're currently iterating upon
 7. state.index - the index of the current iteration

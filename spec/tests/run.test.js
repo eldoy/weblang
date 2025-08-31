@@ -17,6 +17,7 @@ test('empty', async ({ t }) => {
 test('state', async ({ t }) => {
   var ast = compile('=hello: world')
   var result = await run(ast)
+  t.equal(result.state.root.id, 's-1-1-1-1')
   t.deepEqual(result.state.vars, { hello: 'world' })
 })
 
