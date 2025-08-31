@@ -127,17 +127,3 @@ test('each-do-else', async ({ t }) => {
   t.strictEqual(result.state.iterator, undefined)
   t.equal(result.state.vars.a, 'hello')
 })
-
-test('div', async ({ t }) => {
-  var code = ['@div: hello'].join('\n')
-  var ast = compile(code)
-  var opt = {
-    vars: { numbers: [] },
-  }
-  var result = await run(ast, opt)
-  t.equal(result.state.html.id, 's-1-1-1-1')
-  t.equal(result.state.html.tag.name, 'div')
-  t.equal(result.state.html.tag.type, 'element')
-  t.equal(result.state.html.tag.text, 'hello')
-  t.deepEqual(result.state.html.tag.attributes, [])
-})

@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Move node.html with tags.has to compile
 - [√] Return on state.return
 - [√] Return result of last node
 - [√] Bang (!)
