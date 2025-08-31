@@ -24,6 +24,7 @@ test('assign', async ({ t }) => {
     assigns: ['hello'],
     ext: null,
     bang: false,
+    elemental: false,
   })
 })
 
@@ -45,6 +46,7 @@ test('assign - async', async ({ t }) => {
     assigns: ['hello'],
     ext: null,
     bang: false,
+    elemental: false,
   })
 })
 
@@ -65,6 +67,7 @@ test('assign func', async ({ t }) => {
     assigns: ['hello'],
     ext: 'func',
     bang: false,
+    elemental: false,
   })
 })
 
@@ -85,6 +88,7 @@ test('assign func - async', async ({ t }) => {
     assigns: ['hello'],
     ext: 'func',
     bang: false,
+    elemental: false,
   })
 })
 
@@ -104,6 +108,7 @@ test('assign deep', async ({ t }) => {
     assigns: ['hello'],
     ext: null,
     bang: false,
+    elemental: false,
   })
 
   var child = result.children[0]
@@ -121,6 +126,7 @@ test('assign deep', async ({ t }) => {
     assigns: ['bye'],
     ext: null,
     bang: false,
+    elemental: false,
   })
 })
 
@@ -141,6 +147,7 @@ test('func - one', async ({ t }) => {
     assigns: [],
     ext: 'db',
     bang: false,
+    elemental: false,
   })
 })
 
@@ -160,6 +167,7 @@ test('func - multiple', async ({ t }) => {
     assigns: [],
     ext: 'p',
     bang: false,
+    elemental: true,
   })
 
   var child = result.children[0]
@@ -177,6 +185,7 @@ test('func - multiple', async ({ t }) => {
     assigns: [],
     ext: 'span',
     bang: false,
+    elemental: true,
   })
 })
 
@@ -196,6 +205,7 @@ test('func - async single', async ({ t }) => {
     assigns: [],
     ext: 'p',
     bang: false,
+    elemental: true,
   })
 
   var child = result.children[0]
@@ -213,5 +223,6 @@ test('func - async single', async ({ t }) => {
     assigns: [],
     ext: 'span',
     bang: false,
+    elemental: true,
   })
 })
