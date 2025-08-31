@@ -2,7 +2,7 @@
 
 - [√] Return on state.return
 - [√] Return result of last node
-- [ ] Bang (!)
+- [√] Bang (!)
 
 - [ ] Implement core extensions
   - [√] @if

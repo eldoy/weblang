@@ -117,3 +117,21 @@ test('execute children - break', async ({ t }) => {
   await execute(ast, node, state, opt)
   t.strictEqual(state.vars.p, undefined)
 })
+
+test('bang', async ({ t }) => {
+  var ast = compile('@func!: hello')
+  var node = ast[0]
+  var state = { vars: {} }
+  var opt = {
+    ext: {
+      func: {
+        name: 'func',
+        handler: function () {
+          throw Error('hello')
+        },
+      },
+    },
+  }
+  await execute(ast, node, state, opt)
+  t.equal(state.return, 'hello')
+})
