@@ -63,6 +63,7 @@ test('html - simple', async ({ t }) => {
       attributes: [],
     },
   ])
+  t.equal(result.state.return, '<div>hello</div>')
 })
 
 test('html - siblings', async ({ t }) => {
@@ -93,6 +94,7 @@ test('html - siblings', async ({ t }) => {
       attributes: [],
     },
   ])
+  t.equal(result.state.return, '<div>hello</div><p>bye</p>')
 })
 
 test('html - nested', async ({ t }) => {
@@ -124,4 +126,5 @@ test('html - nested', async ({ t }) => {
       attributes: [],
     },
   ])
+  t.equal(result.state.return, '<div>hello<p>bye</p></div>')
 })
