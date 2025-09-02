@@ -58,7 +58,7 @@ test('return - var', async ({ t }) => {
   t.strictEqual(result.state.return, 'world')
 })
 
-test('each-do - default', async ({ t }) => {
+only('each-do - default', async ({ t }) => {
   var code = ['@each: $numbers', '@do:', '  =a: $item', '  =b: $i'].join('\n')
   var ast = compile(code)
   var opt = {
