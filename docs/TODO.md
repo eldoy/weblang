@@ -1,5 +1,22 @@
 # TODO
 
+- [ ] Find out where we are doing string concat right now
+
+
+- [ ] Operator:
+  see OPERATION.md
+  - move string splitting etc to compile
+  - make runner work
+- [ ] @each
+  - make sure it's possible to create a working loop
+    - normal runs
+    - HTML
+- [ ] Options for HTML tags?
+  - it should be possible to define what is HTML and not
+  - explicit operator for that? like % instead of @?
+    - maybe not needed, any function call to ui component will exclusively use tags
+    - or just set elemental = true for anything you want treated as HTML
+
 - [ ] Test dotted and indexed variable
   - assign
   - expand

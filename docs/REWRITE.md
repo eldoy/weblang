@@ -11,7 +11,7 @@ Here’s a compact, implementable core that meets your latest design:
     as: item        # required
     index: i        # optional
   @then: <block>    # runs once per element with $item, $i bound
-  @else: <block>    # runs once if source length == 0
+  @else: <block>    # runs once if source length === 0
   ```
 * `@entries:` objects only
 
