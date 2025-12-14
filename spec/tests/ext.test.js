@@ -127,3 +127,14 @@ test('each-do-else', async ({ t }) => {
   t.strictEqual(result.state.iterator, undefined)
   t.equal(result.state.vars.a, 'hello')
 })
+
+test('each-do-tags', async ({ t }) => {
+  var code = ['@ul:', '  @each: $items', '  @do:', '    @li: $item'].join('\n')
+  var ast = compile(code)
+
+  var opt = {
+    vars: { items: [1, 2] }
+  }
+  var result = await run(ast, opt)
+  t.equal(result.state.return, '<ul><li>1</li><li>2</li></ul>')
+})
