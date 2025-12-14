@@ -8,7 +8,7 @@ test('if-then', async ({ t }) => {
     '  $hello:',
     '    is: string',
     '@then:',
-    '  =hello: then',
+    '  =hello: then'
   ].join('\n')
   var ast = compile(code)
   var opt = { vars: { hello: 'world' } }
@@ -25,7 +25,7 @@ test('if-then-else', async ({ t }) => {
     '@then:',
     '  =hello: then',
     '@else:',
-    '  =hello: else',
+    '  =hello: else'
   ].join('\n')
   var ast = compile(code)
   var opt = { vars: { hello: 5 } }
@@ -62,7 +62,7 @@ only('each-do - default', async ({ t }) => {
   var code = ['@each: $numbers', '@do:', '  =a: $item', '  =b: $i'].join('\n')
   var ast = compile(code)
   var opt = {
-    vars: { numbers: [1, 2, 3, 4, 5] },
+    vars: { numbers: [1, 2, 3, 4, 5] }
   }
   var result = await run(ast, opt)
   t.strictEqual(result.state.iterator, undefined)
@@ -78,11 +78,11 @@ test('each-do - specified', async ({ t }) => {
     '  n: i',
     '@do:',
     '  =a: $item',
-    '  =b: $i',
+    '  =b: $i'
   ].join('\n')
   var ast = compile(code)
   var opt = {
-    vars: { numbers: [1, 2, 3, 4, 5] },
+    vars: { numbers: [1, 2, 3, 4, 5] }
   }
   var result = await run(ast, opt)
   t.strictEqual(result.state.iterator, undefined)
@@ -96,7 +96,7 @@ test('each-do - unavailable', async ({ t }) => {
     '  in: $numbers',
     '@do:',
     '  =a: $item',
-    '  =b: $i',
+    '  =b: $i'
   ].join('\n')
   var ast = compile(code)
   var opt = { vars: {} }
@@ -117,11 +117,11 @@ test('each-do-else', async ({ t }) => {
     '  n: i',
     '@do: {}',
     '@else:',
-    '  =a: hello',
+    '  =a: hello'
   ].join('\n')
   var ast = compile(code)
   var opt = {
-    vars: { numbers: [] },
+    vars: { numbers: [] }
   }
   var result = await run(ast, opt)
   t.strictEqual(result.state.iterator, undefined)

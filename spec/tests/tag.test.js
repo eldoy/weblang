@@ -9,8 +9,8 @@ test('tag - text', ({ t }) => {
   t.deepEqual(result.children, [
     {
       type: 'text',
-      content: 'hello',
-    },
+      content: 'hello'
+    }
   ])
 })
 
@@ -22,13 +22,13 @@ test('tag - attributes', ({ t }) => {
   t.deepEqual(result.attributes, [
     {
       key: 'class',
-      value: 'card',
-    },
+      value: 'card'
+    }
   ])
   t.deepEqual(result.children, [
     {
       type: 'text',
-      content: 'hello',
-    },
+      content: 'hello'
+    }
   ])
 })

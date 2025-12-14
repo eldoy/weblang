@@ -18,8 +18,8 @@ test('no children', async ({ t }) => {
       hit: 1,
       column: 1,
       parent: null,
-      children: [],
-    },
+      children: []
+    }
   ]
 
   var result = linker(ast)
@@ -53,10 +53,10 @@ test('single child', async ({ t }) => {
           line: 1,
           hit: 2,
           column: 7,
-          children: [],
-        },
-      ],
-    },
+          children: []
+        }
+      ]
+    }
   ]
 
   var result = linker(ast)
@@ -100,7 +100,7 @@ test('siblings children', async ({ t }) => {
           line: 1,
           hit: 2,
           column: 1,
-          children: [],
+          children: []
         },
         {
           id: 's-1-2-2',
@@ -111,10 +111,10 @@ test('siblings children', async ({ t }) => {
           line: 2,
           hit: 2,
           column: 1,
-          children: [],
-        },
-      ],
-    },
+          children: []
+        }
+      ]
+    }
   ]
 
   var result = linker(ast)
@@ -167,7 +167,7 @@ test('nested children', async ({ t }) => {
           line: 1,
           hit: 2,
           column: 1,
-          children: [],
+          children: []
         },
         {
           id: 's-1-2-2',
@@ -188,7 +188,7 @@ test('nested children', async ({ t }) => {
               line: 1,
               hit: 2,
               column: 3,
-              children: [],
+              children: []
             },
             {
               id: 's-1-3-3',
@@ -199,12 +199,12 @@ test('nested children', async ({ t }) => {
               line: 1,
               hit: 2,
               column: 1,
-              children: [],
-            },
-          ],
-        },
-      ],
-    },
+              children: []
+            }
+          ]
+        }
+      ]
+    }
   ]
 
   var result = linker(ast)

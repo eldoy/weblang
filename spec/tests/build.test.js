@@ -2,7 +2,7 @@ var build = require('../../lib/build.js')
 
 test('object', ({ t }) => {
   var irt = {
-    hello: {},
+    hello: {}
   }
   var result = build(irt)
   t.deepEqual(result, [])
@@ -10,7 +10,7 @@ test('object', ({ t }) => {
 
 test('simple', ({ t }) => {
   var irt = {
-    '@p_ID_s-1-1-1-1_ID_': {},
+    '@p_ID_s-1-1-1-1_ID_': {}
   }
   var result = build(irt)
   t.equal(result[0].id, 's-1-1-1-1')
@@ -19,7 +19,7 @@ test('simple', ({ t }) => {
 test('multiple', ({ t }) => {
   var irt = {
     '@p_ID_s-1-1-1-1_ID_': {},
-    '@a_ID_s-1-2-1-1_ID_': {},
+    '@a_ID_s-1-2-1-1_ID_': {}
   }
   var result = build(irt)
   t.equal(result[0].id, 's-1-1-1-1')
@@ -29,8 +29,8 @@ test('multiple', ({ t }) => {
 test('nested', ({ t }) => {
   var irt = {
     '@p_ID_s-1-1-1-1_ID_': {
-      '@a_ID_s-1-2-1-2_ID_': {},
-    },
+      '@a_ID_s-1-2-1-2_ID_': {}
+    }
   }
   var result = build(irt)
   t.equal(result[0].id, 's-1-1-1-1')

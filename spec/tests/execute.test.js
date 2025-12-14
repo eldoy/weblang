@@ -41,9 +41,9 @@ test('assign func value', async ({ t }) => {
         name: 'func',
         handler: async function ({ data }) {
           return 'hello ' + data
-        },
-      },
-    },
+        }
+      }
+    }
   }
   await execute(ast, node, state, opt)
   t.equal(Object.keys(state.vars).length, 1)
@@ -60,9 +60,9 @@ test('assign func error', async ({ t }) => {
         name: 'func',
         handler: function () {
           throw Error('bye')
-        },
-      },
-    },
+        }
+      }
+    }
   }
   await execute(ast, node, state, opt)
   t.equal(state.vars.result, 'hello')
@@ -79,15 +79,15 @@ test('execute children', async ({ t }) => {
         name: 'div',
         handler: function ({ state }) {
           state.vars.div = 'div'
-        },
+        }
       },
       p: {
         name: 'p',
         handler: function ({ state }) {
           state.vars.p = 'p'
-        },
-      },
-    },
+        }
+      }
+    }
   }
   await execute(ast, node, state, opt)
   t.equal(state.vars.div, 'div')
@@ -104,15 +104,15 @@ test('execute children - break', async ({ t }) => {
         name: 'div',
         handler: function ({ state }) {
           state.break = true
-        },
+        }
       },
       p: {
         name: 'p',
         handler: function ({ state }) {
           state.vars.p = 'p'
-        },
-      },
-    },
+        }
+      }
+    }
   }
   await execute(ast, node, state, opt)
   t.strictEqual(state.vars.p, undefined)
@@ -128,9 +128,9 @@ test('bang', async ({ t }) => {
         name: 'func',
         handler: function () {
           throw Error('hello')
-        },
-      },
-    },
+        }
+      }
+    }
   }
   await execute(ast, node, state, opt)
   t.equal(state.return, 'hello')
