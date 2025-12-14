@@ -37,9 +37,9 @@ test('last', async ({ t }) => {
         name: 'func',
         handler: async function () {
           return 'hello'
-        },
-      },
-    },
+        }
+      }
+    }
   }
   var result = await run(ast, opt)
   t.equal(result.state.last, 'hello')
@@ -57,11 +57,11 @@ test('html - simple', async ({ t }) => {
       children: [
         {
           type: 'text',
-          content: 'hello',
-        },
+          content: 'hello'
+        }
       ],
-      attributes: [],
-    },
+      attributes: []
+    }
   ])
   t.equal(result.state.return, '<div>hello</div>')
 })
@@ -77,10 +77,10 @@ test('html - siblings', async ({ t }) => {
       children: [
         {
           type: 'text',
-          content: 'hello',
-        },
+          content: 'hello'
+        }
       ],
-      attributes: [],
+      attributes: []
     },
     {
       tagName: 'p',
@@ -88,11 +88,11 @@ test('html - siblings', async ({ t }) => {
       children: [
         {
           type: 'text',
-          content: 'bye',
-        },
+          content: 'bye'
+        }
       ],
-      attributes: [],
-    },
+      attributes: []
+    }
   ])
   t.equal(result.state.return, '<div>hello</div><p>bye</p>')
 })
@@ -109,7 +109,7 @@ test('html - nested', async ({ t }) => {
       children: [
         {
           type: 'text',
-          content: 'hello',
+          content: 'hello'
         },
         {
           tagName: 'p',
@@ -117,14 +117,14 @@ test('html - nested', async ({ t }) => {
           children: [
             {
               type: 'text',
-              content: 'bye',
-            },
+              content: 'bye'
+            }
           ],
-          attributes: [],
-        },
+          attributes: []
+        }
       ],
-      attributes: [],
-    },
+      attributes: []
+    }
   ])
   t.equal(result.state.return, '<div>hello<p>bye</p></div>')
 })
