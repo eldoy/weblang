@@ -1,5 +1,29 @@
 # TODO
 
+Keep a bare minimum right now for v1:
+
+- [ ] Remove "ok" changes. Add late.
+- [ ] Remove dotted stuff, except for assign?
+
+Syntax tweaks for HTML:
+
+- [ ] esc all tags except @div! (bang), both string and "text" attribute
+- [ ] add newline or space to all tags (preseve indentation)
+  @span: a
+  @span: b
+
+  now renders as <span>a</span><span>b</span> (ab, not a b)
+
+  - [ ] except - (dash) in front: - @div
+
+- [ ] Rename sync / async to "dashed" / "bare"
+  - it means sync / async for functions
+  - but spaced / squashed for tags
+  - "d" and "b" for dashed and bare
+
+- [ ] Rename .html internally to "markup"? or "tags"
+  - dashed functions are "tag functions"
+
 - [ ] Test if else with dotted variable
   - $hello.name.eq: nils
 
@@ -65,5 +89,8 @@ for (let [path, parts] of replacements) {
 
 - [ ] @elsif - ext.elsif?
 
-
 - [ ] @if - empty array is false?
+  - or how do we do it? .length?
+  - or =arrayLength@len: $array
+  - should we support something more advanced here?
+  - include a bunch of ext?
