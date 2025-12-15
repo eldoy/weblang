@@ -2,7 +2,25 @@ var ext = require('../../lib/ext.js')
 var compile = require('../../lib/compile.js')
 var run = require('../../lib/run.js')
 
-test('if-then', async ({ t }) => {
+test('if-then - boolean', async ({ t }) => {
+  var code = ['@if: true', '@then:', '  =hello: then'].join('\n')
+  var ast = compile(code)
+  var opt = { vars: {} }
+  var result = await run(ast, opt)
+  t.strictEqual(result.state.test, undefined)
+  t.equal(result.state.vars.hello, 'then')
+})
+
+test('if-then - var', async ({ t }) => {
+  var code = ['@if: hello', '@then:', '  =hello: then'].join('\n')
+  var ast = compile(code)
+  var opt = { vars: {} }
+  var result = await run(ast, opt)
+  t.strictEqual(result.state.test, undefined)
+  t.equal(result.state.vars.hello, 'then')
+})
+
+test('if-then - data', async ({ t }) => {
   var code = [
     '@if:',
     '  $hello:',
