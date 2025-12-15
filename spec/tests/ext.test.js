@@ -138,3 +138,45 @@ test('each-do-tags', async ({ t }) => {
   var result = await run(ast, opt)
   t.equal(result.state.return, '<ul><li>1</li><li>2</li></ul>')
 })
+
+test('deeply-nested-each-if-each-if', async ({ t }) => {
+  var code = [
+    '@ul:',
+    '  @each:',
+    '    in: $a',
+    '  @do:',
+    '    @if:',
+    '      $item:',
+    '        is: number',
+    '    @then:',
+    '      @each:',
+    '        in: $b',
+    '      @do:',
+    '        @if:',
+    '          $item:',
+    '            is: number',
+    '        @then:',
+    '          @each:',
+    '            in: $c',
+    '          @do:',
+    '            @if:',
+    '              $item:',
+    '                is: number',
+    '            @then:',
+    '              @li: $item'
+  ].join('\n')
+
+  var ast = compile(code)
+
+  var opt = {
+    vars: {
+      a: [1],
+      b: [2],
+      c: [3]
+    }
+  }
+
+  var result = await run(ast, opt)
+
+  t.equal(result.state.return, '<ul><li>3</li></ul>')
+})
