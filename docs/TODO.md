@@ -1,21 +1,7 @@
 # TODO
 
-- [ ] Find out where we are doing string concat right now
-
-
-- [ ] Operator:
-  see OPERATION.md
-  - move string splitting etc to compile
-  - make runner work
-- [ ] @each
-  - make sure it's possible to create a working loop
-    - normal runs
-    - HTML
-- [ ] Options for HTML tags?
-  - it should be possible to define what is HTML and not
-  - explicit operator for that? like % instead of @?
-    - maybe not needed, any function call to ui component will exclusively use tags
-    - or just set elemental = true for anything you want treated as HTML
+- [ ] Test if else with dotted variable
+  - $hello.name.eq: nils
 
 - [ ] Test dotted and indexed variable
   - assign
@@ -25,13 +11,14 @@
 
 - [ ] Create Binary Runner and compiler
 - [ ] Docs
-- [ ] Merge and release
 
 - [ ] Prevent expand if not needed
   For "each", for example, we pass $numbers, which gets expanded. It should not need to get expanded. We could simplify this by passing args without dollar.
 
   Same goes for @delete and @if. So the rule becomes that we use $ only when it needs expansion.
 
+- [ ] Update expand to return data
+  - `var data = expand(state, node)`
 
 - [ ] Create a replacer function that sets up replacements on the node.value:
 
@@ -40,11 +27,7 @@ replacements: [
   [ ["hello","world"], [ "what is ", ["hello"], " going" ] ],
   [ ["bye"], [ "see you ", ["user","name"] ] ]
 ]
-```
 
-- [ ] Update expand to `var data = expand(state, node)`
-
-```js
 for (let [path, parts] of replacements) {
   let s = ''
   for (let p of parts) {
@@ -79,3 +62,8 @@ for (let [path, parts] of replacements) {
   - value is the unexpanded
   - data is the expanded
   - isn't the opposite more intuitive?
+
+- [ ] @elsif - ext.elsif?
+
+
+- [ ] @if - empty array is false?

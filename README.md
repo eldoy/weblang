@@ -129,7 +129,12 @@ Variables are stored in `state.vars`:
 Minimal logic is achieved through _@if, @then and @else_:
 
 ```yml
-# If with then
+# If with then - short
+@if: $hello
+@then:
+  =hello: yodle
+
+# If with then - validation mode
 @if:
   $hello:
     name:
@@ -298,6 +303,10 @@ To set the result of the function, use the _extension variable setter syntax_:
 ```
 
 and the `result` variable will be available in `state.vars.result`.
+
+### Acknowledgements
+
+Created by [Vidar Eldøy](https://tekki.no)
 
 ### License
 
