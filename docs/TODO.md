@@ -81,16 +81,18 @@ for (let [path, parts] of replacements) {
 
 =hello@set:
 
-
 - [ ] Switch node.data and node.value meaning?
   - value is the unexpanded
   - data is the expanded
   - isn't the opposite more intuitive?
 
-- [ ] @elsif - ext.elsif?
+Add more default ext:
 
-- [ ] @if - empty array is false?
-  - or how do we do it? .length?
-  - or =arrayLength@len: $array
-  - should we support something more advanced here?
-  - include a bunch of ext?
+- [ ] ext.elsif - @elsif
+- [ ] ext.length - @length
+- [ ] ext.keys - @keys
+- [ ] ext.values - @values
+- [ ] ext.filter - @filter
+- [ ] ext.find - @find
+- [ ] ext.sort - @sort
+- [ ] ext.sum - @sum
